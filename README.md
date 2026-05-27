@@ -1,117 +1,231 @@
+<div align="center">
+
 # GovMate AI
 
-Almaniyada yaşayan xaricilər üçün AI rəsmi sənəd köməkçisi.
+**Almanya'daki resmi yazışmalarınızı yapay zeka ile anlayın, yanıtlayın ve takip edin.**
 
-İstifadəçi rəsmi məktubu (PDF, foto, mətn) yükləyir → sistem oxuyur → sadə dildə izah edir → deadline çıxarır → lazım olan sənədləri göstərir → cavab məktubu hazırlayır → istifadəçinin dilinə tərcümə edir.
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
-## Tech Stack
+[Özellikler](#-özellikler) · [Nasıl Çalışır](#-nasıl-çalışır) · [Kurulum](#-kurulum) · [Komutlar](#-komutlar) · [Güvenlik](#-güvenlik)
 
-- **Frontend:** Next.js 15+, App Router, TypeScript
-- **UI:** Tailwind CSS, shadcn/ui, Lucide React, Framer Motion
-- **Backend:** Next.js Route Handlers + Server Actions
-- **Database:** Supabase PostgreSQL
-- **Auth:** Supabase Auth
-- **File Storage:** Supabase Storage
-- **AI:** OpenAI Responses API
-- **Payments:** Stripe Billing
-- **Email:** Resend
-- **i18n:** next-intl (7 dil: TR, DE, EN, AZ, RU, UK, AR)
-- **Validation:** Zod + React Hook Form
+</div>
 
-## Quraşdırma
+---
 
-### 1. Repository klonla
+## Hakkında
+
+**GovMate AI**, Almanya'da yaşayan kullanıcılar için tasarlanmış tam kapsamlı bir web uygulamasıdır. Jobcenter, Ausländerbehörde, Krankenkasse ve diğer resmi kurumlardan gelen mektupları yükleyebilir; sistem belgeyi analiz eder, basit dilde açıklar, son tarihleri çıkarır ve profesyonel Almanca yanıt mektupları üretir.
+
+> Bu proje yasal danışmanlık sunmaz. Üretilen metinler bilgilendirme amaçlıdır; önemli kararlar için yetkili mercilere veya avukata danışın.
+
+---
+
+## Özellikler
+
+### Kullanıcı paneli
+
+| Özellik | Açıklama |
+|--------|----------|
+| Belge yükleme | PDF, görsel ve metin desteği |
+| AI analiz | Mektubun özeti, riskler ve önerilen adımlar |
+| Son tarih takibi | Otomatik deadline çıkarma ve hatırlatıcılar |
+| Mektup oluşturma | Analize göre uygun şablon önerisi ve otomatik üretim |
+| 78+ şablon | Jobcenter, BAMF, Bürgeramt, Versicherung ve daha fazlası |
+| 7 dil arayüzü | TR · DE · EN · AZ · RU · UK · AR |
+| PDF dışa aktarma | Hazır mektupları indirme |
+| Abonelik | Stripe ile Pro / Business planları |
+
+### Yönetim paneli
+
+- Kullanıcı, rol ve abonelik yönetimi
+- Şablon ve kategori düzenleme (7 dil)
+- Duyuru, site içeriği ve geri bildirim
+- AI ayarları, plan limitleri ve denetim logları
+- **Admin** ve **Support** rolleri
+
+### Kalite ve güvenlik
+
+- Row Level Security (RLS) ile veri izolasyonu
+- Dosya doğrulama, rate limiting, audit log
+- Vitest unit testleri + Playwright E2E
+- i18n senkron kontrolü (`npm run check:i18n`)
+- Sentry hata izleme
+
+---
+
+## Nasıl Çalışır
+
+```mermaid
+flowchart LR
+    A[Belge yükle] --> B[AI analiz]
+    B --> C[Basit dilde açıklama]
+    B --> D[Son tarihler]
+    B --> E[Önerilen mektup tipi]
+    E --> F[Almanca yanıt mektubu]
+    F --> G[PDF / çeviri]
+```
+
+1. **Yükle** — Resmi mektubu PDF, fotoğraf veya metin olarak ekle.
+2. **Anla** — AI içeriği özetler; itiraz süresi gibi kritik noktaları vurgular.
+3. **Yanıtla** — Uygun şablondan profesyonel Almanca mektup oluştur.
+4. **Takip et** — Son tarihleri panelden izle, hatırlatıcı al.
+
+---
+
+## Teknoloji
+
+| Katman | Teknoloji |
+|--------|-----------|
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| UI | Tailwind CSS 4, shadcn/ui, Framer Motion, Lucide |
+| Veritabanı | Supabase (PostgreSQL + Auth + Storage) |
+| AI | OpenAI API |
+| Ödeme | Stripe Billing |
+| E-posta | Resend |
+| i18n | next-intl |
+| Test | Vitest, Playwright |
+| Deploy | Vercel uyumlu |
+
+---
+
+## Kurulum
+
+### Gereksinimler
+
+- Node.js 20+
+- npm
+- [Supabase](https://supabase.com) projesi
+- [OpenAI](https://platform.openai.com) API anahtarı
+- (Opsiyonel) [Stripe](https://stripe.com) ve [Resend](https://resend.com)
+
+### 1. Depoyu klonla
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/xeyal9032/govmate-ai.git
 cd govmate-ai
 npm install
 ```
 
-### 2. Environment Variables
-
-`.env.example` faylını `.env.local` olaraq kopyala və doldur:
+### 2. Ortam değişkenleri
 
 ```bash
 cp .env.example .env.local
 ```
 
-### 3. Supabase Setup
+| Değişken | Açıklama |
+|----------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase proje URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon (public) anahtar |
+| `SUPABASE_SERVICE_ROLE_KEY` | Sunucu tarafı işlemler |
+| `OPENAI_API_KEY` | Belge analizi ve mektup üretimi |
+| `STRIPE_*` | Abonelik ve webhook |
+| `NEXT_PUBLIC_APP_URL` | Uygulama kök URL (örn. `http://localhost:3000`) |
+| `CRON_SECRET` | Hatırlatıcı cron endpoint koruması |
+| `E2E_USER_*` | Playwright test kullanıcısı |
 
-1. [supabase.com](https://supabase.com) saytında yeni layihə yarat
-2. `NEXT_PUBLIC_SUPABASE_URL` və `NEXT_PUBLIC_SUPABASE_ANON_KEY` dəyərlərini Project Settings > API-dən al
-3. `SUPABASE_SERVICE_ROLE_KEY` dəyərini eyni yerdən al
-4. Migration fayllarını icra et:
+### 3. Veritabanı
+
+`supabase/migrations/` altındaki SQL dosyalarını sırayla çalıştırın:
 
 ```bash
 npx supabase db push
 ```
 
-Və ya SQL Editor-da `supabase/migrations/` qovluğundakı faylları sıra ilə icra et.
+Veya Supabase SQL Editor'da `001` … `010` dosyalarını sırayla uygulayın.
 
-### 4. OpenAI Setup
-
-1. [platform.openai.com](https://platform.openai.com) saytından API key al
-2. `.env.local` faylına `OPENAI_API_KEY` olaraq əlavə et
-
-### 5. Stripe Setup
-
-1. [stripe.com](https://stripe.com) saytında hesab yarat
-2. Dashboard > Developers > API Keys-dən key-ləri al
-3. İki məhsul yarat (Pro və Business planları)
-4. Price ID-ləri `.env.local`-a əlavə et
-5. Webhook endpoint-i qur: `https://yourdomain.com/api/stripe/webhook`
-6. Webhook secret-i `.env.local`-a əlavə et
-
-### 6. Lokal İnkişaf
+### 4. Geliştirme sunucusu
 
 ```bash
 npm run dev
 ```
 
-App `http://localhost:3000` ünvanında açılacaq.
+Tarayıcıda: [http://localhost:3000](http://localhost:3000)
 
-### 7. Build & Deploy
+### 5. Admin kullanıcı
 
-```bash
-npm run build
-npm run start
-```
-
-#### Vercel-ə Deploy
-
-1. [vercel.com](https://vercel.com) saytında layihəni import et
-2. Environment variable-ları Vercel dashboard-dan əlavə et
-3. Deploy et
-
-## Database Migration
-
-Migration faylları `supabase/migrations/` qovluğundadır:
-
-1. `001_initial_schema.sql` - Əsas cədvəllər
-2. `002_rls_policies.sql` - RLS siyasətləri
-3. `003_seed_plan_limits.sql` - Plan limitləri
-4. `004_seed_template_categories.sql` - Şablon kateqoriyaları
-5. `005_seed_templates.sql` - Hazır şablonlar
-
-## Admin İstifadəçi Yaratma
-
-Supabase Dashboard > Authentication > Users-dən admin istifadəçi yaradın, sonra SQL Editor-da:
+Supabase Dashboard → Authentication ile kullanıcı oluşturun, ardından SQL Editor:
 
 ```sql
-UPDATE profiles SET role = 'admin' WHERE email = 'admin@govmate.ai';
+UPDATE profiles SET role = 'admin' WHERE email = 'sizin@email.com';
 ```
 
-## Security Qeydləri
+---
 
-- Bütün cədvəllərdə RLS (Row Level Security) aktiv
-- İstifadəçilər yalnız öz sənədlərini görə bilər
-- Admin belə sənəd məzmununu default görə bilməz
-- Fayl əldə etmə signed URL ilə olur
-- Rate limiting tətbiq edilir
-- MIME type və fayl ölçüsü yoxlanılır
-- Audit log bütün əhəmiyyətli əməliyyatlar üçün saxlanılır
+## Komutlar
 
-## Lisenziya
+| Komut | Açıklama |
+|-------|----------|
+| `npm run dev` | Geliştirme sunucusu |
+| `npm run build` | Production build |
+| `npm run start` | Production sunucu |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest unit testleri |
+| `npm run test:e2e` | Playwright E2E |
+| `npm run e2e:setup` | E2E test kullanıcısını Supabase'de oluşturur |
+| `npm run check:i18n` | 7 dil çeviri senkron kontrolü |
+| `npm run verify` | i18n + test + lint + build |
+| `npm run verify:all` | `verify` + E2E |
 
-Proprietary - Bütün hüquqlar qorunur.
+---
+
+## Proje yapısı
+
+```
+govmate-ai/
+├── src/
+│   ├── app/              # Next.js App Router (locale, dashboard, admin, API)
+│   ├── components/       # UI bileşenleri
+│   ├── actions/          # Server Actions
+│   ├── lib/              # AI, Supabase, güvenlik, PDF
+│   └── hooks/            # React hooks
+├── messages/             # 7 dil çeviri dosyaları
+├── supabase/migrations/  # Veritabanı şeması ve seed
+├── e2e/                  # Playwright senaryoları
+└── scripts/              # i18n ve E2E yardımcıları
+```
+
+---
+
+## Deploy (Vercel)
+
+1. [Vercel](https://vercel.com) üzerinde GitHub reposunu import edin.
+2. `.env.local` içindeki tüm değişkenleri Vercel **Environment Variables** bölümüne ekleyin.
+3. Stripe webhook URL: `https://alanadiniz.com/api/stripe/webhook`
+4. Cron (hatırlatıcılar): `vercel.json` ile `/api/cron/reminders`
+
+---
+
+## Güvenlik
+
+- Tüm kullanıcı verilerinde **RLS** aktif
+- Kullanıcılar yalnızca kendi belgelerini görür
+- Admin, varsayılan olarak belge içeriğine erişemez
+- Dosya erişimi imzalı URL ile
+- MIME tipi ve boyut doğrulaması
+- Kritik işlemler için audit log
+
+---
+
+## Desteklenen kurumlar (örnek)
+
+Jobcenter · Ausländerbehörde · Finanzamt · Krankenkasse · Familienkasse · BAMF · Bürgeramt · Rentenversicherung · Schule · Versicherung ve genel şablonlar
+
+---
+
+## Lisans
+
+**Proprietary** — Tüm hakları saklıdır. İzinsiz kopyalama ve dağıtım yasaktır.
+
+---
+
+<div align="center">
+
+**[github.com/xeyal9032/govmate-ai](https://github.com/xeyal9032/govmate-ai)**
+
+Geliştirici: [@xeyal9032](https://github.com/xeyal9032)
+
+</div>
