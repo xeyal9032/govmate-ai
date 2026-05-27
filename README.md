@@ -10,7 +10,7 @@
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
-[Özellikler](#-özellikler) · [Nasıl Çalışır](#-nasıl-çalışır) · [Kurulum](#-kurulum) · [Komutlar](#-komutlar) · [Güvenlik](#-güvenlik)
+[Önizleme](#-önizleme) · [Özellikler](#-özellikler) · [Nasıl Çalışır](#-nasıl-çalışır) · [Kurulum](#-kurulum) · [Komutlar](#-komutlar) · [Güvenlik](#-güvenlik)
 
 </div>
 
@@ -21,6 +21,55 @@
 **GovMate AI**, Almanya'da yaşayan kullanıcılar için tasarlanmış tam kapsamlı bir web uygulamasıdır. Jobcenter, Ausländerbehörde, Krankenkasse ve diğer resmi kurumlardan gelen mektupları yükleyebilir; sistem belgeyi analiz eder, basit dilde açıklar, son tarihleri çıkarır ve profesyonel Almanca yanıt mektupları üretir.
 
 > Bu proje yasal danışmanlık sunmaz. Üretilen metinler bilgilendirme amaçlıdır; önemli kararlar için yetkili mercilere veya avukata danışın.
+
+---
+
+## Önizleme
+
+<div align="center">
+
+<img src="docs/screenshots/demo.gif" alt="GovMate AI — landing sayfası turu" width="920" />
+
+<p><sub>Landing → Nasıl çalışır → Fiyatlandırma → Giriş (otomatik kayıt)</sub></p>
+
+</div>
+
+### Ekran görüntüleri
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <strong>Ana sayfa</strong><br />
+      <img src="docs/screenshots/landing-hero.png" alt="Landing hero" width="100%" />
+    </td>
+    <td align="center" width="50%">
+      <strong>Nasıl çalışır</strong><br />
+      <img src="docs/screenshots/landing-how-it-works.png" alt="Nasıl çalışır" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Fiyatlandırma</strong><br />
+      <img src="docs/screenshots/landing-pricing.png" alt="Fiyatlandırma" width="100%" />
+    </td>
+    <td align="center">
+      <strong>Dashboard</strong><br />
+      <img src="docs/screenshots/dashboard.png" alt="Dashboard" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Şablonlar</strong><br />
+      <img src="docs/screenshots/templates.png" alt="Şablonlar" width="100%" />
+    </td>
+    <td align="center">
+      <strong>Belge yükleme</strong><br />
+      <img src="docs/screenshots/upload.png" alt="Belge yükleme" width="100%" />
+    </td>
+  </tr>
+</table>
+
+> Görselleri yenilemek için: `npm run screenshots` ardından `npm run screenshots:gif` (ffmpeg gerekir).
 
 ---
 
@@ -167,6 +216,8 @@ UPDATE profiles SET role = 'admin' WHERE email = 'sizin@email.com';
 | `npm run test:e2e` | Playwright E2E |
 | `npm run e2e:setup` | E2E test kullanıcısını Supabase'de oluşturur |
 | `npm run check:i18n` | 7 dil çeviri senkron kontrolü |
+| `npm run screenshots` | README için PNG ekran görüntüleri (`docs/screenshots/`) |
+| `npm run screenshots:gif` | Karelerden `demo.gif` üretir |
 | `npm run verify` | i18n + test + lint + build |
 | `npm run verify:all` | `verify` + E2E |
 
