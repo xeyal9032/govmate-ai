@@ -57,7 +57,7 @@ export default function BillingPage() {
         body: JSON.stringify({ plan }),
       });
       const { url } = await response.json();
-      if (url) window.location.href = url;
+      if (url) window.location.assign(url);
     } catch {
       toast.error(t('error'));
     }
@@ -69,7 +69,7 @@ export default function BillingPage() {
         method: 'POST',
       });
       const { url } = await response.json();
-      if (url) window.location.href = url;
+      if (url) window.location.assign(url);
     } catch {
       toast.error(t('error'));
     }

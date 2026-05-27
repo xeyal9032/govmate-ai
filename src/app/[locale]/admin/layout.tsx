@@ -27,11 +27,15 @@ export default async function AdminLayout({
     console.error('Admin layout profile fetch error:', error);
   }
 
-  if (profile?.role !== 'admin') redirect(`/${locale}/dashboard`);
+  if (profile?.role !== 'admin' && profile?.role !== 'support') {
+    redirect(`/${locale}/dashboard`);
+  }
+
+  const staffRole = profile?.role === 'support' ? 'support' : 'admin';
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <AdminSidebar />
+      <AdminSidebar role={staffRole} />
       <main className="flex-1 overflow-y-auto p-6">
         {children}
       </main>

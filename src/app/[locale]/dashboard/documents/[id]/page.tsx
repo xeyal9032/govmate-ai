@@ -2,13 +2,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getDocument } from '@/actions/documents';
 import { notFound } from 'next/navigation';
 import { DocumentAnalysisView } from '@/components/documents/document-analysis-view';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link } from '@/i18n/navigation';
 import { ArrowLeft, Shield, Mail } from 'lucide-react';
 import { formatDate } from '@/lib/utils/format';
+import { getRecommendedLetterType } from '@/lib/letters/recommended-letter-type';
+import type { AnalysisResult } from '@/types/database';
 
 export default async function DocumentDetailPage({
   params,
@@ -27,7 +28,14 @@ export default async function DocumentDetailPage({
     notFound();
   }
 
-  const { document: doc, analysis, deadlines, letters } = data;
+  const { document: doc, analysis, deadlines } = data;
+
+  const recommendedType = analysis
+    ? getRecommendedLetterType(analysis.analysis_json as AnalysisResult)
+    : null;
+  const letterHref = recommendedType
+    ? `/dashboard/letters/new?documentId=${doc.id}&letterType=${recommendedType}&auto=1`
+    : `/dashboard/letters/new?documentId=${doc.id}`;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -50,16 +58,23 @@ export default async function DocumentDetailPage({
             )}
           </div>
         </div>
-        <Link href={`/dashboard/letters/new?documentId=${doc.id}`}>
-          <Button>
-            <Mail className="mr-2 h-4 w-4" />
-            {t('generateReply')}
-          </Button>
-        </Link>
+        {analysis && (
+          <Link href={letterHref}>
+            <Button>
+              <Mail className="mr-2 h-4 w-4" />
+              {recommendedType ? t('createLetterButtonAuto') : t('generateReply')}
+            </Button>
+          </Link>
+        )}
       </div>
 
       {analysis ? (
-        <DocumentAnalysisView analysis={analysis} deadlines={deadlines} />
+        <DocumentAnalysisView
+          analysis={analysis}
+          deadlines={deadlines}
+          documentId={doc.id}
+          authorityName={doc.authority_name}
+        />
       ) : doc.status === 'analyzing' ? (
         <Card>
           <CardContent className="p-12 text-center">

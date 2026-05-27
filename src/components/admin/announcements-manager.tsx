@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { createAnnouncement, toggleAnnouncement, deleteAnnouncement } from '@/actions/admin';
+import {
+  createAnnouncement,
+  updateAnnouncement,
+  toggleAnnouncement,
+  deleteAnnouncement,
+} from '@/actions/admin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +21,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Announcement {
@@ -35,26 +40,57 @@ const typeVariant: Record<string, 'default' | 'secondary' | 'outline' | 'destruc
   info: 'default', warning: 'secondary', success: 'outline', maintenance: 'destructive',
 };
 
+const emptyForm = { title: '', message: '', type: 'info', expiresAt: '' };
+
 export function AnnouncementsManager({ announcements }: Props) {
   const t = useTranslations('admin');
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
-  const [type, setType] = useState('info');
-  const [expiresAt, setExpiresAt] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState(emptyForm);
 
-  const handleCreate = () => {
+  const openCreate = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setDialogOpen(true);
+  };
+
+  const openEdit = (a: Announcement) => {
+    setEditingId(a.id);
+    setForm({
+      title: a.title,
+      message: a.message,
+      type: a.type,
+      expiresAt: a.expires_at
+        ? new Date(a.expires_at).toISOString().slice(0, 16)
+        : '',
+    });
+    setDialogOpen(true);
+  };
+
+  const handleSave = () => {
     startTransition(async () => {
       try {
-        await createAnnouncement({
-          title, message, type,
-          expires_at: expiresAt || undefined,
-        });
-        toast.success(t('announcementCreated'));
+        const payload = {
+          title: form.title,
+          message: form.message,
+          type: form.type,
+          expires_at: form.expiresAt || undefined,
+        };
+        if (editingId) {
+          await updateAnnouncement(editingId, {
+            ...payload,
+            expires_at: form.expiresAt || null,
+          });
+          toast.success(t('announcementUpdated'));
+        } else {
+          await createAnnouncement(payload);
+          toast.success(t('announcementCreated'));
+        }
         setDialogOpen(false);
-        setTitle(''); setMessage(''); setType('info'); setExpiresAt('');
-      } catch { toast.error(t('operationError')); }
+      } catch {
+        toast.error(t('operationError'));
+      }
     });
   };
 
@@ -76,7 +112,7 @@ export function AnnouncementsManager({ announcements }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button onClick={() => setDialogOpen(true)}>
+        <Button onClick={openCreate}>
           <Plus className="size-4" data-icon="inline-start" />
           {t('newAnnouncement')}
         </Button>
@@ -94,6 +130,9 @@ export function AnnouncementsManager({ announcements }: Props) {
                   <Badge variant={typeVariant[a.type] || 'outline'}>{a.type}</Badge>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon-sm" onClick={() => openEdit(a)} disabled={isPending}>
+                    <Pencil className="size-3.5" />
+                  </Button>
                   <Switch checked={a.is_active} onCheckedChange={(v) => handleToggle(a.id, v)} disabled={isPending} />
                   <Button variant="ghost" size="icon-sm" onClick={() => handleDelete(a.id)} disabled={isPending}>
                     <Trash2 className="size-3.5 text-destructive" />
@@ -115,22 +154,22 @@ export function AnnouncementsManager({ announcements }: Props) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{t('newAnnouncement')}</DialogTitle>
+            <DialogTitle>{editingId ? t('editAnnouncement') : t('newAnnouncement')}</DialogTitle>
             <DialogDescription>{t('announcementFormDesc')}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-2">
             <div className="grid gap-2">
               <Label>{t('announcementTitleLabel')}</Label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
             </div>
             <div className="grid gap-2">
               <Label>{t('announcementMessage')}</Label>
-              <Textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={4} />
+              <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={4} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label>{t('announcementType')}</Label>
-                <Select value={type} onValueChange={(v) => setType(v ?? 'info')}>
+                <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v ?? 'info' })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="info">Info</SelectItem>
@@ -142,13 +181,13 @@ export function AnnouncementsManager({ announcements }: Props) {
               </div>
               <div className="grid gap-2">
                 <Label>{t('expiresAt')}</Label>
-                <Input type="datetime-local" value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
+                <Input type="datetime-local" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleCreate} disabled={isPending || !title || !message}>
-              {isPending ? t('saving') : t('create')}
+            <Button onClick={handleSave} disabled={isPending || !form.title || !form.message}>
+              {isPending ? t('saving') : editingId ? t('update') : t('create')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -39,7 +39,7 @@ export function TemplatesView({ templates, categories }: TemplatesViewProps) {
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <LayoutGrid className="h-5 w-5 text-muted-foreground" />
-        <Select value={activeCategory} onValueChange={setActiveCategory}>
+        <Select value={activeCategory} onValueChange={(v) => v && setActiveCategory(v)}>
           <SelectTrigger className="w-[280px]">
             <span>{getCategoryLabel(activeCategory)}</span>
           </SelectTrigger>

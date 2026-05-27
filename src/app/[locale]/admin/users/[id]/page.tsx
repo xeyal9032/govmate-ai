@@ -1,5 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getAdminUserDetail } from '@/actions/admin';
+import { createClient } from '@/lib/supabase/server';
+import { AdminUserDetailPanel } from '@/components/admin/admin-user-detail-panel';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -13,6 +15,13 @@ export default async function AdminUserDetailPage({
   setRequestLocale(locale);
   const t = await getTranslations('admin');
 
+  const supabase = await createClient();
+  const { data: { user: currentUser } } = await supabase.auth.getUser();
+  const { data: currentProfile } = currentUser
+    ? await supabase.from('profiles').select('role').eq('id', currentUser.id).single()
+    : { data: null };
+  const isAdmin = currentProfile?.role === 'admin';
+
   let detail;
   try {
     detail = await getAdminUserDetail(id);
@@ -23,27 +32,37 @@ export default async function AdminUserDetailPage({
   const { profile, documents, letters, totalUsage } = detail;
   if (!profile) return <div className="p-6"><p>{t('userNotFound')}</p></div>;
 
+  const subscription = Array.isArray((profile as { subscriptions?: unknown }).subscriptions)
+    ? (profile as { subscriptions: { id: string; plan: string; status: string }[] }).subscriptions[0]
+    : (profile as { subscriptions?: { id: string; plan: string; status: string } | null }).subscriptions;
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{profile.full_name || profile.email}</h1>
+      <p className="text-sm text-muted-foreground">{profile.email}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6 text-center">
-            <p className="text-2xl font-bold">{profile.role}</p>
-            <p className="text-sm text-muted-foreground">{t('roleColumn')}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6 text-center">
-            <p className="text-2xl font-bold">{(profile as any).subscriptions?.plan || 'free'}</p>
-            <p className="text-sm text-muted-foreground">{t('planColumn')}</p>
-          </CardContent>
-        </Card>
+      <AdminUserDetailPanel
+        userId={id}
+        initialFullName={profile.full_name || ''}
+        initialAddress={profile.address || ''}
+        initialRole={profile.role || 'user'}
+        subscriptionId={subscription?.id ?? null}
+        initialPlan={subscription?.plan || 'free'}
+        initialStatus={subscription?.status || 'inactive'}
+        isAdmin={isAdmin}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-6 text-center">
             <p className="text-2xl font-bold">{documents.length}</p>
             <p className="text-sm text-muted-foreground">{t('documentsCount')}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6 text-center">
+            <p className="text-2xl font-bold">{letters.length}</p>
+            <p className="text-sm text-muted-foreground">{t('userLetters')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -69,7 +88,7 @@ export default async function AdminUserDetailPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {documents.map((doc: any) => (
+                {documents.map((doc: { id: string; title?: string; status: string; created_at: string }) => (
                   <TableRow key={doc.id}>
                     <TableCell>{doc.title || '—'}</TableCell>
                     <TableCell><Badge variant="outline">{doc.status}</Badge></TableCell>
@@ -97,7 +116,7 @@ export default async function AdminUserDetailPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {letters.map((letter: any) => (
+                {letters.map((letter: { id: string; subject: string; letter_type: string; created_at: string }) => (
                   <TableRow key={letter.id}>
                     <TableCell>{letter.subject}</TableCell>
                     <TableCell><Badge variant="outline">{letter.letter_type}</Badge></TableCell>

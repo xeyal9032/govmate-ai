@@ -8,8 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Languages } from 'lucide-react';
-
 export function LanguageSwitcher() {
   const { locale, changeLocale, isPending } = useLanguage();
 
@@ -21,8 +19,7 @@ export function LanguageSwitcher() {
           alt={localeNames[locale]}
           width={20}
           height={14}
-          className="rounded-[2px]"
-          style={{ aspectRatio: '3/2', objectFit: 'cover' }}
+          className="aspect-[3/2] rounded-[2px] object-cover"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -37,8 +34,7 @@ export function LanguageSwitcher() {
               alt={localeNames[loc]}
               width={20}
               height={14}
-              className="rounded-[2px]"
-              style={{ aspectRatio: '3/2', objectFit: 'cover' }}
+              className="aspect-[3/2] rounded-[2px] object-cover"
             />
             {localeNames[loc]}
           </DropdownMenuItem>

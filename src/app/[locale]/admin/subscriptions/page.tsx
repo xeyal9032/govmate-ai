@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/table';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SubscriptionPlanChanger } from '@/components/admin/subscription-plan-changer';
+import { SubscriptionStatusChanger } from '@/components/admin/subscription-status-changer';
 
 export default async function AdminSubscriptionsPage({
   params,
@@ -82,6 +83,7 @@ export default async function AdminSubscriptionsPage({
               <TableHead>{t('emailColumn')}</TableHead>
               <TableHead>{t('planColumn')}</TableHead>
               <TableHead>{t('statusColumn')}</TableHead>
+              <TableHead>{t('changeStatus')}</TableHead>
               <TableHead>{t('changePlan')}</TableHead>
               <TableHead>{t('dateColumn')}</TableHead>
             </TableRow>
@@ -89,7 +91,7 @@ export default async function AdminSubscriptionsPage({
           <TableBody>
             {(!subscriptions || subscriptions.length === 0) ? (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                   {t('noData')}
                 </TableCell>
               </TableRow>
@@ -109,6 +111,9 @@ export default async function AdminSubscriptionsPage({
                     <Badge variant={statusVariant[sub.status] || 'outline'}>
                       {sub.status}
                     </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <SubscriptionStatusChanger subscriptionId={sub.id} currentStatus={sub.status} />
                   </TableCell>
                   <TableCell>
                     <SubscriptionPlanChanger subscriptionId={sub.id} currentPlan={sub.plan} />

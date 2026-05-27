@@ -20,28 +20,40 @@ import {
   Megaphone,
 } from 'lucide-react';
 
-const navItems = [
-  { href: '/admin', icon: LayoutDashboard, labelKey: 'overview' },
-  { href: '/admin/users', icon: Users, labelKey: 'users' },
-  { href: '/admin/templates', icon: FileStack, labelKey: 'templates' },
-  { href: '/admin/categories', icon: FolderTree, labelKey: 'categoriesNav' },
-  { href: '/admin/ai-settings', icon: Brain, labelKey: 'aiSettings' },
-  { href: '/admin/logs', icon: ScrollText, labelKey: 'logs' },
-  { href: '/admin/feedback', icon: MessageSquare, labelKey: 'feedback' },
-  { href: '/admin/site-content', icon: FileEdit, labelKey: 'siteContent' },
-  { href: '/admin/subscriptions', icon: CreditCard, labelKey: 'subscriptions' },
-  { href: '/admin/plan-limits', icon: Gauge, labelKey: 'planLimits' },
-  { href: '/admin/announcements', icon: Megaphone, labelKey: 'announcements' },
+type StaffRole = 'admin' | 'support';
+
+const allNavItems: {
+  href: string;
+  icon: typeof LayoutDashboard;
+  labelKey: string;
+  roles: StaffRole[];
+}[] = [
+  { href: '/admin', icon: LayoutDashboard, labelKey: 'overview', roles: ['admin', 'support'] },
+  { href: '/admin/users', icon: Users, labelKey: 'users', roles: ['admin', 'support'] },
+  { href: '/admin/feedback', icon: MessageSquare, labelKey: 'feedback', roles: ['admin', 'support'] },
+  { href: '/admin/templates', icon: FileStack, labelKey: 'templates', roles: ['admin'] },
+  { href: '/admin/categories', icon: FolderTree, labelKey: 'categoriesNav', roles: ['admin'] },
+  { href: '/admin/ai-settings', icon: Brain, labelKey: 'aiSettings', roles: ['admin'] },
+  { href: '/admin/logs', icon: ScrollText, labelKey: 'logs', roles: ['admin'] },
+  { href: '/admin/site-content', icon: FileEdit, labelKey: 'siteContent', roles: ['admin'] },
+  { href: '/admin/subscriptions', icon: CreditCard, labelKey: 'subscriptions', roles: ['admin'] },
+  { href: '/admin/plan-limits', icon: Gauge, labelKey: 'planLimits', roles: ['admin'] },
+  { href: '/admin/announcements', icon: Megaphone, labelKey: 'announcements', roles: ['admin'] },
 ];
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+  role?: StaffRole;
+}
+
+export function AdminSidebar({ role = 'admin' }: AdminSidebarProps) {
   const t = useTranslations('admin');
   const pathname = usePathname();
+  const navItems = allNavItems.filter((item) => item.roles.includes(role));
 
   return (
     <aside className="w-64 border-r bg-sidebar flex flex-col">
       <div className="p-6">
-        <h2 className="font-bold text-lg">{t('title')}</h2>
+        <h2 className="font-bold text-lg">{role === 'support' ? t('supportTitle') : t('title')}</h2>
       </div>
       <ScrollArea className="flex-1 px-3">
         <nav className="space-y-1">

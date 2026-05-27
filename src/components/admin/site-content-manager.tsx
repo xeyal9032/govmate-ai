@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription,
@@ -35,6 +36,8 @@ const emptyForm = {
   slug: '', content_type: 'page',
   title_de: '', title_tr: '', title_en: '',
   body_de: '', body_tr: '', body_en: '',
+  is_published: true,
+  sort_order: 0,
 };
 
 export function SiteContentManager({ content }: Props) {
@@ -52,6 +55,8 @@ export function SiteContentManager({ content }: Props) {
       slug: item.slug, content_type: item.content_type,
       title_de: item.title?.de || '', title_tr: item.title?.tr || '', title_en: item.title?.en || '',
       body_de: item.body?.de || '', body_tr: item.body?.tr || '', body_en: item.body?.en || '',
+      is_published: item.is_published ?? true,
+      sort_order: item.sort_order ?? 0,
     });
     setDialogOpen(true);
   };
@@ -61,6 +66,8 @@ export function SiteContentManager({ content }: Props) {
       slug: form.slug, content_type: form.content_type,
       title: { de: form.title_de, tr: form.title_tr, en: form.title_en },
       body: { de: form.body_de, tr: form.body_tr, en: form.body_en },
+      is_published: form.is_published,
+      sort_order: form.sort_order,
     };
     startTransition(async () => {
       try {
@@ -72,6 +79,14 @@ export function SiteContentManager({ content }: Props) {
           toast.success(t('contentCreated'));
         }
         setDialogOpen(false);
+      } catch { toast.error(t('operationError')); }
+    });
+  };
+
+  const handleTogglePublished = (id: string, published: boolean) => {
+    startTransition(async () => {
+      try {
+        await updateSiteContent(id, { is_published: published });
       } catch { toast.error(t('operationError')); }
     });
   };
@@ -103,12 +118,23 @@ export function SiteContentManager({ content }: Props) {
           content.map((item) => (
             <Card key={item.id}>
               <CardHeader className="flex flex-row items-center justify-between">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <CardTitle className="text-base">{item.title?.de || item.slug}</CardTitle>
                   <Badge variant="secondary">{typeLabels[item.content_type] || item.content_type}</Badge>
                   <Badge variant="outline">{item.slug}</Badge>
+                  <Badge variant={item.is_published ? 'default' : 'outline'}>
+                    {item.is_published ? t('published') : t('draft')}
+                  </Badge>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs">{t('published')}</Label>
+                    <Switch
+                      checked={item.is_published}
+                      onCheckedChange={(v) => handleTogglePublished(item.id, v)}
+                      disabled={isPending}
+                    />
+                  </div>
                   <Button variant="ghost" size="icon-sm" onClick={() => openEdit(item)}>
                     <Pencil className="size-3.5" />
                   </Button>
@@ -119,6 +145,7 @@ export function SiteContentManager({ content }: Props) {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground line-clamp-2">{item.body?.de || item.body?.tr || ''}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('sortOrder')}: {item.sort_order}</p>
               </CardContent>
             </Card>
           ))
@@ -148,6 +175,16 @@ export function SiteContentManager({ content }: Props) {
                     <SelectItem value="page">Page</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label>{t('sortOrder')}</Label>
+                <Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: parseInt(e.target.value, 10) || 0 })} />
+              </div>
+              <div className="flex items-center gap-3 pt-6">
+                <Switch checked={form.is_published} onCheckedChange={(v) => setForm({ ...form, is_published: v })} />
+                <Label>{t('published')}</Label>
               </div>
             </div>
             <Tabs defaultValue="de">

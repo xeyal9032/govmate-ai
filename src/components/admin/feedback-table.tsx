@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
-import { updateFeedbackStatus, replyToFeedback } from '@/actions/admin';
+import { updateFeedbackStatus, replyToFeedback, deleteFeedback } from '@/actions/admin';
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
@@ -15,7 +15,7 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription,
 } from '@/components/ui/dialog';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Feedback {
@@ -52,6 +52,18 @@ export function FeedbackTable({ feedbacks }: FeedbackTableProps) {
       try {
         await updateFeedbackStatus(id, status);
         toast.success(t('feedbackUpdated'));
+      } catch {
+        toast.error(t('operationError'));
+      }
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    if (!confirm(t('deleteFeedbackConfirm'))) return;
+    startTransition(async () => {
+      try {
+        await deleteFeedback(id);
+        toast.success(t('feedbackDeleted'));
       } catch {
         toast.error(t('operationError'));
       }
@@ -137,17 +149,27 @@ export function FeedbackTable({ feedbacks }: FeedbackTableProps) {
                   </Select>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => {
-                      setReplyingFeedback(fb);
-                      setReplyText(fb.admin_reply || '');
-                      setReplyDialogOpen(true);
-                    }}
-                  >
-                    <MessageSquare className="size-3.5" />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => {
+                        setReplyingFeedback(fb);
+                        setReplyText(fb.admin_reply || '');
+                        setReplyDialogOpen(true);
+                      }}
+                    >
+                      <MessageSquare className="size-3.5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => handleDelete(fb.id)}
+                      disabled={isPending}
+                    >
+                      <Trash2 className="size-3.5 text-destructive" />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))

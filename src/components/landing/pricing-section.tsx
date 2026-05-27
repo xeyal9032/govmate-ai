@@ -43,7 +43,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export function PricingSection() {
@@ -52,7 +52,7 @@ export function PricingSection() {
   const billingT = useTranslations('billing.plans');
 
   return (
-    <section className="relative overflow-hidden bg-muted/30 py-24 sm:py-32">
+    <section id="pricing" className="relative overflow-hidden bg-muted/30 py-24 sm:py-32">
       <div className="absolute inset-0">
         <div className="absolute left-1/4 top-0 h-64 w-64 rounded-full bg-blue-500/5 blur-3xl" />
         <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-purple-500/5 blur-3xl" />

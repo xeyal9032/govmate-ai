@@ -13,9 +13,72 @@ interface Props {
   data: ChartDataPoint[];
 }
 
+const CHART_HEIGHT = 160;
+const MIN_BAR = 4;
+
+function BarChart({
+  values,
+  labels,
+  barClassName,
+}: {
+  values: number[];
+  labels: string[];
+  barClassName: string;
+}) {
+  const maxVal = Math.max(...values, 1);
+
+  return (
+    <svg
+      viewBox={`0 0 ${values.length * 24} 200`}
+      className="h-[200px] w-full text-foreground"
+      role="img"
+      aria-hidden
+    >
+      {values.map((value, i) => {
+        const barH = Math.max((value / maxVal) * CHART_HEIGHT, MIN_BAR);
+        const x = i * 24 + 4;
+        const y = 180 - barH;
+        return (
+          <g key={labels[i] ?? i}>
+            <text
+              x={x + 8}
+              y={y - 6}
+              textAnchor="middle"
+              fill="currentColor"
+              fontSize={8}
+            >
+              {value}
+            </text>
+            <rect
+              x={x}
+              y={y}
+              width={16}
+              height={barH}
+              rx={2}
+              className={barClassName}
+            />
+            <text
+              x={x + 8}
+              y={196}
+              textAnchor="middle"
+              fill="currentColor"
+              fontSize={7}
+              opacity={0.6}
+            >
+              {labels[i]}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export function DashboardChart({ data }: Props) {
   const t = useTranslations('admin');
-  const maxVal = Math.max(...data.map(d => Math.max(d.documents, d.aiUsage)), 1);
+  const dates = data.map((d) => d.date);
+  const documents = data.map((d) => d.documents);
+  const aiUsage = data.map((d) => d.aiUsage);
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -24,18 +87,11 @@ export function DashboardChart({ data }: Props) {
           <CardTitle className="text-base">{t('documentsChart')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-end gap-2 h-[200px]">
-            {data.map((d, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-xs font-medium">{d.documents}</span>
-                <div
-                  className="w-full bg-primary rounded-t-sm transition-all"
-                  style={{ height: `${Math.max((d.documents / maxVal) * 160, 4)}px` }}
-                />
-                <span className="text-[10px] text-muted-foreground">{d.date}</span>
-              </div>
-            ))}
-          </div>
+          <BarChart
+            values={documents}
+            labels={dates}
+            barClassName="fill-primary"
+          />
         </CardContent>
       </Card>
 
@@ -44,18 +100,11 @@ export function DashboardChart({ data }: Props) {
           <CardTitle className="text-base">{t('aiUsageChart')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-end gap-2 h-[200px]">
-            {data.map((d, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-xs font-medium">{d.aiUsage}</span>
-                <div
-                  className="w-full bg-chart-2 rounded-t-sm transition-all"
-                  style={{ height: `${Math.max((d.aiUsage / maxVal) * 160, 4)}px` }}
-                />
-                <span className="text-[10px] text-muted-foreground">{d.date}</span>
-              </div>
-            ))}
-          </div>
+          <BarChart
+            values={aiUsage}
+            labels={dates}
+            barClassName="fill-chart-2"
+          />
         </CardContent>
       </Card>
     </div>

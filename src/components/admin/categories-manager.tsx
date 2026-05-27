@@ -17,6 +17,9 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { adminCreateCategory, adminUpdateCategory, adminDeleteCategory } from '@/actions/admin';
 
+const LANGS = ['de', 'tr', 'en', 'az', 'ru', 'uk', 'ar'] as const;
+type Lang = (typeof LANGS)[number];
+
 interface Category {
   id: string;
   slug: string;
@@ -29,11 +32,14 @@ interface CategoriesManagerProps {
   categories: Category[];
 }
 
-const emptyForm = {
-  slug: '',
-  name_de: '', name_tr: '', name_en: '',
-  description_de: '', description_tr: '', description_en: '',
-};
+function emptyForm() {
+  const form: Record<string, string> = { slug: '' };
+  for (const lang of LANGS) {
+    form[`name_${lang}`] = '';
+    form[`description_${lang}`] = '';
+  }
+  return form;
+}
 
 export function CategoriesManager({ categories }: CategoriesManagerProps) {
   const t = useTranslations('admin.categories');
@@ -43,26 +49,36 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<Record<string, string>>(emptyForm());
 
   const openCreateDialog = () => {
     setEditingId(null);
-    setForm(emptyForm);
+    setForm(emptyForm());
     setDialogOpen(true);
   };
 
   const openEditDialog = (cat: Category) => {
     setEditingId(cat.id);
-    setForm({
-      slug: cat.slug,
-      name_de: cat.name?.de || '',
-      name_tr: cat.name?.tr || '',
-      name_en: cat.name?.en || '',
-      description_de: cat.description?.de || '',
-      description_tr: cat.description?.tr || '',
-      description_en: cat.description?.en || '',
-    });
+    const next = emptyForm();
+    next.slug = cat.slug;
+    for (const lang of LANGS) {
+      next[`name_${lang}`] = cat.name?.[lang] || '';
+      next[`description_${lang}`] = cat.description?.[lang] || '';
+    }
+    setForm(next);
     setDialogOpen(true);
+  };
+
+  const buildPayload = () => {
+    const name: Record<string, string> = {};
+    const description: Record<string, string> = {};
+    for (const lang of LANGS) {
+      const n = form[`name_${lang}`]?.trim();
+      const d = form[`description_${lang}`]?.trim();
+      if (n) name[lang] = n;
+      if (d) description[lang] = d;
+    }
+    return { slug: form.slug, name, description };
   };
 
   const handleSave = () => {
@@ -70,13 +86,7 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
       toast.error(t('slugRequired'));
       return;
     }
-
-    const payload = {
-      slug: form.slug,
-      name: { de: form.name_de, tr: form.name_tr, en: form.name_en },
-      description: { de: form.description_de, tr: form.description_tr, en: form.description_en },
-    };
-
+    const payload = buildPayload();
     startTransition(async () => {
       try {
         if (editingId) {
@@ -107,8 +117,13 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
     });
   };
 
-  const updateField = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+  const langLabel = (lang: Lang) => {
+    const key = `lang${lang.charAt(0).toUpperCase()}${lang.slice(1)}` as 'langDe';
+    try {
+      return t(key as Parameters<typeof t>[0]);
+    } catch {
+      return lang.toUpperCase();
+    }
   };
 
   return (
@@ -120,7 +135,7 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
         </Button>
       </div>
 
-      <div className="rounded-lg border">
+      <div className="rounded-lg border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -167,7 +182,7 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingId ? t('editCategory') : t('createCategory')}</DialogTitle>
             <DialogDescription>{t('formDesc')}</DialogDescription>
@@ -175,44 +190,35 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
           <div className="grid gap-4 py-2">
             <div className="grid gap-2">
               <Label htmlFor="slug">{t('slugLabel')}</Label>
-              <Input id="slug" value={form.slug} onChange={(e) => updateField('slug', e.target.value)} placeholder={t('slugPlaceholder')} className="font-mono" />
+              <Input id="slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder={t('slugPlaceholder')} className="font-mono" />
             </div>
             <Tabs defaultValue="de">
-              <TabsList>
-                <TabsTrigger value="de">{t('langDe')}</TabsTrigger>
-                <TabsTrigger value="tr">{t('langTr')}</TabsTrigger>
-                <TabsTrigger value="en">{t('langEn')}</TabsTrigger>
+              <TabsList className="flex flex-wrap h-auto">
+                {LANGS.map((lang) => (
+                  <TabsTrigger key={lang} value={lang}>{langLabel(lang)}</TabsTrigger>
+                ))}
               </TabsList>
-              <TabsContent value="de" className="mt-3 space-y-3">
-                <div className="grid gap-2">
-                  <Label>{t('nameDe')}</Label>
-                  <Input value={form.name_de} onChange={(e) => updateField('name_de', e.target.value)} placeholder={t('namePlaceholder')} />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t('descDe')}</Label>
-                  <Textarea value={form.description_de} onChange={(e) => updateField('description_de', e.target.value)} placeholder={t('descPlaceholder')} rows={2} />
-                </div>
-              </TabsContent>
-              <TabsContent value="tr" className="mt-3 space-y-3">
-                <div className="grid gap-2">
-                  <Label>{t('nameTr')}</Label>
-                  <Input value={form.name_tr} onChange={(e) => updateField('name_tr', e.target.value)} />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t('descTr')}</Label>
-                  <Textarea value={form.description_tr} onChange={(e) => updateField('description_tr', e.target.value)} rows={2} />
-                </div>
-              </TabsContent>
-              <TabsContent value="en" className="mt-3 space-y-3">
-                <div className="grid gap-2">
-                  <Label>{t('nameEn')}</Label>
-                  <Input value={form.name_en} onChange={(e) => updateField('name_en', e.target.value)} />
-                </div>
-                <div className="grid gap-2">
-                  <Label>{t('descEn')}</Label>
-                  <Textarea value={form.description_en} onChange={(e) => updateField('description_en', e.target.value)} rows={2} />
-                </div>
-              </TabsContent>
+              {LANGS.map((lang) => (
+                <TabsContent key={lang} value={lang} className="mt-3 space-y-3">
+                  <div className="grid gap-2">
+                    <Label>{t('nameDe').replace('(DE)', `(${lang.toUpperCase()})`)}</Label>
+                    <Input
+                      value={form[`name_${lang}`] || ''}
+                      onChange={(e) => setForm({ ...form, [`name_${lang}`]: e.target.value })}
+                      placeholder={t('namePlaceholder')}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>{t('descDe').replace('(DE)', `(${lang.toUpperCase()})`)}</Label>
+                    <Textarea
+                      value={form[`description_${lang}`] || ''}
+                      onChange={(e) => setForm({ ...form, [`description_${lang}`]: e.target.value })}
+                      placeholder={t('descPlaceholder')}
+                      rows={2}
+                    />
+                  </div>
+                </TabsContent>
+              ))}
             </Tabs>
           </div>
           <DialogFooter>

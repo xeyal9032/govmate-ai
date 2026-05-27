@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Playwright E2E (127.0.0.1) için dev kaynak erişimi
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   images: {
     remotePatterns: [
       {

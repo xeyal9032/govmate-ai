@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
@@ -16,6 +16,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { toast } from 'sonner';
+import { getRecommendedLetterType, isLetterType } from '@/lib/letters/recommended-letter-type';
+import type { AnalysisResult } from '@/types/database';
 
 type LetterType =
   | 'simple_reply'
@@ -33,19 +35,6 @@ interface GeneratedLetter {
   disclaimer: string;
 }
 
-interface DocumentData {
-  id: string;
-  title?: string;
-  authority_name?: string;
-  document_type?: string;
-}
-
-interface AnalysisData {
-  summary_simple?: string;
-  summary_detailed?: string;
-  required_actions?: Array<{ action?: string }>;
-}
-
 export default function NewLetterPage() {
   const t = useTranslations('letters');
   const tCommon = useTranslations('common');
@@ -55,9 +44,12 @@ export default function NewLetterPage() {
   const router = useRouter();
 
   const documentId = searchParams.get('documentId');
-  const documentType = searchParams.get('documentType');
+  const letterTypeParam = searchParams.get('letterType');
+  const autoGenerate = searchParams.get('auto') === '1';
 
-  const [letterType, setLetterType] = useState<LetterType | null>(null);
+  const [letterType, setLetterType] = useState<LetterType | null>(
+    letterTypeParam && isLetterType(letterTypeParam) ? letterTypeParam : null
+  );
   const [authorityName, setAuthorityName] = useState('');
   const [summary, setSummary] = useState('');
   const [action, setAction] = useState('');
@@ -70,6 +62,7 @@ export default function NewLetterPage() {
   const [prefilling, setPrefilling] = useState(!!documentId);
   const [result, setResult] = useState<GeneratedLetter | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const autoStarted = useRef(false);
 
   useEffect(() => {
     if (!documentId) return;
@@ -83,24 +76,43 @@ export default function NewLetterPage() {
           .eq('id', documentId)
           .single();
 
-        if (doc) {
-          if (doc.authority_name) setAuthorityName(doc.authority_name);
-        }
-
-        const { data: analysis } = await supabase
+        const { data: analysisRow } = await supabase
           .from('document_analyses')
-          .select('summary_simple, summary_detailed, required_actions')
+          .select('summary_simple, summary_detailed, required_actions, analysis_json')
           .eq('document_id', documentId)
           .order('created_at', { ascending: false })
           .limit(1)
           .single();
 
-        if (analysis) {
-          if (analysis.summary_simple) setSummary(analysis.summary_simple);
-          const actions = analysis.required_actions as Array<{ action?: string }> | null;
+        const analysisJson = analysisRow?.analysis_json as AnalysisResult | null;
+
+        if (doc?.authority_name) {
+          setAuthorityName(doc.authority_name);
+        } else if (analysisJson?.sender_authority) {
+          setAuthorityName(analysisJson.sender_authority);
+        }
+
+        if (analysisRow) {
+          if (analysisRow.summary_simple) setSummary(analysisRow.summary_simple);
+          const actions = analysisRow.required_actions as Array<{ action?: string }> | null;
           if (actions?.length) {
             setAction(actions.map((a) => a.action || '').filter(Boolean).join('\n'));
+          } else if (analysisJson?.required_actions?.length) {
+            setAction(
+              analysisJson.required_actions
+                .map((a) => a.action)
+                .filter(Boolean)
+                .join('\n')
+            );
+          } else if (analysisRow.summary_simple) {
+            // Otomatik mektup için minimum aksiyon metni
+            setAction(analysisRow.summary_simple);
           }
+        }
+
+        if (!letterTypeParam && analysisJson) {
+          const suggested = getRecommendedLetterType(analysisJson);
+          if (suggested) setLetterType(suggested);
         }
 
         const { data: { user } } = await supabase.auth.getUser();
@@ -124,16 +136,19 @@ export default function NewLetterPage() {
     };
 
     fetchDocumentData();
-  }, [documentId]);
-
-  const canSubmit =
-    letterType && authorityName.trim() && summary.trim() && action.trim() && fullName.trim();
+  }, [documentId, letterTypeParam]);
 
   const toTitleCase = (str: string) =>
     str.trim().split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
 
-  const handleSubmit = async () => {
-    if (!canSubmit) return;
+  const canSubmit = Boolean(
+    letterType && authorityName.trim() && summary.trim() && action.trim() && fullName.trim()
+  );
+
+  const handleSubmit = useCallback(async () => {
+    if (!letterType || !authorityName.trim() || !summary.trim() || !action.trim() || !fullName.trim()) {
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -173,19 +188,52 @@ export default function NewLetterPage() {
       }
       setResult(data.letter);
       toast.success(t('generate.success'));
+
+      if (data.letterId) {
+        router.push(`/dashboard/letters/${data.letterId}`);
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : tErrors('generic');
       setError(message);
       toast.error(message);
+      // Otomatik deneme başarısızsa sonsuz döngüyü önle; kullanıcı formdan tekrar dener
+      autoStarted.current = true;
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    letterType,
+    authorityName,
+    summary,
+    action,
+    fullName,
+    address,
+    customerNumber,
+    notes,
+    documentId,
+    locale,
+    router,
+    t,
+    tErrors,
+  ]);
 
-  if (prefilling) {
+  useEffect(() => {
+    if (!autoGenerate || prefilling || autoStarted.current || result) return;
+    if (!canSubmit || loading) return;
+    autoStarted.current = true;
+    const timer = window.setTimeout(() => {
+      void handleSubmit();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [autoGenerate, prefilling, canSubmit, loading, result, handleSubmit]);
+
+  if (prefilling || (autoGenerate && loading && !result)) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div className="flex flex-col items-center justify-center gap-3 py-20">
         <Loader2 className="size-8 animate-spin text-muted-foreground" />
+        <p className="text-sm text-muted-foreground">
+          {autoGenerate ? t('generate.autoFromDocument') : tCommon('loading')}
+        </p>
       </div>
     );
   }

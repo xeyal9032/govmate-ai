@@ -1,0 +1,25 @@
+.ge-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+}
+
+.ge-inner {
+  text-align: center;
+  padding: 2rem;
+}
+
+.ge-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ge-button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background: white;
+}

@@ -2,6 +2,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
+import './global-error.css';
 
 export default function GlobalError({
   error,
@@ -13,16 +14,14 @@ export default function GlobalError({
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
+
   return (
     <html>
       <body>
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'system-ui, sans-serif' }}>
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Something went wrong</h2>
-            <button
-              onClick={reset}
-              style={{ padding: '0.5rem 1.5rem', borderRadius: '0.5rem', border: '1px solid #ccc', cursor: 'pointer', background: 'white' }}
-            >
+        <div className="ge-root">
+          <div className="ge-inner">
+            <h2 className="ge-title">Something went wrong</h2>
+            <button type="button" onClick={reset} className="ge-button">
               Try again
             </button>
           </div>

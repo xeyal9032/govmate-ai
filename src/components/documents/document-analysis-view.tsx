@@ -6,14 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle2, AlertTriangle, FileText, Clock } from 'lucide-react';
-import type { DocumentAnalysis, Deadline } from '@/types/database';
+import type { AnalysisResult, DocumentAnalysis, Deadline } from '@/types/database';
 import { formatDate, daysUntil } from '@/lib/utils/format';
 import { useLocale } from 'next-intl';
 import type { Locale } from '@/lib/utils/language';
+import { AnalysisLetterCta } from '@/components/documents/analysis-letter-cta';
 
 interface DocumentAnalysisViewProps {
   analysis: DocumentAnalysis;
   deadlines: Deadline[];
+  documentId: string;
+  authorityName?: string | null;
 }
 
 const urgencyColors: Record<string, string> = {
@@ -29,9 +32,16 @@ const priorityColors: Record<string, string> = {
   low: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
 };
 
-export function DocumentAnalysisView({ analysis, deadlines }: DocumentAnalysisViewProps) {
+export function DocumentAnalysisView({
+  analysis,
+  deadlines,
+  documentId,
+  authorityName,
+}: DocumentAnalysisViewProps) {
   const t = useTranslations('documents.detail');
   const locale = useLocale() as Locale;
+
+  const analysisJson = analysis.analysis_json as AnalysisResult | null | undefined;
 
   const actions = (analysis.required_actions as unknown as Array<{ action: string; priority: string; deadline: string | null }>) || [];
   const requiredDocs = (analysis.required_documents as unknown as Array<{ name: string; why_needed: string; optional: boolean }>) || [];
@@ -39,6 +49,12 @@ export function DocumentAnalysisView({ analysis, deadlines }: DocumentAnalysisVi
 
   return (
     <div className="space-y-4">
+      <AnalysisLetterCta
+        documentId={documentId}
+        authorityName={authorityName}
+        analysisJson={analysisJson}
+      />
+
       {/* Confidence Score */}
       {analysis.confidence_score !== null && (
         <Card>

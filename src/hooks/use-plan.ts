@@ -14,14 +14,11 @@ export function usePlan(userId: string | undefined) {
   const [data, setData] = useState<PlanData>({
     subscription: null,
     limits: null,
-    loading: true,
+    loading: Boolean(userId),
   });
 
   useEffect(() => {
-    if (!userId) {
-      setData(prev => ({ ...prev, loading: false }));
-      return;
-    }
+    if (!userId) return;
 
     const supabase = createClient();
 

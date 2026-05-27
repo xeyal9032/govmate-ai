@@ -27,7 +27,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.8, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export function LanguagesSection() {
@@ -90,8 +90,7 @@ export function LanguagesSection() {
                     alt={localeNames[locale]}
                     width={48}
                     height={32}
-                    className="rounded-md shadow-md ring-1 ring-black/5"
-                    style={{ aspectRatio: '3/2', objectFit: 'cover' }}
+                    className="aspect-[3/2] rounded-md object-cover shadow-md ring-1 ring-black/5"
                   />
                   <div className="absolute -inset-1 -z-10 rounded-lg bg-gradient-to-br from-white/50 to-white/0 blur-sm dark:from-white/10" />
                 </motion.div>

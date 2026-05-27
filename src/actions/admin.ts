@@ -19,8 +19,25 @@ async function requireAdmin() {
   return user;
 }
 
+async function requireStaff() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Yetkisiz');
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role !== 'admin' && profile?.role !== 'support') {
+    throw new Error('Staff access required');
+  }
+  return { user, role: profile?.role as 'admin' | 'support' };
+}
+
 export async function getAdminStats() {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
 
   const { count: totalUsers } = await admin.from('profiles').select('*', { count: 'exact', head: true });
@@ -45,7 +62,7 @@ export async function getAdminStats() {
 }
 
 export async function getAdminChartData() {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
 
   const days = [];
@@ -79,7 +96,7 @@ export async function getAdminChartData() {
 }
 
 export async function getAdminUsers(page = 1, perPage = 20) {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
 
   const from = (page - 1) * perPage;
@@ -100,6 +117,16 @@ export async function updateUserRole(userId: string, role: 'user' | 'admin' | 's
 
   await admin.from('profiles').update({ role }).eq('id', userId);
   revalidatePath('/[locale]/admin/users');
+  revalidatePath(`/[locale]/admin/users/${userId}`);
+}
+
+export async function getStaffRole(): Promise<'admin' | 'support' | null> {
+  try {
+    const { role } = await requireStaff();
+    return role;
+  } catch {
+    return null;
+  }
 }
 
 export async function adminCreateTemplate(data: {
@@ -155,7 +182,7 @@ export async function getAuditLogs(page = 1, perPage = 50) {
 }
 
 export async function getFeedbacks(status?: string) {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
 
   let query = admin
@@ -233,7 +260,7 @@ export async function adminDeleteUser(userId: string) {
 }
 
 export async function updateFeedbackStatus(id: string, status: string) {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
   const { error } = await admin.from('feedback').update({ status }).eq('id', id);
   if (error) throw new Error(error.message);
@@ -283,10 +310,48 @@ export async function updateSubscriptionPlan(subscriptionId: string, plan: strin
     .eq('id', subscriptionId);
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/subscriptions');
+  revalidatePath('/[locale]/admin/users');
+}
+
+export async function updateSubscriptionStatus(
+  subscriptionId: string,
+  status: 'active' | 'inactive' | 'canceled' | 'past_due'
+) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from('subscriptions')
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq('id', subscriptionId);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[locale]/admin/subscriptions');
+  revalidatePath('/[locale]/admin/users');
+}
+
+export async function updateUserProfile(
+  userId: string,
+  data: { full_name?: string; address?: string }
+) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const updates: Record<string, string> = {};
+  if (data.full_name !== undefined) updates.full_name = data.full_name;
+  if (data.address !== undefined) updates.address = data.address;
+  const { error } = await admin.from('profiles').update(updates).eq('id', userId);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[locale]/admin/users');
+}
+
+export async function deleteFeedback(id: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from('feedback').delete().eq('id', id);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[locale]/admin/feedback');
 }
 
 export async function replyToFeedback(id: string, reply: string) {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -343,6 +408,7 @@ export async function createSiteContent(data: {
   title: Record<string, string>;
   body: Record<string, string>;
   sort_order?: number;
+  is_published?: boolean;
 }) {
   await requireAdmin();
   const admin = createAdminClient();
@@ -387,6 +453,30 @@ export async function createAnnouncement(data: {
   revalidatePath('/[locale]/admin/announcements');
 }
 
+export async function updateAnnouncement(
+  id: string,
+  data: {
+    title: string;
+    message: string;
+    type: string;
+    expires_at?: string | null;
+  }
+) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from('announcements')
+    .update({
+      title: data.title,
+      message: data.message,
+      type: data.type,
+      expires_at: data.expires_at || null,
+    })
+    .eq('id', id);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[locale]/admin/announcements');
+}
+
 export async function toggleAnnouncement(id: string, isActive: boolean) {
   await requireAdmin();
   const admin = createAdminClient();
@@ -404,10 +494,10 @@ export async function deleteAnnouncement(id: string) {
 }
 
 export async function getAdminUserDetail(userId: string) {
-  await requireAdmin();
+  await requireStaff();
   const admin = createAdminClient();
   const [profileRes, docsRes, lettersRes, usageRes] = await Promise.all([
-    admin.from('profiles').select('*, subscriptions(plan, status)').eq('id', userId).single(),
+    admin.from('profiles').select('*, subscriptions(id, plan, status)').eq('id', userId).single(),
     admin.from('documents').select('id, title, status, created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(20),
     admin.from('generated_letters').select('id, subject, letter_type, created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(20),
     admin.from('usage_logs').select('*', { count: 'exact', head: true }).eq('user_id', userId),
