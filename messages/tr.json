@@ -99,7 +99,7 @@
       "q3": "Verilerim güvende mi?",
       "a3": "Evet, tüm verileriniz şifrelenerek saklanır. GDPR uyumlu çalışıyoruz ve verilerinizi üçüncü taraflarla paylaşmıyoruz.",
       "q4": "Ücretsiz plan ne kadar yeterli?",
-      "a4": "Ücretsiz plan ile ayda 3 belge analizi yapabilir ve 2 yanıt mektubu oluşturabilirsiniz. Daha fazlası için Pro veya Business planına geçebilirsiniz.",
+      "a4": "Ücretsiz plan ile ayda 20 belge analizi yapabilir ve 2 yanıt mektubu oluşturabilirsiniz. Daha fazlası için Pro veya Business planına geçebilirsiniz.",
       "q5": "AI yanıtları hukuki geçerliliğe sahip mi?",
       "a5": "Hayır, GovMate AI hukuki danışmanlık sağlamaz. Oluşturulan mektuplar taslak niteliğindedir. Önemli hukuki konularda mutlaka bir avukata danışın."
     },
@@ -488,8 +488,8 @@
         "name": "Ücretsiz",
         "price": "0€",
         "features": [
-          "Ayda 3 belge analizi",
-          "Maks. 5 MB yükleme",
+          "Ayda 20 belge analizi",
+          "Maks. 20 MB yükleme",
           "Basit açıklama",
           "2 mektup oluşturma",
           "Temel şablonlar"

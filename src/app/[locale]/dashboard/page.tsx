@@ -34,7 +34,7 @@ export default async function DashboardPage({
           title={t('stats.documentsAnalyzed')}
           value={usage?.documentsUsed ?? 0}
           icon={FileText}
-          description={`/ ${usage?.documentsLimit === -1 ? '∞' : usage?.documentsLimit ?? 3}`}
+          description={`/ ${usage?.documentsLimit === -1 ? '∞' : usage?.documentsLimit ?? 20}`}
         />
         <StatsCard
           title={t('stats.lettersGenerated')}
@@ -52,7 +52,7 @@ export default async function DashboardPage({
           value={
             usage?.documentsLimit === -1
               ? '∞'
-              : Math.max(0, (usage?.documentsLimit ?? 3) - (usage?.documentsUsed ?? 0))
+              : Math.max(0, (usage?.documentsLimit ?? 20) - (usage?.documentsUsed ?? 0))
           }
           icon={BarChart3}
         />

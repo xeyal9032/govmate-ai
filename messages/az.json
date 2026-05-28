@@ -99,7 +99,7 @@
       "q3": "Məlumatlarım təhlükəsizdirmi?",
       "a3": "Bəli, bütün məlumatlarınız şifrələnərək saxlanılır. GDPR-a uyğun işləyirik və məlumatlarınızı üçüncü tərəflərlə paylaşmırıq.",
       "q4": "Pulsuz plan nə qədər kifayətdir?",
-      "a4": "Pulsuz plan ilə ayda 3 sənəd analizi edə və 2 cavab məktubu yarada bilərsiniz. Daha çoxu üçün Pro və ya Business planına keçə bilərsiniz.",
+      "a4": "Pulsuz plan ilə ayda 20 sənəd analizi edə və 2 cavab məktubu yarada bilərsiniz. Daha çoxu üçün Pro və ya Business planına keçə bilərsiniz.",
       "q5": "AI cavabları hüquqi qüvvəyə malikdirmi?",
       "a5": "Xeyr, GovMate AI hüquqi məsləhət vermir. Yaradılan məktublar qaralama xarakterlidir. Vacib hüquqi məsələlərdə mütləq bir vəkilə müraciət edin."
     },
@@ -488,8 +488,8 @@
         "name": "Pulsuz",
         "price": "0€",
         "features": [
-          "Ayda 3 sənəd analizi",
-          "Maks. 5 MB yükləmə",
+          "Ayda 20 sənəd analizi",
+          "Maks. 20 MB yükləmə",
           "Sadə izahat",
           "2 məktub yaratma",
           "Əsas şablonlar"

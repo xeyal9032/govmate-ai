@@ -99,7 +99,7 @@
       "q3": "Sind meine Daten sicher?",
       "a3": "Ja, alle Ihre Daten werden verschlüsselt gespeichert. Wir arbeiten DSGVO-konform und teilen Ihre Daten nicht mit Dritten.",
       "q4": "Wie ausreichend ist der kostenlose Plan?",
-      "a4": "Mit dem kostenlosen Plan können Sie monatlich 3 Dokumente analysieren und 2 Antwortbriefe erstellen. Für mehr können Sie auf den Pro- oder Business-Plan upgraden.",
+      "a4": "Mit dem kostenlosen Plan können Sie monatlich 20 Dokumente analysieren und 2 Antwortbriefe erstellen. Für mehr können Sie auf den Pro- oder Business-Plan upgraden.",
       "q5": "Sind KI-Antworten rechtlich gültig?",
       "a5": "Nein, GovMate AI bietet keine Rechtsberatung. Erstellte Briefe sind Entwürfe. Konsultieren Sie bei wichtigen rechtlichen Angelegenheiten immer einen Anwalt."
     },
@@ -488,8 +488,8 @@
         "name": "Kostenlos",
         "price": "0€",
         "features": [
-          "3 Dokumentanalysen pro Monat",
-          "Max. 5 MB Upload",
+          "20 Dokumentanalysen pro Monat",
+          "Max. 20 MB Upload",
           "Einfache Erklärung",
           "2 Brieferstellungen",
           "Grundvorlagen"

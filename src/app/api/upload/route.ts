@@ -38,8 +38,8 @@ export async function POST(request: NextRequest) {
       .eq('plan', plan)
       .single();
 
-    const maxSize = limits?.max_file_size_mb || 5;
-    const monthlyDocLimit = limits?.monthly_document_limit || 3;
+    const maxSize = limits?.max_file_size_mb || 20;
+    const monthlyDocLimit = limits?.monthly_document_limit || 20;
 
     if (monthlyDocLimit > 0) {
       const startOfMonth = new Date();

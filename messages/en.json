@@ -99,7 +99,7 @@
       "q3": "Is my data secure?",
       "a3": "Yes, all your data is encrypted and stored securely. We are GDPR compliant and do not share your data with third parties.",
       "q4": "How sufficient is the free plan?",
-      "a4": "With the free plan, you can analyze 3 documents per month and create 2 reply letters. For more, you can upgrade to the Pro or Business plan.",
+      "a4": "With the free plan, you can analyze 20 documents per month and create 2 reply letters. For more, you can upgrade to the Pro or Business plan.",
       "q5": "Are AI responses legally valid?",
       "a5": "No, GovMate AI does not provide legal advice. Generated letters are drafts. For important legal matters, always consult a lawyer."
     },
@@ -488,8 +488,8 @@
         "name": "Free",
         "price": "€0",
         "features": [
-          "3 document analyses per month",
-          "Max. 5 MB upload",
+          "20 document analyses per month",
+          "Max. 20 MB upload",
           "Simple explanation",
           "2 letter generations",
           "Basic templates"

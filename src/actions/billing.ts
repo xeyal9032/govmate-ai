@@ -55,7 +55,7 @@ export async function getUsageSummary() {
 
   return {
     documentsUsed: docsUsed || 0,
-    documentsLimit: limits?.monthly_document_limit || 3,
+    documentsLimit: limits?.monthly_document_limit || 20,
     lettersUsed: lettersUsed || 0,
     lettersLimit: limits?.monthly_letter_limit || 2,
     currentPlan: plan,
