@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { AdminSidebar } from '@/components/admin/admin-sidebar';
+import { AdminShell } from '@/components/admin/admin-shell';
 import { setRequestLocale } from 'next-intl/server';
 
 export default async function AdminLayout({
@@ -33,12 +33,5 @@ export default async function AdminLayout({
 
   const staffRole = profile?.role === 'support' ? 'support' : 'admin';
 
-  return (
-    <div className="flex h-screen overflow-hidden">
-      <AdminSidebar role={staffRole} />
-      <main className="flex-1 overflow-y-auto p-6">
-        {children}
-      </main>
-    </div>
-  );
+  return <AdminShell role={staffRole}>{children}</AdminShell>;
 }

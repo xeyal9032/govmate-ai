@@ -51,7 +51,7 @@ export function AdminSidebar({ role = 'admin' }: AdminSidebarProps) {
   const navItems = allNavItems.filter((item) => item.roles.includes(role));
 
   return (
-    <aside className="w-64 border-r bg-sidebar flex flex-col">
+    <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar lg:flex">
       <div className="p-6">
         <h2 className="font-bold text-lg">{role === 'support' ? t('supportTitle') : t('title')}</h2>
       </div>

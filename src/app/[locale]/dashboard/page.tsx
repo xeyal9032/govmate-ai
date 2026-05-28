@@ -26,7 +26,7 @@ export default async function DashboardPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">{t('welcome')}</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">{t('welcome')}</h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

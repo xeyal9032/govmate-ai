@@ -69,12 +69,22 @@ export function DocumentAnalysisView({
       )}
 
       <Tabs defaultValue="summary">
-        <TabsList className="w-full justify-start">
-          <TabsTrigger value="summary">{t('simpleExplanation')}</TabsTrigger>
-          <TabsTrigger value="actions">{t('requiredActions')}</TabsTrigger>
-          <TabsTrigger value="documents">{t('requiredDocuments')}</TabsTrigger>
-          <TabsTrigger value="deadlines">{t('deadlines')}</TabsTrigger>
-        </TabsList>
+        <div className="tabs-scroll">
+          <TabsList className="inline-flex h-auto w-max min-w-full flex-nowrap justify-start gap-1 p-1">
+            <TabsTrigger value="summary" className="shrink-0 px-3 py-2 text-xs sm:text-sm">
+              {t('simpleExplanation')}
+            </TabsTrigger>
+            <TabsTrigger value="actions" className="shrink-0 px-3 py-2 text-xs sm:text-sm">
+              {t('requiredActions')}
+            </TabsTrigger>
+            <TabsTrigger value="documents" className="shrink-0 px-3 py-2 text-xs sm:text-sm">
+              {t('requiredDocuments')}
+            </TabsTrigger>
+            <TabsTrigger value="deadlines" className="shrink-0 px-3 py-2 text-xs sm:text-sm">
+              {t('deadlines')}
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="summary" className="space-y-4">
           <Card>

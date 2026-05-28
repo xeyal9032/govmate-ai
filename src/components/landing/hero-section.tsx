@@ -16,7 +16,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-indigo-500/5 to-purple-600/10 dark:from-blue-900/20 dark:via-indigo-900/10 dark:to-purple-900/20" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent to-transparent dark:from-blue-950/40" />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32 xl:py-40">
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -55,7 +55,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
           >
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
               {t('title')}
@@ -75,16 +75,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            className="mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:mx-auto sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4"
           >
-            <Link href="/auth/register">
-              <Button size="lg" className="gap-2 px-8 text-base">
+            <Link href="/auth/register" className="w-full sm:w-auto">
+              <Button size="lg" className="h-12 w-full gap-2 px-8 text-base sm:w-auto">
                 {t('cta')}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <a href="#how-it-works">
-              <Button variant="outline" size="lg" className="px-8 text-base">
+            <a href="#how-it-works" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="h-12 w-full px-8 text-base sm:w-auto">
                 {t('ctaSecondary')}
               </Button>
             </a>

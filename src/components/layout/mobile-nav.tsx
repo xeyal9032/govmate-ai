@@ -31,31 +31,35 @@ export function MobileNav() {
 
   return (
     <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <SheetContent side="left" className="w-72 p-0">
-        <SheetHeader className="p-6 pb-2">
-          <SheetTitle>
+      <SheetContent side="left" className="flex h-full w-[min(100vw-2rem,18rem)] flex-col gap-0 p-0">
+        <SheetHeader className="shrink-0 border-b p-4 pb-3">
+          <SheetTitle className="text-left">
             <Link href="/" className="flex items-center gap-2" onClick={() => setSidebarOpen(false)}>
               <Logo size="md" />
-              GovMate AI
+              <span className="truncate">GovMate AI</span>
             </Link>
           </SheetTitle>
         </SheetHeader>
-        <ScrollArea className="flex-1 px-3">
+        <ScrollArea className="min-h-0 flex-1 px-3 py-3">
           <nav className="space-y-1">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link key={item.href} href={item.href} onClick={() => setSidebarOpen(false)}>
-                  <Button variant={isActive ? 'secondary' : 'ghost'} className={cn('w-full justify-start gap-3')}>
-                    <item.icon className="h-4 w-4" />
-                    {t(item.labelKey)}
+                  <Button
+                    variant={isActive ? 'secondary' : 'ghost'}
+                    className={cn('h-11 w-full justify-start gap-3')}
+                  >
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{t(item.labelKey)}</span>
                   </Button>
                 </Link>
               );
             })}
           </nav>
 
-          {user?.role === 'admin' && (
+          {(user?.role === 'admin' || user?.role === 'support') && (
             <>
               <Separator className="my-4" />
               <Link href="/admin" onClick={() => setSidebarOpen(false)}>
@@ -68,9 +72,9 @@ export function MobileNav() {
           )}
         </ScrollArea>
 
-        <div className="p-3 border-t">
+        <div className="shrink-0 border-t p-3">
           <form action="/api/auth/signout" method="post">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground" type="submit">
+            <Button variant="ghost" className="h-11 w-full justify-start gap-3 text-muted-foreground" type="submit">
               <LogOut className="h-4 w-4" />
               {t('logout')}
             </Button>

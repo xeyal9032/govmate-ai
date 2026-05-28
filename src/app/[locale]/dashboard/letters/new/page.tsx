@@ -239,14 +239,14 @@ export default function NewLetterPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Link href="/dashboard/letters">
-          <Button variant="ghost" size="icon">
+    <div className="mx-auto max-w-4xl space-y-6">
+      <div className="flex min-w-0 items-center gap-2">
+        <Link href="/dashboard/letters" className="shrink-0">
+          <Button variant="ghost" size="icon" className="touch-target">
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <h1 className="text-2xl font-bold">{t('generate.title')}</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">{t('generate.title')}</h1>
       </div>
 
       {!result ? (
@@ -390,11 +390,15 @@ export default function NewLetterPage() {
             </Alert>
           )}
 
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={() => setResult(null)}>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button variant="outline" className="h-11 w-full sm:w-auto" onClick={() => setResult(null)}>
               {t('generate.editForm')}
             </Button>
-            <Button variant="outline" onClick={() => router.push('/dashboard/letters')}>
+            <Button
+              variant="outline"
+              className="h-11 w-full sm:w-auto"
+              onClick={() => router.push('/dashboard/letters')}
+            >
               {t('generate.backToList')}
             </Button>
           </div>

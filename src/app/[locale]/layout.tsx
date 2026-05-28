@@ -5,8 +5,16 @@ import { routing } from '@/i18n/routing';
 import { Providers } from '@/components/providers';
 import { getDirection } from '@/lib/utils/language';
 import type { Locale } from '@/lib/utils/language';
+import type { Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+};
 
 import trMessages from '../../../messages/tr.json';
 import enMessages from '../../../messages/en.json';

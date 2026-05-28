@@ -38,31 +38,36 @@ export default async function DocumentDetailPage({
     : `/dashboard/letters/new?documentId=${doc.id}`;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Link href="/dashboard/documents">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold">{doc.title || doc.original_file_name}</h1>
-          <div className="flex items-center gap-2 mt-1">
-            {doc.authority_name && (
-              <span className="text-sm text-muted-foreground">{doc.authority_name}</span>
-            )}
-            {doc.created_at && (
-              <span className="text-sm text-muted-foreground">
-                · {formatDate(doc.created_at, locale as 'tr')}
-              </span>
-            )}
+    <div className="mx-auto max-w-4xl space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <div className="flex min-w-0 items-start gap-2 sm:flex-1">
+          <Link href="/dashboard/documents" className="shrink-0">
+            <Button variant="ghost" size="icon" className="touch-target">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl font-bold break-words sm:text-2xl">
+              {doc.title || doc.original_file_name}
+            </h1>
+            <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+              {doc.authority_name && <span>{doc.authority_name}</span>}
+              {doc.created_at && (
+                <span>
+                  {doc.authority_name ? '· ' : ''}
+                  {formatDate(doc.created_at, locale as 'tr')}
+                </span>
+              )}
+            </div>
           </div>
         </div>
         {analysis && (
-          <Link href={letterHref}>
-            <Button>
-              <Mail className="mr-2 h-4 w-4" />
-              {recommendedType ? t('createLetterButtonAuto') : t('generateReply')}
+          <Link href={letterHref} className="w-full shrink-0 sm:w-auto">
+            <Button className="h-11 w-full sm:w-auto">
+              <Mail className="mr-2 h-4 w-4 shrink-0" />
+              <span className="truncate">
+                {recommendedType ? t('createLetterButtonAuto') : t('generateReply')}
+              </span>
             </Button>
           </Link>
         )}

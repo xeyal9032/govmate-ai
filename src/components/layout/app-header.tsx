@@ -36,21 +36,28 @@ export function AppHeader() {
     : 'U';
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
-        <Button variant="ghost" size="icon" className="lg:hidden" onClick={toggleSidebar}>
+    <header className="sticky top-0 z-40 shrink-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-14 min-w-0 items-center gap-1.5 px-3 sm:gap-2 sm:px-4 lg:gap-4 lg:px-6">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="touch-target shrink-0 lg:hidden"
+          onClick={toggleSidebar}
+          aria-label="Menü"
+        >
           <Menu className="h-5 w-5" />
         </Button>
 
-        <div className="flex-1" />
+        <div className="min-w-0 flex-1" />
 
-        <LanguageSwitcher />
-        <ThemeToggle />
-
-        <FeedbackDialog />
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+          <LanguageSwitcher />
+          <ThemeToggle />
+          <FeedbackDialog />
+        </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="relative h-8 w-8 rounded-full cursor-pointer">
+          <DropdownMenuTrigger className="touch-target relative flex h-9 w-9 items-center justify-center rounded-full cursor-pointer sm:h-8 sm:w-8">
             <Avatar className="h-8 w-8">
               <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                 {initials}

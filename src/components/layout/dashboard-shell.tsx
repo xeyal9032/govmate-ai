@@ -23,12 +23,12 @@ export function DashboardShell({ children, profile, subscription }: DashboardShe
   }, [profile, subscription, setUser, setSubscription]);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex min-h-[100dvh] flex-col overflow-hidden lg:flex-row">
       <AppSidebar />
       <MobileNav />
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <AppHeader />
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+        <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:p-5 lg:p-6">
           <AnnouncementBanner />
           {children}
         </main>

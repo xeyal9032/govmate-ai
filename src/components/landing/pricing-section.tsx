@@ -92,7 +92,7 @@ export function PricingSection() {
                 variants={itemVariants}
                 whileHover={{ y: -8 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className={isPro ? 'lg:-my-4' : ''}
+                className={isPro ? 'lg:-my-4 max-lg:mx-auto max-lg:max-w-md' : ''}
               >
                 <div
                   className={`relative overflow-hidden rounded-3xl border-2 ${plan.borderClass} ${plan.bgClass} bg-card p-1 shadow-xl transition-shadow duration-300 hover:shadow-2xl`}

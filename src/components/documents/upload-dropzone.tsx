@@ -42,7 +42,7 @@ export function UploadDropzone({ onFileSelect, selectedFile, disabled }: UploadD
         <div
           {...getRootProps()}
           className={cn(
-            'border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-colors',
+            'border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors sm:p-12',
             isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50',
             disabled && 'opacity-50 cursor-not-allowed'
           )}
