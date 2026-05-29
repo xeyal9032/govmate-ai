@@ -8,6 +8,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Playwright E2E (127.0.0.1) için dev kaynak erişimi
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
+  serverExternalPackages: ['@napi-rs/canvas', 'unpdf'],
   images: {
     remotePatterns: [
       {

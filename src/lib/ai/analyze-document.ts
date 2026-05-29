@@ -12,7 +12,8 @@ export async function analyzeDocument(
   documentText: string,
   targetLanguage: string,
   fileUrl?: string,
-  mimeType?: string
+  mimeType?: string,
+  visionImages?: string[]
 ): Promise<AnalysisResult> {
   const openai = getOpenAIClient();
 
@@ -22,7 +23,20 @@ export async function analyzeDocument(
         { role: 'system', content: DOCUMENT_ANALYSIS_SYSTEM_PROMPT },
       ];
 
-      if (fileUrl && mimeType?.startsWith('image/')) {
+      const userPrompt = buildDocumentAnalysisUserPrompt(documentText, targetLanguage);
+
+      if (visionImages && visionImages.length > 0) {
+        messages.push({
+          role: 'user',
+          content: [
+            ...visionImages.map((url) => ({
+              type: 'image_url' as const,
+              image_url: { url, detail: 'high' as const },
+            })),
+            { type: 'text' as const, text: userPrompt },
+          ],
+        });
+      } else if (fileUrl && mimeType?.startsWith('image/')) {
         messages.push({
           role: 'user',
           content: [
@@ -32,17 +46,14 @@ export async function analyzeDocument(
             },
             {
               type: 'text',
-              text: buildDocumentAnalysisUserPrompt(
-                documentText || 'Please extract and analyze the text from this image.',
-                targetLanguage
-              ),
+              text: userPrompt,
             },
           ],
         });
       } else {
         messages.push({
           role: 'user',
-          content: buildDocumentAnalysisUserPrompt(documentText, targetLanguage),
+          content: userPrompt,
         });
       }
 

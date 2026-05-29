@@ -5,6 +5,9 @@ import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-respon
 import { checkUsageLimit, incrementUsage } from '@/lib/utils/plan-limits';
 import { writeAuditLog } from '@/lib/security/audit-log';
 
+export const maxDuration = 60;
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   let documentId: string | undefined;
 
@@ -59,6 +62,7 @@ export async function POST(request: NextRequest) {
 
     let extractedText = document.extracted_text || '';
     let fileUrl: string | undefined;
+    let visionImages: string[] | undefined;
 
     if (!extractedText) {
       if (document.file_type === 'application/pdf') {
@@ -66,13 +70,15 @@ export async function POST(request: NextRequest) {
           .from('documents')
           .download(document.file_path);
         if (fileData) {
-          const { extractText } = await import('unpdf');
+          const { extractPdfForAnalysis } = await import('@/lib/pdf/extract-pdf-content');
           const uint8 = new Uint8Array(await fileData.arrayBuffer());
-          const { text } = await extractText(uint8, { mergePages: true });
-          extractedText = text || '';
+          const pdfContent = await extractPdfForAnalysis(uint8);
+          extractedText = pdfContent.text;
+          visionImages = pdfContent.visionImages;
         }
-        if (!extractedText) {
-          extractedText = 'PDF document uploaded but text could not be extracted. Please analyze based on available context.';
+        if (!extractedText && !visionImages?.length) {
+          extractedText =
+            'PDF yüklendi ancak metin çıkarılamadı. Lütfen taranmış belgeyi görsel olarak analiz et.';
         }
       } else if (document.file_type.startsWith('image/')) {
         const { data: signedUrl } = await supabase.storage
@@ -91,7 +97,13 @@ export async function POST(request: NextRequest) {
 
     // Run AI analysis
     const lang = targetLanguage || document.target_language || 'tr';
-    const analysis = await analyzeDocument(extractedText, lang, fileUrl, document.file_type);
+    const analysis = await analyzeDocument(
+      extractedText,
+      lang,
+      fileUrl,
+      document.file_type,
+      visionImages
+    );
 
     // Save results
     await supabase.from('document_analyses').insert({
