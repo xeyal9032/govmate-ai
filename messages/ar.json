@@ -180,7 +180,9 @@
       "analyzing": "الذكاء الاصطناعي يحلّل...",
       "limitReached": "لقد وصلت إلى حد التحليلات لهذا الشهر",
       "upgradePlan": "ترقية خطتك",
-      "analysisComplete": "تم تحليل المستند بنجاح!"
+      "analysisComplete": "تم تحليل المستند بنجاح!",
+      "heicNotSupported": "صيغة HEIC على iPhone غير مدعومة. الإعدادات > الكاميرا > التنسيقات > الأكثر توافقاً (JPEG) أو ارفع JPG/PNG/PDF.",
+      "unsupportedOnDevice": "تعذر التعرف على نوع الملف على جهازك. جرّب JPG أو PNG أو PDF أو TXT."
     },
     "detail": {
       "overview": "نظرة عامة",
@@ -815,7 +817,7 @@
     "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
     "uploadFailed": "فشل رفع الملف",
     "analysisFailed": "فشل تحليل الذكاء الاصطناعي",
-    "jsonParseFailed": "خطأ في معالجة النتيجة",
+    "jsonParseFailed": "تعذر قراءة استجابة الخادم. حدّث الجلسة أو استخدم Safari/Chrome (قد يفشل المتصفح داخل واتساب).",
     "planLimitReached": "لقد وصلت إلى حد خطتك",
     "subscriptionInactive": "اشتراكك غير نشط",
     "fileTooLarge": "الملف كبير جداً (الحد الأقصى {size})",

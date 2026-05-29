@@ -180,7 +180,9 @@
       "analyzing": "AI analiz ediyor...",
       "limitReached": "Bu ay için analiz limitinize ulaştınız",
       "upgradePlan": "Planınızı yükseltin",
-      "analysisComplete": "Belge başarıyla analiz edildi!"
+      "analysisComplete": "Belge başarıyla analiz edildi!",
+      "heicNotSupported": "iPhone HEIC formatı desteklenmiyor. Ayarlar > Kamera > Biçimler > En Uyumlu (JPEG) seçin veya JPG/PNG/PDF yükleyin.",
+      "unsupportedOnDevice": "Bu dosya türü cihazınızda tanınamadı. Lütfen JPG, PNG, PDF veya TXT deneyin."
     },
     "detail": {
       "overview": "Genel Bakış",
@@ -816,7 +818,7 @@
     "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
     "uploadFailed": "Dosya yükleme başarısız oldu",
     "analysisFailed": "AI analizi başarısız oldu",
-    "jsonParseFailed": "Sonuç işleme hatası",
+    "jsonParseFailed": "Sunucu yanıtı okunamadı. Oturumu yenileyin veya Safari/Chrome ile tekrar deneyin (WhatsApp içi tarayıcıda sorun çıkabilir).",
     "planLimitReached": "Plan limitinize ulaştınız",
     "subscriptionInactive": "Aboneliğiniz aktif değil",
     "fileTooLarge": "Dosya çok büyük (maks. {size})",

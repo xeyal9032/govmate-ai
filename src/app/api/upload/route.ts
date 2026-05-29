@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { validateFile, validateMagicBytes } from '@/lib/security/file-validation';
 import { checkRateLimit, UPLOAD_RATE_LIMIT } from '@/lib/security/rate-limit';
 import { writeAuditLog } from '@/lib/security/audit-log';
+import { resolveServerFileMeta } from '@/lib/utils/upload-file';
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,6 +24,11 @@ export async function POST(request: NextRequest) {
 
     if (!file) {
       return NextResponse.json({ error: 'File is required' }, { status: 400 });
+    }
+
+    const fileMeta = resolveServerFileMeta({ type: file.type, name: file.name });
+    if ('error' in fileMeta) {
+      return NextResponse.json({ error: fileMeta.error }, { status: 400 });
     }
 
     const { data: subscription } = await supabase
@@ -56,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     const validation = validateFile(
-      { type: file.type, size: file.size, name: file.name },
+      { type: fileMeta.type, size: file.size, name: file.name },
       maxSize
     );
 
@@ -65,18 +71,18 @@ export async function POST(request: NextRequest) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    if (!validateMagicBytes(arrayBuffer, file.type)) {
+    if (!validateMagicBytes(arrayBuffer, fileMeta.type)) {
       return NextResponse.json({ error: 'File content does not match declared type' }, { status: 400 });
     }
 
-    const fileExt = file.name.split('.').pop();
+    const fileExt = fileMeta.ext || file.name.split('.').pop();
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
     const buffer = Buffer.from(arrayBuffer);
 
     const { error: uploadError } = await supabase.storage
       .from('documents')
       .upload(fileName, buffer, {
-        contentType: file.type,
+        contentType: fileMeta.type,
         upsert: false,
       });
 
@@ -92,7 +98,7 @@ export async function POST(request: NextRequest) {
         title: file.name.replace(/\.[^/.]+$/, ''),
         original_file_name: file.name,
         file_path: fileName,
-        file_type: file.type,
+        file_type: fileMeta.type,
         file_size: file.size,
         status: 'uploaded',
         target_language: targetLanguage,

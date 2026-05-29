@@ -3,10 +3,12 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import { Upload, FileText, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatFileSize } from '@/lib/utils/format';
 import { cn } from '@/lib/utils';
+import { normalizeUploadFile } from '@/lib/utils/upload-file';
 
 interface UploadDropzoneProps {
   onFileSelect: (file: File | null) => void;
@@ -26,8 +28,18 @@ export function UploadDropzone({ onFileSelect, selectedFile, disabled }: UploadD
   const t = useTranslations('documents.upload');
 
   const onDrop = useCallback((files: File[]) => {
-    if (files.length > 0) onFileSelect(files[0]);
-  }, [onFileSelect]);
+    if (files.length === 0) return;
+    const normalized = normalizeUploadFile(files[0]);
+    if (!normalized.ok) {
+      if (normalized.reason === 'heic') {
+        toast.error(t('heicNotSupported'));
+      } else {
+        toast.error(t('unsupportedOnDevice'));
+      }
+      return;
+    }
+    onFileSelect(normalized.file);
+  }, [onFileSelect, t]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

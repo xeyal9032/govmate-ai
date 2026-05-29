@@ -180,7 +180,9 @@
       "analyzing": "KI analysiert...",
       "limitReached": "Sie haben Ihr Analyselimit für diesen Monat erreicht",
       "upgradePlan": "Plan upgraden",
-      "analysisComplete": "Dokument erfolgreich analysiert!"
+      "analysisComplete": "Dokument erfolgreich analysiert!",
+      "heicNotSupported": "iPhone-HEIC wird nicht unterstützt. Einstellungen > Kamera > Formate > Maximale Kompatibilität (JPEG) oder JPG/PNG/PDF hochladen.",
+      "unsupportedOnDevice": "Dateityp auf diesem Gerät nicht erkannt. Bitte JPG, PNG, PDF oder TXT versuchen."
     },
     "detail": {
       "overview": "Übersicht",
@@ -816,7 +818,7 @@
     "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
     "uploadFailed": "Datei-Upload fehlgeschlagen",
     "analysisFailed": "KI-Analyse fehlgeschlagen",
-    "jsonParseFailed": "Fehler bei der Ergebnisverarbeitung",
+    "jsonParseFailed": "Serverantwort konnte nicht gelesen werden. Sitzung aktualisieren oder Safari/Chrome verwenden (In-App-Browser wie WhatsApp können Probleme machen).",
     "planLimitReached": "Sie haben Ihr Plan-Limit erreicht",
     "subscriptionInactive": "Ihr Abonnement ist nicht aktiv",
     "fileTooLarge": "Datei zu groß (max. {size})",

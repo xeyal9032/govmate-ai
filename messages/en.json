@@ -180,7 +180,9 @@
       "analyzing": "AI is analyzing...",
       "limitReached": "You've reached your analysis limit for this month",
       "upgradePlan": "Upgrade your plan",
-      "analysisComplete": "Document analyzed successfully!"
+      "analysisComplete": "Document analyzed successfully!",
+      "heicNotSupported": "iPhone HEIC format is not supported. Use Settings > Camera > Formats > Most Compatible (JPEG), or upload JPG/PNG/PDF.",
+      "unsupportedOnDevice": "This file type could not be recognized on your device. Please try JPG, PNG, PDF, or TXT."
     },
     "detail": {
       "overview": "Overview",
@@ -816,7 +818,7 @@
     "generic": "An error occurred. Please try again.",
     "uploadFailed": "File upload failed",
     "analysisFailed": "AI analysis failed",
-    "jsonParseFailed": "Result processing error",
+    "jsonParseFailed": "Could not read the server response. Refresh your session or try Safari/Chrome (in-app browsers like WhatsApp may fail).",
     "planLimitReached": "You've reached your plan limit",
     "subscriptionInactive": "Your subscription is not active",
     "fileTooLarge": "File too large (max. {size})",

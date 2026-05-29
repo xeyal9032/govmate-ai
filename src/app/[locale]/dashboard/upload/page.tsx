@@ -50,8 +50,10 @@ export default function UploadPage() {
           <div className="space-y-2">
             <label className="text-sm font-medium">{t('selectLanguage')}</label>
             <Select value={targetLang} onValueChange={(v) => { if (v) setTargetLang(v); }} disabled={isProcessing}>
-              <SelectTrigger>
-                <SelectValue />
+              <SelectTrigger className="w-full">
+                <SelectValue>
+                  {localeNames[targetLang as Locale] ?? targetLang}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(localeNames).map(([code, name]) => (
@@ -78,6 +80,7 @@ export default function UploadPage() {
           )}
 
           <Button
+            type="button"
             onClick={handleUpload}
             disabled={!file || isProcessing}
             className="w-full"
