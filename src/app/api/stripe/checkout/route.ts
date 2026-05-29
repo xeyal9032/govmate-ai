@@ -15,12 +15,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { plan, priceId: directPriceId } = await request.json();
+    const { plan, priceId: directPriceId, locale } = await request.json();
 
     const resolvedPriceId = directPriceId || PLAN_PRICE_MAP[plan];
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json({ error: 'Stripe yapılandırılmamış' }, { status: 503 });
+    }
     if (!resolvedPriceId) {
       return NextResponse.json(
-        { error: 'Invalid plan or priceId' },
+        { error: 'Plan fiyat ID bulunamadı (Vercel env kontrol edin)' },
         { status: 400 }
       );
     }
@@ -31,13 +34,14 @@ export async function POST(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const loc = typeof locale === 'string' && locale.length > 0 ? locale : 'tr';
     const session = await createCheckoutSession({
       customerId: subscription?.stripe_customer_id || undefined,
       priceId: resolvedPriceId,
       userId: user.id,
-      successUrl: `${appUrl}/dashboard/billing?success=true`,
-      cancelUrl: `${appUrl}/dashboard/billing?canceled=true`,
+      successUrl: `${appUrl}/${loc}/dashboard/billing?success=true`,
+      cancelUrl: `${appUrl}/${loc}/dashboard/billing?canceled=true`,
     });
 
     return NextResponse.json({ url: session.url });

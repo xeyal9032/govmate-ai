@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { getUserSubscription, getUsageSummary } from '@/actions/billing';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +11,7 @@ import { SubscriptionStatus } from '@/components/billing/subscription-status';
 import { Button } from '@/components/ui/button';
 import { CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
+import { getApiBaseUrl, readApiError, readApiJson } from '@/lib/utils/api-response';
 
 interface UsageSummary {
   documentsUsed: number;
@@ -24,10 +25,12 @@ const PLANS = ['free', 'pro', 'business'] as const;
 
 export default function BillingPage() {
   const t = useTranslations('billing');
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const [subscription, setSubscription] = useState<any>(null);
   const [usage, setUsage] = useState<UsageSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [upgrading, setUpgrading] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -50,26 +53,54 @@ export default function BillingPage() {
   }, [searchParams]);
 
   const handleUpgrade = async (plan: string) => {
+    if (plan === 'free') return;
+    setUpgrading(plan);
     try {
-      const response = await fetch('/api/stripe/checkout', {
+      const response = await fetch(`${getApiBaseUrl()}/api/stripe/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan, locale }),
+        credentials: 'same-origin',
       });
-      const { url } = await response.json();
-      if (url) window.location.assign(url);
+
+      if (!response.ok) {
+        const message = await readApiError(response, t('error'));
+        toast.error(message);
+        return;
+      }
+
+      const { url } = await readApiJson<{ url: string | null }>(response);
+      if (url) {
+        window.location.assign(url);
+      } else {
+        toast.error(t('error'));
+      }
     } catch {
       toast.error(t('error'));
+    } finally {
+      setUpgrading(null);
     }
   };
 
   const handleManageBilling = async () => {
     try {
-      const response = await fetch('/api/stripe/portal', {
+      const response = await fetch(`${getApiBaseUrl()}/api/stripe/portal`, {
         method: 'POST',
+        credentials: 'same-origin',
       });
-      const { url } = await response.json();
-      if (url) window.location.assign(url);
+
+      if (!response.ok) {
+        const message = await readApiError(response, t('error'));
+        toast.error(message);
+        return;
+      }
+
+      const { url } = await readApiJson<{ url: string | null }>(response);
+      if (url) {
+        window.location.assign(url);
+      } else {
+        toast.error(t('error'));
+      }
     } catch {
       toast.error(t('error'));
     }
@@ -135,6 +166,7 @@ export default function BillingPage() {
             key={plan}
             plan={plan}
             isActive={usage?.currentPlan === plan}
+            isLoading={upgrading === plan}
             onUpgrade={() => handleUpgrade(plan)}
           />
         ))}

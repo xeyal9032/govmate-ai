@@ -4,16 +4,17 @@ import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Check } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PricingCardProps {
   plan: 'free' | 'pro' | 'business';
   isActive: boolean;
+  isLoading?: boolean;
   onUpgrade: () => void;
 }
 
-export function PricingCard({ plan, isActive, onUpgrade }: PricingCardProps) {
+export function PricingCard({ plan, isActive, isLoading, onUpgrade }: PricingCardProps) {
   const t = useTranslations('billing');
 
   const planName = t(`plans.${plan}.name`);
@@ -62,10 +63,13 @@ export function PricingCard({ plan, isActive, onUpgrade }: PricingCardProps) {
             </Button>
           ) : (
             <Button
+              type="button"
               className="w-full"
               variant={isPopular ? 'default' : 'outline'}
               onClick={onUpgrade}
+              disabled={isLoading}
             >
+              {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
               {plan === 'free' ? t('startFree') : t('upgrade')}
             </Button>
           )}
