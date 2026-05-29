@@ -811,6 +811,11 @@
       "complaint": "Beschwerde"
     }
   },
+  "maintenance": {
+    "title": "Wartungsarbeiten",
+    "description": "GovMate AI ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+    "adminLogin": "Admin-Anmeldung"
+  },
   "announcements": {
     "dismiss": "Schließen"
   },

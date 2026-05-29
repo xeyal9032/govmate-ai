@@ -811,6 +811,11 @@
       "complaint": "Complaint"
     }
   },
+  "maintenance": {
+    "title": "Under maintenance",
+    "description": "GovMate AI is temporarily unavailable. Please try again shortly.",
+    "adminLogin": "Admin sign in"
+  },
   "announcements": {
     "dismiss": "Dismiss"
   },

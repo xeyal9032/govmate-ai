@@ -810,6 +810,11 @@
       "complaint": "شكوى"
     }
   },
+  "maintenance": {
+    "title": "صيانة",
+    "description": "GovMate AI غير متاح مؤقتاً. يرجى المحاولة لاحقاً.",
+    "adminLogin": "تسجيل دخول المسؤول"
+  },
   "announcements": {
     "dismiss": "إغلاق"
   },

@@ -45,13 +45,10 @@ const titleToI18nKey: Record<string, string> = {
   'Vollmacht erteilen': 'vollmacht',
 };
 
+import type { Template } from '@/types/database';
+
 interface TemplateCardProps {
-  template: {
-    id: string;
-    title: string;
-    category: string;
-    description?: string;
-  };
+  template: Pick<Template, 'id' | 'title' | 'category' | 'description'>;
 }
 
 export function TemplateCard({ template }: TemplateCardProps) {

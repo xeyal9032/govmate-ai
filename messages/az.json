@@ -811,6 +811,11 @@
       "complaint": "Şikayət"
     }
   },
+  "maintenance": {
+    "title": "Texniki xidmət",
+    "description": "GovMate AI müvəqqəti olaraq əlçatan deyil. Zəhmət olmasa bir az sonra yenidən cəhd edin.",
+    "adminLogin": "Admin girişi"
+  },
   "announcements": {
     "dismiss": "Bağla"
   },

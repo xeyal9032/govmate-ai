@@ -283,6 +283,10 @@ export async function updateAppSetting(key: string, value: string) {
     .from('app_settings')
     .upsert({ key, value, updated_at: new Date().toISOString() });
   if (error) throw new Error(error.message);
+  if (key === 'maintenance_mode') {
+    const { clearMaintenanceCache } = await import('@/lib/maintenance');
+    clearMaintenanceCache();
+  }
   revalidatePath('/[locale]/admin/ai-settings');
 }
 

@@ -1,24 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { TemplateCard } from '@/components/templates/template-card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select';
 import { LayoutGrid } from 'lucide-react';
+import type { Locale } from '@/lib/utils/language';
+import type { Template, TemplateCategory } from '@/types/database';
 
 interface TemplatesViewProps {
-  templates: any[];
-  categories: any[];
+  templates: Template[];
+  categories: TemplateCategory[];
 }
 
 export function TemplatesView({ templates, categories }: TemplatesViewProps) {
   const t = useTranslations('templates');
+  const locale = useLocale() as Locale;
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   const filtered =
@@ -28,11 +30,10 @@ export function TemplatesView({ templates, categories }: TemplatesViewProps) {
 
   function getCategoryLabel(slug: string): string {
     if (slug === 'all') return t('allCategories');
-    try {
-      return t(`categories.${slug}` as any);
-    } catch {
-      return slug;
-    }
+    const category = categories.find((c) => c.slug === slug);
+    const localized = category?.name?.[locale] ?? category?.name?.de;
+    if (localized) return localized;
+    return slug;
   }
 
   return (

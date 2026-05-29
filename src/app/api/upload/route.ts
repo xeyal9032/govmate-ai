@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { validateFile, validateMagicBytes } from '@/lib/security/file-validation';
-import { checkRateLimit, UPLOAD_RATE_LIMIT } from '@/lib/security/rate-limit';
+import { rateLimitOrNull, UPLOAD_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import { writeAuditLog } from '@/lib/security/audit-log';
 import { resolveServerFileMeta } from '@/lib/utils/upload-file';
 
@@ -13,10 +13,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const rateCheck = checkRateLimit(`upload:${user.id}`, UPLOAD_RATE_LIMIT);
-    if (!rateCheck.allowed) {
-      return NextResponse.json({ error: 'Too many requests, please wait' }, { status: 429 });
-    }
+    const rateLimited = await rateLimitOrNull(`upload:${user.id}`, UPLOAD_RATE_LIMIT);
+    if (rateLimited) return rateLimited;
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;

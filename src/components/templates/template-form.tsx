@@ -33,7 +33,6 @@ export function TemplateForm({
   category = '',
 }: TemplateFormProps) {
   const t = useTranslations('templates');
-  const tCommon = useTranslations('common');
   const tErrors = useTranslations('errors');
   const [preview, setPreview] = useState('');
   const [showPreview, setShowPreview] = useState(false);

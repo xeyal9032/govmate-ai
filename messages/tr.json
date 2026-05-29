@@ -811,6 +811,11 @@
       "complaint": "Şikayet"
     }
   },
+  "maintenance": {
+    "title": "Bakım çalışması",
+    "description": "GovMate AI kısa süreliğine bakımda. Lütfen biraz sonra tekrar deneyin.",
+    "adminLogin": "Yönetici girişi"
+  },
   "announcements": {
     "dismiss": "Kapat"
   },

@@ -811,6 +811,11 @@
       "complaint": "Жалоба"
     }
   },
+  "maintenance": {
+    "title": "Техническое обслуживание",
+    "description": "GovMate AI временно недоступен. Пожалуйста, попробуйте позже.",
+    "adminLogin": "Вход для администратора"
+  },
   "announcements": {
     "dismiss": "Закрыть"
   },

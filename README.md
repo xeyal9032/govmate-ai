@@ -83,7 +83,7 @@
 | AI analiz | Mektubun özeti, riskler ve önerilen adımlar |
 | Son tarih takibi | Otomatik deadline çıkarma ve hatırlatıcılar |
 | Mektup oluşturma | Analize göre uygun şablon önerisi ve otomatik üretim |
-| 78+ şablon | Jobcenter, BAMF, Bürgeramt, Versicherung ve daha fazlası |
+| 39+ şablon | Jobcenter, BAMF, Bürgeramt, Versicherung ve daha fazlası (seed) |
 | 7 dil arayüzü | TR · DE · EN · AZ · RU · UK · AR |
 | PDF dışa aktarma | Hazır mektupları indirme |
 | Abonelik | Stripe ile Pro / Business planları |
@@ -184,7 +184,7 @@ cp .env.example .env.local
 npx supabase db push
 ```
 
-Veya Supabase SQL Editor'da `001` … `010` dosyalarını sırayla uygulayın.
+Veya Supabase SQL Editor'da `001` … `011` dosyalarını sırayla uygulayın (`011`: ücretsiz plan 20 belge / 20 MB).
 
 ### 4. Geliştirme sunucusu
 
@@ -243,10 +243,15 @@ govmate-ai/
 
 ## Deploy (Vercel)
 
-1. [Vercel](https://vercel.com) üzerinde GitHub reposunu import edin.
-2. `.env.local` içindeki tüm değişkenleri Vercel **Environment Variables** bölümüne ekleyin.
-3. Stripe webhook URL: `https://alanadiniz.com/api/stripe/webhook`
-4. Cron (hatırlatıcılar): `vercel.json` ile `/api/cron/reminders`
+1. [Vercel](https://vercel.com) üzerinde GitHub reposunu import edin (`khayal-s-projects/govmate-ai`, production branch: **master**).
+2. Zorunlu env: Supabase, OpenAI, `NEXT_PUBLIC_APP_URL`, `CRON_SECRET`.
+3. **Önerilen (production):**
+   - **Upstash Redis** — `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (API rate limit, çok instance)
+   - **Stripe** — `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_*_MONTHLY`
+   - **Resend** — `RESEND_API_KEY`, `EMAIL_FROM` (son tarih hatırlatıcıları)
+   - **Sentry** — `NEXT_PUBLIC_SENTRY_DSN` (isteğe bağlı)
+4. Stripe webhook: `https://govmate-ai.vercel.app/api/stripe/webhook` (kendi domain'iniz varsa onu kullanın)
+5. Cron: `vercel.json` → `/api/cron/reminders` (günlük 08:00 UTC); Vercel'de `CRON_SECRET` header ile eşleşmeli
 
 ---
 

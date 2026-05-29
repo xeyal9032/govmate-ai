@@ -30,9 +30,11 @@ interface TemplateVariable {
   required?: boolean;
 }
 
+type VariableFormValues = Record<string, string>;
+
 interface VariableFormProps {
   variables: TemplateVariable[];
-  form: UseFormReturn<any>;
+  form: UseFormReturn<VariableFormValues>;
   category?: string;
 }
 
@@ -127,11 +129,9 @@ export function VariableForm({ variables, form, category = '' }: VariableFormPro
   function getLabel(variable: TemplateVariable): string {
     const i18nKey = keyToI18n[variable.key];
     if (i18nKey) {
-      try {
-        return t(`variables.${i18nKey}` as any);
-      } catch {
-        return variable.label;
-      }
+      const msgKey = `variables.${i18nKey}`;
+      // Dinamik şablon anahtarları — bilinen variables.* çeviri ağacı
+      return (t as (key: string) => string)(msgKey) || variable.label;
     }
     return variable.label;
   }
