@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { createClient } from '@/lib/supabase/client';
 import { getApiBaseUrl, readApiError, readApiJson } from '@/lib/utils/api-response';
 
 interface UploadState {
@@ -10,6 +11,35 @@ interface UploadState {
   analyzing: boolean;
   progress: number;
   error: string | null;
+}
+
+async function readMagicPrefix(file: File): Promise<number[]> {
+  const slice = file.slice(0, 8);
+  const buffer = await slice.arrayBuffer();
+  return Array.from(new Uint8Array(buffer));
+}
+
+function mapUploadError(message: string, t: ReturnType<typeof useTranslations>): string {
+  if (message.includes('Monthly document limit')) {
+    return t('errors.planLimitReached');
+  }
+  if (message.includes('Dosya çok büyük') || message.toLowerCase().includes('too large')) {
+    const match = message.match(/(\d+)\s*MB/i);
+    return t('errors.fileTooLarge', { size: match?.[1] ? `${match[1]} MB` : '?' });
+  }
+  if (message.includes('Desteklenmeyen') || message.includes('Unsupported')) {
+    return t('errors.unsupportedFileType');
+  }
+  if (message.includes('HEIC')) {
+    return t('documents.upload.heicNotSupported');
+  }
+  if (message.includes('File content does not match')) {
+    return t('errors.unsupportedFileType');
+  }
+  if (message === 'Unauthorized') {
+    return t('errors.unauthorized');
+  }
+  return message;
 }
 
 export function useUpload() {
@@ -30,34 +60,80 @@ export function useUpload() {
     const baseUrl = getApiBaseUrl();
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('targetLanguage', targetLanguage);
+      setState(prev => ({ ...prev, progress: 15 }));
 
-      setState(prev => ({ ...prev, progress: 30 }));
-
-      const uploadRes = await fetch(`${baseUrl}/api/upload`, {
+      const prepareRes = await fetch(`${baseUrl}/api/upload/prepare`, {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+          targetLanguage,
+        }),
         credentials: 'same-origin',
       });
 
-      if (!uploadRes.ok) {
+      if (!prepareRes.ok) {
         const fallback = t('errors.uploadFailed');
-        if (uploadRes.status === 401) {
-          throw new Error(t('errors.unauthorized'));
-        }
-        const message = await readApiError(uploadRes, fallback);
-        throw new Error(message);
+        const raw = await readApiError(prepareRes, fallback);
+        throw new Error(mapUploadError(raw, t));
       }
 
-      const { documentId } = await readApiJson<{ documentId: string }>(uploadRes);
-      setState(prev => ({ ...prev, uploading: false, analyzing: true, progress: 50 }));
+      const { storagePath, contentType, targetLanguage: lang } =
+        await readApiJson<{
+          storagePath: string;
+          contentType: string;
+          targetLanguage: string;
+        }>(prepareRes);
+
+      setState(prev => ({ ...prev, progress: 35 }));
+
+      const supabase = createClient();
+      const { error: storageError } = await supabase.storage
+        .from('documents')
+        .upload(storagePath, file, {
+          contentType: contentType || file.type,
+          upsert: false,
+        });
+
+      if (storageError) {
+        console.error('Storage upload error:', storageError);
+        throw new Error(t('errors.uploadFailed'));
+      }
+
+      setState(prev => ({ ...prev, progress: 55 }));
+
+      const magicPrefix = await readMagicPrefix(file);
+
+      const completeRes = await fetch(`${baseUrl}/api/upload/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          storagePath,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type || contentType,
+          targetLanguage: lang || targetLanguage,
+          magicPrefix,
+        }),
+        credentials: 'same-origin',
+      });
+
+      if (!completeRes.ok) {
+        await supabase.storage.from('documents').remove([storagePath]);
+        const fallback = t('errors.uploadFailed');
+        const raw = await readApiError(completeRes, fallback);
+        throw new Error(mapUploadError(raw, t));
+      }
+
+      const { documentId } = await readApiJson<{ documentId: string }>(completeRes);
+      setState(prev => ({ ...prev, uploading: false, analyzing: true, progress: 70 }));
 
       const analyzeRes = await fetch(`${baseUrl}/api/ai/analyze-document`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ documentId, targetLanguage }),
+        body: JSON.stringify({ documentId, targetLanguage: lang || targetLanguage }),
         credentials: 'same-origin',
       });
 

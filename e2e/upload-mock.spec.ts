@@ -11,7 +11,31 @@ test.describe('Belge yükleme (mock API)', () => {
   );
 
   test.beforeEach(async ({ page }) => {
-    await page.route('**/api/upload', async (route) => {
+    await page.route('**/storage/v1/object/documents/**', async (route) => {
+      if (route.request().method() === 'POST') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ Key: 'mock' }),
+        });
+        return;
+      }
+      await route.continue();
+    });
+
+    await page.route('**/api/upload/prepare', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          storagePath: 'mock-user/mock-file.txt',
+          contentType: 'text/plain',
+          targetLanguage: 'tr',
+        }),
+      });
+    });
+
+    await page.route('**/api/upload/complete', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
