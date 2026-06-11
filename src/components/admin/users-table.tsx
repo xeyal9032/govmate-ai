@@ -184,7 +184,7 @@ export function UsersTable({ users, total, page, perPage }: UsersTableProps) {
                       {(() => {
                         const plan = user.subscriptions?.plan || 'free';
                         return isPlanKey(plan)
-                          ? tBilling(`plans.${plan}.name`)
+                          ? tBilling(`${plan}.name`)
                           : plan;
                       })()}
                     </Badge>
