@@ -545,6 +545,8 @@
     "dataDownloaded": "Bericht als PDF heruntergeladen",
     "exportFailed": "Bericht konnte nicht erstellt werden",
     "deleteAccountContact": "Bitte kontaktieren Sie den Support, um Ihr Konto zu löschen",
+    "deleteAccountSuccess": "Ihr Konto wurde gelöscht",
+    "deleteAccountFailed": "Konto konnte nicht gelöscht werden",
     "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden gelöscht.",
     "deleteConfirm": "Ihr Konto und alle Dokumente werden dauerhaft gelöscht.",
     "cancel": "Abbrechen"

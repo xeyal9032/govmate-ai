@@ -15,12 +15,14 @@ import { createClient } from '@/lib/supabase/client';
 import { useAppStore } from '@/store/app-store';
 import { toast } from 'sonner';
 import { Loader2, Trash2, Download, AlertTriangle } from 'lucide-react';
+import { readApiError } from '@/lib/utils/api-response';
 
 export default function SettingsPage() {
   const t = useTranslations('settings');
   const { user, setUser } = useAppStore();
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   async function handleSaveProfile(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -88,7 +90,8 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/pdf/export');
       if (!res.ok) {
-        toast.error(t('exportFailed'));
+        const message = await readApiError(res, t('exportFailed'));
+        toast.error(message);
         return;
       }
       const blob = await res.blob();
@@ -107,8 +110,22 @@ export default function SettingsPage() {
   }
 
   async function handleDeleteAccount() {
-    toast.error(t('deleteAccountContact'));
-    setDeleteDialogOpen(false);
+    setDeleting(true);
+    try {
+      const res = await fetch('/api/account/delete', { method: 'POST' });
+      if (!res.ok) {
+        const message = await readApiError(res, t('deleteAccountFailed'));
+        toast.error(message);
+        return;
+      }
+      toast.success(t('deleteAccountSuccess'));
+      window.location.assign('/api/auth/signout');
+    } catch {
+      toast.error(t('deleteAccountFailed'));
+    } finally {
+      setDeleting(false);
+      setDeleteDialogOpen(false);
+    }
   }
 
   return (
@@ -195,7 +212,8 @@ export default function SettingsPage() {
                 <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
                   {t('cancel')}
                 </Button>
-                <Button variant="destructive" onClick={handleDeleteAccount}>
+                <Button variant="destructive" onClick={handleDeleteAccount} disabled={deleting}>
+                  {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {t('deleteAccount')}
                 </Button>
               </DialogFooter>

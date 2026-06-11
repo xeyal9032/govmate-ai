@@ -545,6 +545,8 @@
     "dataDownloaded": "Hesabat PDF olaraq yükləndi",
     "exportFailed": "Hesabat yaradıla bilmədi",
     "deleteAccountContact": "Hesabı silmək üçün dəstək komandasına müraciət edin",
+    "deleteAccountSuccess": "Hesabınız silindi",
+    "deleteAccountFailed": "Hesab silinə bilmədi",
     "deleteWarning": "Bu əməliyyat geri alına bilməz. Bütün məlumatlarınız silinəcək.",
     "deleteConfirm": "Hesabınız və bütün sənədləriniz həmişəlik silinəcək.",
     "cancel": "Ləğv et"

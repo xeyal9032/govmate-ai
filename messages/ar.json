@@ -545,6 +545,8 @@
     "dataDownloaded": "تم تنزيل التقرير بصيغة PDF",
     "exportFailed": "فشل في إنشاء التقرير",
     "deleteAccountContact": "يرجى الاتصال بالدعم لحذف حسابك",
+    "deleteAccountSuccess": "تم حذف حسابك",
+    "deleteAccountFailed": "تعذر حذف الحساب",
     "deleteWarning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك.",
     "deleteConfirm": "سيتم حذف حسابك وجميع مستنداتك نهائيًا.",
     "cancel": "إلغاء"

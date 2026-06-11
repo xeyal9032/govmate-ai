@@ -545,6 +545,8 @@
     "dataDownloaded": "Report downloaded as PDF",
     "exportFailed": "Failed to generate report",
     "deleteAccountContact": "Please contact support to delete your account",
+    "deleteAccountSuccess": "Your account has been deleted",
+    "deleteAccountFailed": "Could not delete account",
     "deleteWarning": "This action cannot be undone. All your data will be deleted.",
     "deleteConfirm": "Your account and all documents will be permanently deleted.",
     "cancel": "Cancel"

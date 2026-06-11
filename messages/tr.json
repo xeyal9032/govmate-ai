@@ -545,6 +545,8 @@
     "dataDownloaded": "Rapor PDF olarak indirildi",
     "exportFailed": "Rapor oluşturulamadı",
     "deleteAccountContact": "Hesap silme için destek ekibine başvurun",
+    "deleteAccountSuccess": "Hesabınız silindi",
+    "deleteAccountFailed": "Hesap silinemedi",
     "deleteWarning": "Bu işlem geri alınamaz. Tüm verileriniz silinecektir.",
     "deleteConfirm": "Hesabınız ve tüm belgeleriniz kalıcı olarak silinecektir.",
     "cancel": "İptal"

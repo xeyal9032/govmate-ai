@@ -64,7 +64,7 @@ export function AppSidebar() {
           })}
         </nav>
 
-        {user?.role === 'admin' && (
+        {(user?.role === 'admin' || user?.role === 'support') && (
           <>
             <Separator className="my-4" />
             <Link href="/admin">
