@@ -2,6 +2,16 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getSiteContent } from '@/actions/admin';
 import { SiteContentManager } from '@/components/admin/site-content-manager';
 
+interface SiteContentItem {
+  id: string;
+  slug: string;
+  content_type: string;
+  title: Record<string, string>;
+  body: Record<string, string>;
+  is_published: boolean;
+  sort_order: number;
+}
+
 export default async function AdminSiteContentPage({
   params,
 }: {
@@ -11,8 +21,12 @@ export default async function AdminSiteContentPage({
   setRequestLocale(locale);
   const t = await getTranslations('admin');
 
-  let content: any[] = [];
-  try { content = await getSiteContent(); } catch {}
+  let content: SiteContentItem[] = [];
+  try {
+    content = await getSiteContent();
+  } catch {
+    content = [];
+  }
 
   return (
     <div className="space-y-6">

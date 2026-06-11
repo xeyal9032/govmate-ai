@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { getOpenAIClient } from '@/lib/ai/client';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
+import { assertPlanFeature } from '@/lib/utils/plan-limits';
 
 const NAME_KEYS = new Set([
   'full_name', 'child_name', 'school_name',
@@ -32,6 +33,11 @@ export async function POST(request: NextRequest) {
 
     const rateLimited = await rateLimitOrNull(`ai:${user.id}`, AI_RATE_LIMIT);
     if (rateLimited) return rateLimited;
+
+    const featureCheck = await assertPlanFeature(supabase, user.id, 'translation_enabled');
+    if (!featureCheck.ok) {
+      return NextResponse.json({ error: featureCheck.error }, { status: 403 });
+    }
 
     const { fields } = await request.json() as {
       fields: Record<string, string>;

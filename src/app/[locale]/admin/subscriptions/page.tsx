@@ -7,6 +7,15 @@ import {
 import { createAdminClient } from '@/lib/supabase/admin';
 import { SubscriptionPlanChanger } from '@/components/admin/subscription-plan-changer';
 import { SubscriptionStatusChanger } from '@/components/admin/subscription-status-changer';
+import { isPlanKey, type PlanKey } from '@/lib/utils/plan-keys';
+
+interface AdminSubscriptionRow {
+  id: string;
+  plan: string;
+  status: string;
+  created_at: string;
+  profiles: { full_name: string | null; email: string } | null;
+}
 
 export default async function AdminSubscriptionsPage({
   params,
@@ -24,12 +33,13 @@ export default async function AdminSubscriptionsPage({
     .select('*, profiles(full_name, email)')
     .order('created_at', { ascending: false });
 
-  const planCounts = { free: 0, pro: 0, business: 0 };
-  subscriptions?.forEach((s: any) => {
-    if (s.plan in planCounts) planCounts[s.plan as keyof typeof planCounts]++;
+  const planCounts: Record<PlanKey, number> = { free: 0, pro: 0, business: 0 };
+  subscriptions?.forEach((s: AdminSubscriptionRow) => {
+    if (isPlanKey(s.plan)) planCounts[s.plan]++;
   });
 
-  const activeSubs = subscriptions?.filter((s: any) => s.status === 'active').length || 0;
+  const activeSubs =
+    subscriptions?.filter((s: AdminSubscriptionRow) => s.status === 'active').length || 0;
 
   const statusVariant: Record<string, 'default' | 'secondary' | 'outline' | 'destructive'> = {
     active: 'default',
@@ -96,7 +106,7 @@ export default async function AdminSubscriptionsPage({
                 </TableCell>
               </TableRow>
             ) : (
-              subscriptions.map((sub: any) => (
+              subscriptions.map((sub: AdminSubscriptionRow) => (
                 <TableRow key={sub.id}>
                   <TableCell className="font-medium">
                     {sub.profiles?.full_name || '—'}
@@ -104,7 +114,9 @@ export default async function AdminSubscriptionsPage({
                   <TableCell>{sub.profiles?.email || '—'}</TableCell>
                   <TableCell>
                     <Badge variant="secondary">
-                      {tBilling(`plans.${sub.plan}.name` as any)}
+                      {isPlanKey(sub.plan)
+                        ? tBilling(`plans.${sub.plan}.name`)
+                        : sub.plan}
                     </Badge>
                   </TableCell>
                   <TableCell>

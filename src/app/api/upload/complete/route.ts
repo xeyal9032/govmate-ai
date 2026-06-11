@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { writeAuditLog } from '@/lib/security/audit-log';
+import { rateLimitOrNull, UPLOAD_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import {
   assertMonthlyDocumentQuota,
   assertStoragePathOwnedByUser,
@@ -19,6 +20,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const rateLimited = await rateLimitOrNull(`upload:${user.id}`, UPLOAD_RATE_LIMIT);
+    if (rateLimited) return rateLimited;
 
     const body = await request.json();
     const storagePath = String(body.storagePath ?? '');

@@ -43,7 +43,7 @@ export default function SettingsPage() {
       preferred_language: formData.get('language') as string,
     };
 
-    const { data, error, status, statusText } = await supabase
+    const { error, status, statusText } = await supabase
       .from('profiles')
       .update(updates)
       .eq('id', authUser.id)
@@ -107,7 +107,6 @@ export default function SettingsPage() {
   }
 
   async function handleDeleteAccount() {
-    const supabase = createClient();
     toast.error(t('deleteAccountContact'));
     setDeleteDialogOpen(false);
   }

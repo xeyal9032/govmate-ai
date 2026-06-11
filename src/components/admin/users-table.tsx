@@ -41,6 +41,7 @@ import {
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { toast } from 'sonner';
+import { isPlanKey, isUserRoleKey } from '@/lib/utils/plan-keys';
 
 interface User {
   id: string;
@@ -175,12 +176,17 @@ export function UsersTable({ users, total, page, perPage }: UsersTableProps) {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     <Badge variant={roleBadgeVariant[user.role] || 'outline'}>
-                      {t(`roles.${user.role}` as any)}
+                      {isUserRoleKey(user.role) ? t(`roles.${user.role}`) : user.role}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary">
-                      {tBilling(`${user.subscriptions?.plan || 'free'}.name` as any)}
+                      {(() => {
+                        const plan = user.subscriptions?.plan || 'free';
+                        return isPlanKey(plan)
+                          ? tBilling(`plans.${plan}.name`)
+                          : plan;
+                      })()}
                     </Badge>
                   </TableCell>
                   <TableCell>{formatDate(user.created_at)}</TableCell>

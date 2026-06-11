@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { generateExportPDF, type UserExportData } from '@/lib/pdf/generate-export-pdf';
+import { assertPlanFeature } from '@/lib/utils/plan-limits';
 
 export async function GET() {
   try {
@@ -8,6 +9,11 @@ export async function GET() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const featureCheck = await assertPlanFeature(supabase, user.id, 'pdf_export_enabled');
+    if (!featureCheck.ok) {
+      return NextResponse.json({ error: featureCheck.error }, { status: 403 });
     }
 
     const [profile, docs, letters, deadlines] = await Promise.all([

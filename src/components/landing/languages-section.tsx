@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Globe } from 'lucide-react';
 import { localeNames, localeFlagUrls, type Locale } from '@/lib/utils/language';
@@ -85,12 +86,13 @@ export function LanguagesSection() {
                   transition={{ duration: 0.4 }}
                   className="relative"
                 >
-                  <img
+                  <Image
                     src={localeFlagUrls[locale]}
                     alt={localeNames[locale]}
                     width={48}
                     height={32}
                     className="aspect-[3/2] rounded-md object-cover shadow-md ring-1 ring-black/5"
+                    unoptimized
                   />
                   <div className="absolute -inset-1 -z-10 rounded-lg bg-gradient-to-br from-white/50 to-white/0 blur-sm dark:from-white/10" />
                 </motion.div>

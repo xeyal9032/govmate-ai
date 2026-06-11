@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import type { Deadline } from '@/types/database';
 
 type Urgency = 'critical' | 'high' | 'medium' | 'low';
 type Status = 'open' | 'done';
@@ -47,7 +48,7 @@ const URGENCY_STYLES: Record<Urgency, string> = {
 };
 
 interface DeadlinesListProps {
-  initialDeadlines: any[];
+  initialDeadlines: Deadline[];
 }
 
 export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
@@ -103,7 +104,7 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
     });
   };
 
-  const handleExportICS = (deadline: any) => {
+  const handleExportICS = (deadline: Deadline) => {
     const icsContent = generateICSEvent({
       title: deadline.title,
       description: deadline.description || '',
@@ -215,7 +216,7 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
               size="sm"
               onClick={() => setUrgencyFilter(u)}
             >
-              {u === 'all' ? tCommon('filter') : t(`urgency.${u}` as any)}
+              {u === 'all' ? tCommon('filter') : t(`urgency.${u}`)}
             </Button>
           ))}
         </div>
@@ -273,7 +274,7 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
                           URGENCY_STYLES[urgency]
                         )}
                       >
-                        {t(`urgency.${urgency}` as any)}
+                        {t(`urgency.${urgency}`)}
                       </Badge>
                     </div>
 

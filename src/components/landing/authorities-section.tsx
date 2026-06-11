@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -72,13 +73,12 @@ export function AuthoritiesSection() {
                   <Card className="h-full border-0 shadow-none transition-all hover:bg-primary/5 hover:-translate-y-1 hover:shadow-md cursor-pointer">
                     <CardContent className="flex flex-col items-center gap-3 py-6 text-center">
                       <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-white dark:bg-white p-2.5 shadow-sm">
-                        <img
+                        <Image
                           src={authority.logo}
                           alt={authority.name}
                           width={48}
                           height={48}
                           className="object-contain"
-                          loading="lazy"
                         />
                       </div>
                       <span className="text-sm font-medium leading-tight">

@@ -272,7 +272,9 @@ export async function getAppSettings() {
   const admin = createAdminClient();
   const { data } = await admin.from('app_settings').select('*');
   const settings: Record<string, string> = {};
-  data?.forEach((row: any) => { settings[row.key] = row.value; });
+  data?.forEach((row: { key: string; value: string }) => {
+    settings[row.key] = row.value;
+  });
   return settings;
 }
 

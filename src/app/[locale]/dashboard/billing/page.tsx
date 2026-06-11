@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 import { getApiBaseUrl, readApiError, readApiJson } from '@/lib/utils/api-response';
+import type { Subscription } from '@/types/database';
 
 interface UsageSummary {
   documentsUsed: number;
@@ -27,7 +28,7 @@ export default function BillingPage() {
   const t = useTranslations('billing');
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const [subscription, setSubscription] = useState<any>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [usage, setUsage] = useState<UsageSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export default function BillingPage() {
     const canceled = searchParams.get('canceled');
     if (success === 'true') toast.success(t('subscriptionUpdated'));
     if (canceled === 'true') toast.info(t('paymentCanceled'));
-  }, [searchParams]);
+  }, [searchParams, t]);
 
   const handleUpgrade = async (plan: string) => {
     if (plan === 'free') return;

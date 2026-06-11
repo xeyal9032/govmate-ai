@@ -57,7 +57,7 @@ export function LetterTypeSelector({ selected, onSelect }: LetterTypeSelectorPro
                 )}
               />
               <span className="text-sm font-medium">
-                {t(`generate.types.${key}` as any)}
+                {t(`generate.types.${key}`)}
               </span>
             </CardContent>
           </Card>

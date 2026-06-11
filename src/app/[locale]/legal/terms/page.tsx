@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { FileText, UserCheck, AlertTriangle, CreditCard, BookOpen, Lock, RefreshCw, Mail } from 'lucide-react';
+import { FileText, UserCheck, AlertTriangle, CreditCard, BookOpen, Lock, RefreshCw } from 'lucide-react';
 
 function SectionCard({ icon: Icon, title, children, gradient }: { icon: React.ElementType; title: string; children: React.ReactNode; gradient: string }) {
   return (

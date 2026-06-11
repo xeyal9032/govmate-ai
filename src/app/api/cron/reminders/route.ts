@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { sendDeadlineReminder } from '@/lib/email/send-reminder';
-import type { Profile } from '@/types/database';
+import { isPlanFeatureEnabled, resolveActivePlan } from '@/lib/utils/plan-limits';
+import type { PlanType, Profile } from '@/types/database';
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -11,6 +12,20 @@ export async function GET(request: NextRequest) {
 
   try {
     const admin = createAdminClient();
+
+    const { data: featureSetting } = await admin
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'feature_reminders')
+      .single();
+
+    if (featureSetting?.value === 'false') {
+      return NextResponse.json({
+        reminders: { sent: 0, errors: 0, skipped: 'feature_disabled' },
+        expired: 0,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     const threeDaysFromNow = new Date();
     threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
@@ -28,16 +43,50 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch deadlines' }, { status: 500 });
     }
 
+    const userIds = [
+      ...new Set(
+        (deadlines || [])
+          .map((d) => (d as { user_id?: string }).user_id)
+          .filter((id): id is string => Boolean(id))
+      ),
+    ];
+
+    const userPlanMap = new Map<string, PlanType>();
+    if (userIds.length > 0) {
+      const { data: subscriptions } = await admin
+        .from('subscriptions')
+        .select('user_id, plan, status')
+        .in('user_id', userIds);
+
+      for (const userId of userIds) {
+        const sub = subscriptions?.find((s) => s.user_id === userId);
+        userPlanMap.set(userId, resolveActivePlan(sub));
+      }
+    }
+
     let sent = 0;
     let errors = 0;
+    let skippedPlan = 0;
 
     for (const deadline of deadlines || []) {
       try {
-        const profile = (deadline as Record<string, unknown>).profiles as Profile | null;
-        if (profile?.email) {
-          await sendDeadlineReminder(profile, deadline);
-          sent++;
+        const row = deadline as { user_id: string; profiles: Profile | null };
+        const profile = row.profiles;
+        if (!profile?.email) continue;
+
+        const plan = userPlanMap.get(row.user_id) ?? 'free';
+        const remindersAllowed = await isPlanFeatureEnabled(
+          plan,
+          'reminders_enabled',
+          admin
+        );
+        if (!remindersAllowed) {
+          skippedPlan++;
+          continue;
         }
+
+        await sendDeadlineReminder(profile, deadline);
+        sent++;
       } catch (error) {
         console.error(`Failed to send reminder for deadline ${deadline.id}:`, error);
         errors++;
@@ -54,7 +103,7 @@ export async function GET(request: NextRequest) {
     const expiredCount = expiredData?.length ?? 0;
 
     return NextResponse.json({
-      reminders: { sent, errors },
+      reminders: { sent, errors, skippedPlan },
       expired: expiredCount || 0,
       timestamp: new Date().toISOString(),
     });

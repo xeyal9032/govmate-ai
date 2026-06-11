@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import type { Template } from '@/types/database';
 
 const titleToI18nKey: Record<string, string> = {
   'Unterlagen nachreichen': 'unterlagenNachreichen',
@@ -45,7 +46,26 @@ const titleToI18nKey: Record<string, string> = {
   'Vollmacht erteilen': 'vollmacht',
 };
 
-import type { Template } from '@/types/database';
+const TEMPLATE_CATEGORIES = [
+  'jobcenter',
+  'auslaenderbehoerde',
+  'finanzamt',
+  'krankenkasse',
+  'wohnung',
+  'versicherung',
+  'schule',
+  'allgemein',
+  'familienkasse',
+  'bamf',
+  'buergeramt',
+  'rentenversicherung',
+] as const;
+
+type TemplateCategoryKey = (typeof TEMPLATE_CATEGORIES)[number];
+
+function isTemplateCategory(value: string): value is TemplateCategoryKey {
+  return (TEMPLATE_CATEGORIES as readonly string[]).includes(value);
+}
 
 interface TemplateCardProps {
   template: Pick<Template, 'id' | 'title' | 'category' | 'description'>;
@@ -58,7 +78,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
     const i18nKey = titleToI18nKey[template.title];
     if (i18nKey) {
       try {
-        return t(`descriptions.${i18nKey}` as any);
+        return t(`descriptions.${i18nKey}` as `descriptions.${typeof i18nKey}`);
       } catch {
         return template.description || '';
       }
@@ -74,7 +94,9 @@ export function TemplateCard({ template }: TemplateCardProps) {
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="line-clamp-2">{template.title}</CardTitle>
           <Badge variant="secondary" className="shrink-0">
-            {t(`categories.${template.category}` as any)}
+            {isTemplateCategory(template.category)
+              ? t(`categories.${template.category}`)
+              : template.category}
           </Badge>
         </div>
         {description && (

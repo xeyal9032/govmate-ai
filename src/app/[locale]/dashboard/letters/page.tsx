@@ -6,6 +6,11 @@ import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { Mail, Globe, Calendar, Plus } from 'lucide-react';
 import Link from 'next/link';
+import type { GeneratedLetter, LetterType } from '@/types/database';
+
+type LetterListItem = GeneratedLetter & {
+  documents: { title: string; authority_name: string | null } | null;
+};
 
 export default async function LettersPage({
   params,
@@ -16,7 +21,9 @@ export default async function LettersPage({
   setRequestLocale(locale);
   const t = await getTranslations('letters');
   const tCommon = await getTranslations('common');
-  const letters = await getLetters();
+  const letters = (await getLetters()) as LetterListItem[];
+
+  const letterTypeLabel = (type: LetterType) => t(`generate.types.${type}`);
 
   return (
     <div className="space-y-6">
@@ -39,7 +46,7 @@ export default async function LettersPage({
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {letters.map((letter: any) => (
+          {letters.map((letter) => (
             <Link key={letter.id} href={`/${locale}/dashboard/letters/${letter.id}`}>
             <Card className="hover:ring-2 hover:ring-primary/20 transition-all cursor-pointer">
               <CardHeader>
@@ -48,7 +55,7 @@ export default async function LettersPage({
                     {letter.subject || t('generate.title')}
                   </CardTitle>
                   <Badge variant="secondary" className="shrink-0">
-                    {t(`generate.types.${letter.letter_type}` as any)}
+                    {letterTypeLabel(letter.letter_type)}
                   </Badge>
                 </div>
               </CardHeader>

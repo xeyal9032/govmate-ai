@@ -4,6 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, Bot, Mail } from 'lucide-react';
 import { DashboardChart } from '@/components/admin/dashboard-chart';
 
+interface AdminChartPoint {
+  date: string;
+  documents: number;
+  aiUsage: number;
+}
+
 export default async function AdminOverviewPage({
   params,
 }: {
@@ -14,8 +20,12 @@ export default async function AdminOverviewPage({
   const t = await getTranslations('admin');
   const stats = await getAdminStats();
 
-  let chartData: any[] = [];
-  try { chartData = await getAdminChartData(); } catch {}
+  let chartData: AdminChartPoint[] = [];
+  try {
+    chartData = await getAdminChartData();
+  } catch {
+    chartData = [];
+  }
 
   const cards = [
     { title: t('totalUsers'), value: stats.totalUsers, icon: Users, description: t('registeredUsersDesc') },

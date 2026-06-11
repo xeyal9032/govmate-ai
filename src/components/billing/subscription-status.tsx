@@ -4,15 +4,13 @@ import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle } from 'lucide-react';
+import type { Subscription } from '@/types/database';
 
 interface SubscriptionStatusProps {
-  subscription: {
-    plan: string;
-    status: string;
-    current_period_start?: string;
-    current_period_end?: string;
-    cancel_at_period_end?: boolean;
-  };
+  subscription: Pick<
+    Subscription,
+    'plan' | 'status' | 'current_period_start' | 'current_period_end' | 'cancel_at_period_end'
+  >;
 }
 
 export function SubscriptionStatus({ subscription }: SubscriptionStatusProps) {

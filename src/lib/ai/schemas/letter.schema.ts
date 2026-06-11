@@ -22,17 +22,3 @@ export const templateFillResponseSchema = z.object({
 });
 
 export type TemplateFillResponseSchema = z.infer<typeof templateFillResponseSchema>;
-
-export const deadlineExtractionResponseSchema = z.object({
-  deadlines: z.array(
-    z.object({
-      date: z.string(),
-      reason: z.string(),
-      urgency: z.enum(['low', 'medium', 'high', 'critical']),
-      original_text: z.string().optional(),
-    })
-  ),
-  has_deadlines: z.boolean(),
-});
-
-export type DeadlineExtractionResponseSchema = z.infer<typeof deadlineExtractionResponseSchema>;

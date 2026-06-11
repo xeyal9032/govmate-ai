@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { translateText } from '@/lib/ai/translate';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
+import { assertPlanFeature } from '@/lib/utils/plan-limits';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,25 +15,9 @@ export async function POST(request: NextRequest) {
     const rateLimited = await rateLimitOrNull(`ai:${user.id}`, AI_RATE_LIMIT);
     if (rateLimited) return rateLimited;
 
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('plan, status')
-      .eq('user_id', user.id)
-      .single();
-
-    const plan = (subscription?.status === 'active' ? subscription?.plan : 'free') || 'free';
-
-    const { data: limits } = await supabase
-      .from('plan_limits')
-      .select('translation_enabled')
-      .eq('plan', plan)
-      .single();
-
-    if (!limits?.translation_enabled) {
-      return NextResponse.json(
-        { error: 'Translation feature is not available on your current plan. Please upgrade to Pro or Business.' },
-        { status: 403 }
-      );
+    const featureCheck = await assertPlanFeature(supabase, user.id, 'translation_enabled');
+    if (!featureCheck.ok) {
+      return NextResponse.json({ error: featureCheck.error }, { status: 403 });
     }
 
     const body = await request.json();
