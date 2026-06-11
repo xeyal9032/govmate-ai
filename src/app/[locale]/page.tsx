@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
+import { getAllPlanLimits } from '@/actions/billing';
 import { Navbar } from '@/components/landing/navbar';
 import { HeroSection } from '@/components/landing/hero-section';
 import { HowItWorksSection } from '@/components/landing/how-it-works-section';
@@ -15,6 +16,7 @@ export default async function LandingPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const planLimits = await getAllPlanLimits();
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -23,7 +25,7 @@ export default async function LandingPage({
         <HowItWorksSection />
         <AuthoritiesSection />
         <LanguagesSection />
-        <PricingSection />
+        <PricingSection planLimits={planLimits} />
         <FaqSection />
       </main>
       <Footer />

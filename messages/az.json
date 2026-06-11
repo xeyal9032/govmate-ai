@@ -42,7 +42,8 @@
     "admin": "İdarəetmə",
     "logout": "Çıxış",
     "login": "Daxil ol",
-    "register": "Qeydiyyat"
+    "register": "Qeydiyyat",
+    "openMenu": "Menunu aç"
   },
   "landing": {
     "hero": {
@@ -70,10 +71,22 @@
     },
     "howItWorks": {
       "title": "Necə İşləyir?",
-      "step1": { "title": "Sənədi Yüklə", "description": "PDF, şəkil və ya mətn olaraq rəsmi məktubu yükləyin" },
-      "step2": { "title": "AI Analiz Etsin", "description": "Süni intellekt məktubu oxuyur, başa düşür və sadə dildə izah edir" },
-      "step3": { "title": "Cavab Məktubu Hazırla", "description": "Peşəkar Almanca cavab məktubu avtomatik yaradılır" },
-      "step4": { "title": "Son Tarixləri İzlə", "description": "Vacib tarixləri qaçırmamaq üçün xatırladıcılar qurun" }
+      "step1": {
+        "title": "Sənədi Yüklə",
+        "description": "PDF, şəkil və ya mətn olaraq rəsmi məktubu yükləyin"
+      },
+      "step2": {
+        "title": "AI Analiz Etsin",
+        "description": "Süni intellekt məktubu oxuyur, başa düşür və sadə dildə izah edir"
+      },
+      "step3": {
+        "title": "Cavab Məktubu Hazırla",
+        "description": "Peşəkar Almanca cavab məktubu avtomatik yaradılır"
+      },
+      "step4": {
+        "title": "Son Tarixləri İzlə",
+        "description": "Vacib tarixləri qaçırmamaq üçün xatırladıcılar qurun"
+      }
     },
     "authorities": {
       "title": "Dəstəklənən Qurumlar",
@@ -165,7 +178,11 @@
       "remainingAnalyses": "Qalan Analiz Hüququ"
     },
     "noDocuments": "Hələ heç bir sənəd yükləməmisiniz",
-    "noDeadlines": "Açıq son tarix yoxdur"
+    "noDeadlines": "Açıq son tarix yoxdur",
+    "feedback": {
+      "repliesTitle": "Dəstək cavabları",
+      "adminReply": "Cavab:"
+    }
   },
   "documents": {
     "title": "Sənədlər",
@@ -182,7 +199,9 @@
       "upgradePlan": "Planınızı yüksəltin",
       "analysisComplete": "Sənəd uğurla analiz edildi!",
       "heicNotSupported": "iPhone HEIC dəstəklənmir. Parametrlər > Kamera > Formatlar > Ən uyğun (JPEG) seçin və ya JPG/PNG/PDF yükləyin.",
-      "unsupportedOnDevice": "Fayl növü cihazda tanınmadı. JPG, PNG, PDF və ya TXT sınayın."
+      "unsupportedOnDevice": "Fayl növü cihazda tanınmadı. JPG, PNG, PDF və ya TXT sınayın.",
+      "maxFileSizeHint": "Maksimum fayl ölçüsü: {size} MB",
+      "cameraCapture": "Kamera ilə çək"
     },
     "detail": {
       "overview": "Ümumi Baxış",
@@ -220,7 +239,10 @@
       "createLetterButtonAuto": "Məktubu indi yarat",
       "customizeLetter": "Növü özüm seçim",
       "recommendedTypeLabel": "Tövsiyə olunan məktub növü",
-      "noResponseNeededHint": "Analiz cavab tələb etməyə bilər; yenə də məktub yarada bilərsiniz."
+      "noResponseNeededHint": "Analiz cavab tələb etməyə bilər; yenə də məktub yarada bilərsiniz.",
+      "retryAnalysis": "Təkrar analiz et",
+      "retryingAnalysis": "Analiz edilir...",
+      "retrySuccess": "Analiz başladı"
     },
     "status": {
       "uploaded": "Yükləndi",
@@ -240,7 +262,12 @@
       "insurance": "Sığorta",
       "school": "Məktəb/Uşaq Bağçası/Universitet",
       "unknown": "Naməlum"
-    }
+    },
+    "deleteDocument": "Sənədi sil",
+    "deleteConfirm": "Bu sənəd həmişəlik silinəcək.",
+    "deleteSuccess": "Sənəd silindi",
+    "deleteFailed": "Sənəd silinmədi",
+    "cancelDelete": "Ləğv et"
   },
   "letters": {
     "title": "Məktublar",
@@ -321,7 +348,11 @@
     "urgencyLevel": "Təcililik",
     "reminderEnabled": "Xatırlatma",
     "deadlineCreated": "Son tarix yaradıldı",
-    "deadlineCreateError": "Son tarix yaradıla bilmədi"
+    "deadlineCreateError": "Son tarix yaradıla bilmədi",
+    "deleteDeadline": "Son tarixi sil",
+    "deadlineDeleted": "Son tarix silindi",
+    "deadlineDeleteError": "Son tarix silinmədi",
+    "viewDocument": "Sənədə keç"
   },
   "templates": {
     "title": "Şablonlar",
@@ -465,7 +496,8 @@
       "versicherungsverlauf": "Pensiya sığorta tarixçəsi tələbi",
       "allgemeinerWiderspruch": "İstənilən quruma ümumi etiraz məktubu",
       "vollmacht": "Rəsmi işlər üçün başqa şəxsə səlahiyyət verilməsi"
-    }
+    },
+    "upgradeForTranslation": "Tərcümə üçün Pro və ya Business plana keçin"
   },
   "billing": {
     "title": "Abunəlik",
@@ -524,6 +556,24 @@
           "Maks. 100 MB yükləmə"
         ]
       }
+    },
+    "usageBanner": {
+      "title": "Aylıq istifadə kotanız",
+      "limitReached": "Plan limitinə çatdınız",
+      "documents": "Sənədlər: {count}",
+      "letters": "Məktublar: {count}",
+      "maxFileSize": "Maks. fayl ölçüsü: {size} MB",
+      "upgrade": "Planı yüksəlt"
+    },
+    "planFeatures": {
+      "documents": "Ayda {count} sənəd analizi",
+      "unlimitedDocuments": "Limitsiz sənəd analizi",
+      "maxUpload": "Maks. {size} MB yükləmə",
+      "letters": "Ayda {count} məktub",
+      "unlimitedLetters": "Limitsiz məktub",
+      "translation": "AI tərcümə",
+      "reminders": "E-poçt xatırlatmaları",
+      "pdfExport": "PDF ixrac"
     }
   },
   "settings": {
@@ -549,7 +599,22 @@
     "deleteAccountFailed": "Hesab silinə bilmədi",
     "deleteWarning": "Bu əməliyyat geri alına bilməz. Bütün məlumatlarınız silinəcək.",
     "deleteConfirm": "Hesabınız və bütün sənədləriniz həmişəlik silinəcək.",
-    "cancel": "Ləğv et"
+    "cancel": "Ləğv et",
+    "address": "Ünvan",
+    "addressPlaceholder": "Məktub PDF üçün ünvanınız",
+    "changePassword": "Şifrəni dəyiş",
+    "newPassword": "Yeni şifrə",
+    "confirmPassword": "Şifrəni təsdiqlə",
+    "passwordUpdated": "Şifrə yeniləndi",
+    "passwordUpdateFailed": "Şifrə yenilənmədi",
+    "passwordTooShort": "Şifrə ən azı 8 simvol olmalıdır",
+    "passwordMismatch": "Şifrələr uyğun gəlmir",
+    "emailReminders": "E-poçt xatırlatmaları",
+    "emailRemindersDesc": "Son tarix xatırlatmalarını e-poçtla al",
+    "notificationsSaved": "Bildiriş seçimi saxlanıldı",
+    "deleteAllDocumentsConfirm": "Bütün sənədləriniz həmişəlik silinəcək.",
+    "deleteAllDocumentsSuccess": "Bütün sənədlər silindi",
+    "deleteAllDocumentsFailed": "Sənədlər silinmədi"
   },
   "admin": {
     "title": "İdarəetmə Paneli",
@@ -728,7 +793,6 @@
     "statusResolved": "Həll edildi",
     "statusDismissed": "Rədd edildi",
     "feedback": "Geri Bildirişlər",
-    "statusColumn": "Status",
     "operationError": "Əməliyyat uğursuz oldu",
     "featureFlagsTitle": "Xüsusiyyət İdarəetməsi",
     "featureFlagsDesc": "Tətbiq xüsusiyyətlərini aktiv və ya deaktiv edin.",
@@ -838,7 +902,14 @@
     "tryAgain": "Yenidən Cəhd Et",
     "pdfFailed": "PDF yükləmə uğursuz oldu",
     "pdfGenerationFailed": "PDF yaratma uğursuz oldu",
-    "pdfDownloadFailed": "PDF yükləmə uğursuz oldu"
+    "pdfDownloadFailed": "PDF yükləmə uğursuz oldu",
+    "planLimit": {
+      "documentLimit": "Aylıq sənəd limitinə çatdınız. Planınızı yüksəldin.",
+      "letterLimit": "Aylıq məktub limitinə çatdınız. Planınızı yüksəldin.",
+      "pdfExport": "PDF ixrac planınızda mövcud deyil. Pro və ya Business plana keçin.",
+      "translation": "Tərcümə planınızda mövcud deyil. Pro və ya Business plana keçin.",
+      "reminders": "E-poçt xatırlatmaları planınızda mövcud deyil."
+    }
   },
   "legal": {
     "disclaimer": "Bu tətbiq hüquqi məsləhət vermir. Rəsmi qərarlar üçün mütəxəssisə və ya səlahiyyətli quruma müraciət edin.",
@@ -857,7 +928,13 @@
       "s2Usage": "İstifadə Məlumatları: Təhlil sayı, yaradılmış məktublar, son tarixlər",
       "s2Technical": "Texniki Məlumatlar: IP ünvanı, brauzer növü, giriş vaxtları (təhlükəsizlik qeydləri üçün)",
       "s3Title": "3. Məlumatlarınızı Necə İstifadə Edirik",
-      "s3Items": ["AI sənəd təhlilinin təmin edilməsi", "Cavab məktublarının yaradılması", "Son tarix idarəetməsi və xatırlatmalar", "Hesab idarəetməsi və faktura", "Xidmətlərimizin yaxşılaşdırılması"],
+      "s3Items": [
+        "AI sənəd təhlilinin təmin edilməsi",
+        "Cavab məktublarının yaradılması",
+        "Son tarix idarəetməsi və xatırlatmalar",
+        "Hesab idarəetməsi və faktura",
+        "Xidmətlərimizin yaxşılaşdırılması"
+      ],
       "s4Title": "4. Məlumat Saxlama",
       "s4Text": "Məlumatlarınız Supabase Inc. serverlərində etibarlı şəkildə saxlanılır. Bütün məlumat ötürmələri şifrələnir (TLS/SSL). Sənədlər Row Level Security ilə qorunur – yalnız siz öz sənədlərinizə daxil ola bilərsiniz.",
       "s5Title": "5. AI Emal",
@@ -876,7 +953,12 @@
       "s1Title": "1. Xidmət Təsviri",
       "s1Text": "GovMate AI, Almaniyada mühacirlərin rəsmi məktubları başa düşməsinə və cavab yazmalarına kömək edən AI dəstəkli sənəd köməkçisidir. Xidmət hüquqi məsləhət VERMİR.",
       "s2Title": "2. İstifadə Şərtləri",
-      "s2Items": ["Ən azı 18 yaşında olmalısınız", "Yüklənmiş sənədlərin düzgünlüyünə görə siz məsuliyyət daşıyırsınız", "Xidmətdən qeyri-qanuni məqsədlər üçün istifadə edə bilməzsiniz", "Saxta sənədlər yükləyə bilməzsiniz"],
+      "s2Items": [
+        "Ən azı 18 yaşında olmalısınız",
+        "Yüklənmiş sənədlərin düzgünlüyünə görə siz məsuliyyət daşıyırsınız",
+        "Xidmətdən qeyri-qanuni məqsədlər üçün istifadə edə bilməzsiniz",
+        "Saxta sənədlər yükləyə bilməzsiniz"
+      ],
       "s3Title": "3. Məsuliyyətin Rəddi",
       "s3Text": "GovMate AI hüquqi məsləhət VERMİR. AI tərəfindən yaradılmış izahatlar və məktub qaralamalar yalnız məlumat məqsədi daşıyır.",
       "s4Title": "4. Abunəlik və Ödəniş",
@@ -903,7 +985,13 @@
       "s4Title": "4. Məktub Qaralmaları",
       "s4Text": "Yaradılmış məktub qaralmaları təklifdir və göndərmədən əvvəl nəzərdən keçirilməli və lazım olduqda düzəldilməlidir.",
       "s5Title": "5. Tövsiyə Olunan Məsləhət Mərkəzləri",
-      "s5Items": ["Yetkin Mühacirlar üçün Miqrasiya Məsləhəti (MBE)", "Gənclər Miqrasiya Xidmətləri (JMD)", "İstehlakçı Məsləhət Mərkəzi", "Əcnəbilər Hüququ Vəkili", "Sosial Yardım Təşkilatları Məsləhəti"],
+      "s5Items": [
+        "Yetkin Mühacirlar üçün Miqrasiya Məsləhəti (MBE)",
+        "Gənclər Miqrasiya Xidmətləri (JMD)",
+        "İstehlakçı Məsləhət Mərkəzi",
+        "Əcnəbilər Hüququ Vəkili",
+        "Sosial Yardım Təşkilatları Məsləhəti"
+      ],
       "s6Title": "6. Əlaqə",
       "s6Text": "Sual və ya narahatlıqlarınız üçün bizimlə əlaqə saxlayın:"
     }

@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { resolveActivePlan } from '@/lib/utils/plan-limits';
 import type { Subscription, PlanLimit } from '@/types/database';
 
 interface PlanData {
   subscription: Subscription | null;
   limits: PlanLimit | null;
+  activePlan: string;
   loading: boolean;
 }
 
@@ -14,6 +16,7 @@ export function usePlan(userId: string | undefined) {
   const [data, setData] = useState<PlanData>({
     subscription: null,
     limits: null,
+    activePlan: 'free',
     loading: Boolean(userId),
   });
 
@@ -29,17 +32,20 @@ export function usePlan(userId: string | undefined) {
         .eq('user_id', userId!)
         .single();
 
-      if (sub) {
-        const { data: limits } = await supabase
-          .from('plan_limits')
-          .select('*')
-          .eq('plan', sub.plan)
-          .single();
+      const activePlan = resolveActivePlan(sub);
 
-        setData({ subscription: sub, limits, loading: false });
-      } else {
-        setData({ subscription: null, limits: null, loading: false });
-      }
+      const { data: limits } = await supabase
+        .from('plan_limits')
+        .select('*')
+        .eq('plan', activePlan)
+        .single();
+
+      setData({
+        subscription: sub,
+        limits,
+        activePlan,
+        loading: false,
+      });
     }
 
     fetchPlan();

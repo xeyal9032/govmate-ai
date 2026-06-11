@@ -36,7 +36,10 @@ export async function POST(request: NextRequest) {
 
     const featureCheck = await assertPlanFeature(supabase, user.id, 'translation_enabled');
     if (!featureCheck.ok) {
-      return NextResponse.json({ error: featureCheck.error }, { status: 403 });
+      return NextResponse.json(
+        { error: featureCheck.error, errorCode: featureCheck.errorCode },
+        { status: 403 }
+      );
     }
 
     const { fields } = await request.json() as {

@@ -6,6 +6,8 @@ import { StatsCard } from '@/components/dashboard/stats-card';
 import { RecentDocuments } from '@/components/dashboard/recent-documents';
 import { DeadlineList } from '@/components/dashboard/deadline-list';
 import { QuickActions } from '@/components/dashboard/quick-actions';
+import { UsageBanner } from '@/components/billing/usage-banner';
+import { FeedbackRepliesWidget } from '@/components/dashboard/feedback-replies-widget';
 import { FileText, Mail, Clock, BarChart3 } from 'lucide-react';
 
 export default async function DashboardPage({
@@ -28,6 +30,8 @@ export default async function DashboardPage({
       <div>
         <h1 className="text-xl font-bold sm:text-2xl">{t('welcome')}</h1>
       </div>
+
+      <UsageBanner variant="all" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
@@ -59,6 +63,8 @@ export default async function DashboardPage({
       </div>
 
       <QuickActions />
+
+      <FeedbackRepliesWidget />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RecentDocuments documents={documents} />

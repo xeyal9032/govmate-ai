@@ -13,7 +13,10 @@ export async function GET() {
 
     const featureCheck = await assertPlanFeature(supabase, user.id, 'pdf_export_enabled');
     if (!featureCheck.ok) {
-      return NextResponse.json({ error: featureCheck.error }, { status: 403 });
+      return NextResponse.json(
+        { error: featureCheck.error, errorCode: featureCheck.errorCode },
+        { status: 403 }
+      );
     }
 
     const [profile, docs, letters, deadlines] = await Promise.all([

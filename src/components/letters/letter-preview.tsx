@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, Download } from 'lucide-react';
 import { toast } from 'sonner';
+import { readApiErrorBody } from '@/lib/utils/api-response';
+import { mapApiError } from '@/lib/utils/map-api-error';
 
 interface LetterPreviewProps {
   germanBody: string;
@@ -29,8 +31,8 @@ export function LetterPreview({
   date,
 }: LetterPreviewProps) {
   const t = useTranslations('letters');
+  const tRoot = useTranslations();
   const tCommon = useTranslations('common');
-  const tErrors = useTranslations('errors');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -56,7 +58,20 @@ export function LetterPreview({
         }),
       });
 
-      if (!response.ok) throw new Error('PDF generation failed');
+      if (!response.ok) {
+        const body = await readApiErrorBody(response, tRoot('errors.pdfFailed'));
+        const message = mapApiError(body, (key, values) => tRoot(key, values));
+        if (response.status === 403) {
+          toast.error(message, {
+            action: {
+              label: tRoot('billing.upgrade'),
+              onClick: () => window.location.assign('/dashboard/billing'),
+            },
+          });
+          return;
+        }
+        throw new Error(message);
+      }
 
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -66,7 +81,7 @@ export function LetterPreview({
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast.error(tErrors('pdfFailed'));
+      toast.error(tRoot('errors.pdfFailed'));
     }
   };
 

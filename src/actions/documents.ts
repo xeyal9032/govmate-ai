@@ -76,6 +76,29 @@ export async function deleteDocument(id: string) {
 
   await supabase.from('documents').delete().eq('id', id).eq('user_id', user.id);
   revalidatePath('/[locale]/dashboard/documents');
+  revalidatePath('/[locale]/dashboard');
+}
+
+export async function deleteAllDocuments() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Yetkisiz');
+
+  const { data: docs } = await supabase
+    .from('documents')
+    .select('id, file_path')
+    .eq('user_id', user.id);
+
+  if (docs?.length) {
+    const paths = docs.map((d) => d.file_path).filter(Boolean) as string[];
+    if (paths.length) {
+      await supabase.storage.from('documents').remove(paths);
+    }
+    await supabase.from('documents').delete().eq('user_id', user.id);
+  }
+
+  revalidatePath('/[locale]/dashboard/documents');
+  revalidatePath('/[locale]/dashboard');
 }
 
 export async function getRecentDocuments(limit = 5) {

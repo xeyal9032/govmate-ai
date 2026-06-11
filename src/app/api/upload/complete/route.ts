@@ -49,7 +49,10 @@ export async function POST(request: NextRequest) {
       limits.monthlyDocumentLimit
     );
     if (!quota.ok) {
-      return NextResponse.json({ error: quota.error }, { status: 403 });
+      return NextResponse.json(
+        { error: quota.error, errorCode: quota.errorCode },
+        { status: 403 }
+      );
     }
 
     const meta = validateUploadMetadata(

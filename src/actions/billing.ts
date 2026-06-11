@@ -1,6 +1,9 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { resolveActivePlan } from '@/lib/utils/plan-limits';
+import { countMonthlyDocuments, countMonthlyLetters } from '@/lib/utils/usage-counts';
+import type { PlanType, PlanLimit } from '@/types/database';
 
 export async function getUserSubscription() {
   const supabase = await createClient();
@@ -23,11 +26,11 @@ export async function getUsageSummary() {
 
   const { data: subscription } = await supabase
     .from('subscriptions')
-    .select('plan')
+    .select('plan, status')
     .eq('user_id', user.id)
     .single();
 
-  const plan = subscription?.plan || 'free';
+  const plan = resolveActivePlan(subscription) as PlanType;
 
   const { data: limits } = await supabase
     .from('plan_limits')
@@ -35,29 +38,34 @@ export async function getUsageSummary() {
     .eq('plan', plan)
     .single();
 
-  const startOfMonth = new Date();
-  startOfMonth.setDate(1);
-  startOfMonth.setHours(0, 0, 0, 0);
+  const [documentsUsed, lettersUsed] = await Promise.all([
+    countMonthlyDocuments(supabase, user.id),
+    countMonthlyLetters(supabase, user.id),
+  ]);
 
-  const { count: docsUsed } = await supabase
-    .from('usage_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-    .eq('action_type', 'document_analysis')
-    .gte('created_at', startOfMonth.toISOString());
-
-  const { count: lettersUsed } = await supabase
-    .from('usage_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-    .eq('action_type', 'letter_generation')
-    .gte('created_at', startOfMonth.toISOString());
+  const documentsLimit = limits?.monthly_document_limit ?? 20;
+  const lettersLimit = limits?.monthly_letter_limit ?? 2;
 
   return {
-    documentsUsed: docsUsed || 0,
-    documentsLimit: limits?.monthly_document_limit || 20,
-    lettersUsed: lettersUsed || 0,
-    lettersLimit: limits?.monthly_letter_limit || 2,
+    documentsUsed,
+    documentsLimit,
+    lettersUsed,
+    lettersLimit,
+    maxFileSizeMb: limits?.max_file_size_mb ?? 20,
     currentPlan: plan,
+    documentsRemaining:
+      documentsLimit === -1 ? -1 : Math.max(0, documentsLimit - documentsUsed),
+    lettersRemaining:
+      lettersLimit === -1 ? -1 : Math.max(0, lettersLimit - lettersUsed),
   };
+}
+
+export async function getAllPlanLimits(): Promise<PlanLimit[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('plan_limits')
+    .select('*')
+    .order('plan');
+
+  return (data as PlanLimit[]) || [];
 }

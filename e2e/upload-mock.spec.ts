@@ -65,7 +65,8 @@ test.describe('Belge yükleme (mock API)', () => {
     await page.goto('/tr/dashboard/upload');
 
     const fixture = path.join(__dirname, 'fixtures', 'jobcenter-brief.txt');
-    await page.locator('input[type="file"]').setInputFiles(fixture);
+    // Dropzone input (multiple); kamera input ayrı (accept=image/*)
+    await page.locator('input[type="file"][multiple]').setInputFiles(fixture);
 
     await page.getByRole('button', { name: /analiz|analyze/i }).click();
 

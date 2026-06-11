@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Check, Sparkles, Zap, Building2 } from 'lucide-react';
 
+import { getPlanFeatureDescriptors } from '@/lib/utils/plan-feature-labels';
+import type { PlanLimit } from '@/types/database';
+
 const plans = [
   {
     key: 'free' as const,
@@ -46,10 +49,14 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-export function PricingSection() {
+interface PricingSectionProps {
+  planLimits?: PlanLimit[];
+}
+
+export function PricingSection({ planLimits = [] }: PricingSectionProps) {
   const t = useTranslations();
   const landingT = useTranslations('landing.pricing');
-  const billingT = useTranslations('billing.plans');
+  const billingT = useTranslations('billing');
 
   return (
     <section id="pricing" className="relative overflow-hidden bg-muted/30 py-24 sm:py-32">
@@ -83,7 +90,12 @@ export function PricingSection() {
         >
           {plans.map((plan) => {
             const isPro = plan.key === 'pro';
-            const features: string[] = billingT.raw(`${plan.key}.features`);
+            const planLimit = planLimits.find((l) => l.plan === plan.key);
+            const features: string[] = planLimit
+              ? getPlanFeatureDescriptors(planLimit).map((d) =>
+                  billingT(`planFeatures.${d.key}`, d.params)
+                )
+              : (billingT.raw(`plans.${plan.key}.features`) as string[]);
             const Icon = plan.icon;
 
             return (
@@ -118,14 +130,14 @@ export function PricingSection() {
                       <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient} shadow-lg`}>
                         <Icon className="h-6 w-6 text-white" />
                       </div>
-                      <h3 className="text-xl font-bold">{billingT(`${plan.key}.name`)}</h3>
+                      <h3 className="text-xl font-bold">{billingT(`plans.${plan.key}.name`)}</h3>
                     </div>
 
                     {/* Fiyat */}
                     <div className="mb-8">
                       <div className="flex items-baseline gap-1">
                         <span className={`text-5xl font-extrabold tracking-tight ${isPro ? 'bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400' : ''}`}>
-                          {billingT(`${plan.key}.price`)}
+                          {billingT(`plans.${plan.key}.price`)}
                         </span>
                         {plan.key !== 'free' && (
                           <span className="ml-1 text-base text-muted-foreground">

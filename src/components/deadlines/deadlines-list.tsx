@@ -22,8 +22,12 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { updateDeadlineStatus, createManualDeadline } from '@/actions/deadlines';
+import { updateDeadlineStatus, createManualDeadline, deleteDeadline } from '@/actions/deadlines';
 import { generateICSEvent } from '@/lib/utils/date';
+import { formatDate } from '@/lib/utils/format';
+import { Link } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
+import type { Locale } from '@/lib/utils/language';
 import { differenceInDays, parseISO } from 'date-fns';
 import {
   CheckCircle,
@@ -32,6 +36,8 @@ import {
   AlertTriangle,
   Download,
   Plus,
+  Trash2,
+  FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -48,12 +54,15 @@ const URGENCY_STYLES: Record<Urgency, string> = {
 };
 
 interface DeadlinesListProps {
-  initialDeadlines: Deadline[];
+  initialDeadlines: (Deadline & {
+    documents?: { title: string | null; authority_name: string | null } | null;
+  })[];
 }
 
 export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
   const t = useTranslations('deadlines');
   const tCommon = useTranslations('common');
+  const locale = useLocale() as Locale;
   const [urgencyFilter, setUrgencyFilter] = useState<Urgency | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<Status | 'all'>('open');
   const [isPending, startTransition] = useTransition();
@@ -81,6 +90,7 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
           description: newDescription.trim() || undefined,
           deadline_date: newDate,
           urgency: newUrgency,
+          reminder_enabled: reminderEnabled,
         });
         toast.success(t('deadlineCreated'));
         resetForm();
@@ -96,6 +106,17 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
     if (statusFilter !== 'all' && d.status !== statusFilter) return false;
     return true;
   });
+
+  const handleDelete = (id: string) => {
+    startTransition(async () => {
+      try {
+        await deleteDeadline(id);
+        toast.success(t('deadlineDeleted'));
+      } catch {
+        toast.error(t('deadlineDeleteError'));
+      }
+    });
+  };
 
   const handleMarkDone = (id: string) => {
     startTransition(async () => {
@@ -206,9 +227,10 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
         </Dialog>
       </div>
 
-      {/* Filtrelər */}
-      <div className="flex flex-wrap gap-2">
-        <div className="flex gap-1 rounded-lg bg-muted p-1">
+      {/* Filtreler — mobilde yatay kaydırma */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        <div className="tabs-scroll overflow-x-auto">
+          <div className="flex w-max gap-1 rounded-lg bg-muted p-1">
           {(['all', 'critical', 'high', 'medium', 'low'] as const).map((u) => (
             <Button
               key={u}
@@ -219,9 +241,11 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
               {u === 'all' ? tCommon('filter') : t(`urgency.${u}`)}
             </Button>
           ))}
+          </div>
         </div>
 
-        <div className="flex gap-1 rounded-lg bg-muted p-1">
+        <div className="tabs-scroll overflow-x-auto">
+          <div className="flex w-max gap-1 rounded-lg bg-muted p-1">
           {(['all', 'open', 'done'] as const).map((s) => (
             <Button
               key={s}
@@ -232,6 +256,7 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
               {s === 'all' ? tCommon('filter') : s === 'open' ? t('statusOpen') : t('statusDone')}
             </Button>
           ))}
+          </div>
         </div>
       </div>
 
@@ -284,11 +309,20 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
                       </p>
                     )}
 
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="size-3" />
-                        {deadline.deadline_date}
+                        {formatDate(deadline.deadline_date, locale)}
                       </span>
+                      {(deadline as Deadline & { document_id?: string }).document_id && (
+                        <Link
+                          href={`/dashboard/documents/${(deadline as Deadline & { document_id?: string }).document_id}`}
+                          className="flex items-center gap-1 text-primary hover:underline"
+                        >
+                          <FileText className="size-3" />
+                          {t('viewDocument')}
+                        </Link>
+                      )}
                       <span
                         className={cn(
                           'flex items-center gap-1 font-medium',
@@ -323,6 +357,15 @@ export function DeadlinesList({ initialDeadlines }: DeadlinesListProps) {
                         {t('markDone')}
                       </Button>
                     )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(deadline.id)}
+                      disabled={isPending}
+                      title={t('deleteDeadline')}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

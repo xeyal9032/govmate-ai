@@ -35,6 +35,7 @@ export async function createManualDeadline(data: {
   description?: string;
   deadline_date: string;
   urgency: string;
+  reminder_enabled?: boolean;
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -42,9 +43,12 @@ export async function createManualDeadline(data: {
 
   await supabase.from('deadlines').insert({
     user_id: user.id,
-    ...data,
+    title: data.title,
+    description: data.description,
+    deadline_date: data.deadline_date,
+    urgency: data.urgency,
     status: 'open',
-    reminder_enabled: true,
+    reminder_enabled: data.reminder_enabled ?? true,
   });
 
   revalidatePath('/[locale]/dashboard/deadlines');

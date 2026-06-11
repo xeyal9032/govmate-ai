@@ -9,6 +9,8 @@ import { VariableForm } from '@/components/templates/variable-form';
 import { Eye, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
+import { mapApiError } from '@/lib/utils/map-api-error';
+import { readApiErrorBody } from '@/lib/utils/api-response';
 
 interface TemplateVariable {
   key: string;
@@ -33,6 +35,7 @@ export function TemplateForm({
   category = '',
 }: TemplateFormProps) {
   const t = useTranslations('templates');
+  const tRoot = useTranslations();
   const tErrors = useTranslations('errors');
   const [preview, setPreview] = useState('');
   const [showPreview, setShowPreview] = useState(false);
@@ -93,6 +96,19 @@ export function TemplateForm({
       if (res.ok) {
         const json = await res.json();
         processedData = { ...data, ...json.fields };
+      } else if (res.status === 403) {
+        const body = await res.json().catch(() => ({}));
+        toast.error(
+          body.errorCode
+            ? mapApiError(body, (key, values) => tRoot(key, values))
+            : t('upgradeForTranslation'),
+          {
+            action: {
+              label: tRoot('billing.upgrade'),
+              onClick: () => window.location.assign('/dashboard/billing'),
+            },
+          }
+        );
       }
 
       let result = templateBody;
@@ -131,7 +147,20 @@ export function TemplateForm({
         }),
       });
 
-      if (!response.ok) throw new Error('PDF generation failed');
+      if (!response.ok) {
+        const body = await readApiErrorBody(response, tErrors('pdfFailed'));
+        const message = mapApiError(body, (key, values) => tRoot(key, values));
+        if (response.status === 403) {
+          toast.error(message, {
+            action: {
+              label: tRoot('billing.upgrade'),
+              onClick: () => window.location.assign('/dashboard/billing'),
+            },
+          });
+          return;
+        }
+        throw new Error(message);
+      }
 
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);

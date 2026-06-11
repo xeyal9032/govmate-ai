@@ -1,19 +1,33 @@
 import { createClient } from '@/lib/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PlanType } from '@/types/database';
+import { API_ERROR_CODES, type ApiErrorCode } from '@/lib/utils/api-error-codes';
+import { countMonthlyDocuments, countMonthlyLetters } from '@/lib/utils/usage-counts';
 
 export type PlanFeature =
   | 'translation_enabled'
   | 'pdf_export_enabled'
   | 'reminders_enabled';
 
-const FEATURE_ERRORS: Record<PlanFeature, string> = {
-  translation_enabled:
-    'Translation feature is not available on your current plan. Please upgrade to Pro or Business.',
-  pdf_export_enabled:
-    'PDF export is not available on your current plan. Please upgrade to Pro or Business.',
-  reminders_enabled:
-    'Email reminders are not available on your current plan. Please upgrade to Pro or Business.',
+const FEATURE_ERRORS: Record<
+  PlanFeature,
+  { error: string; errorCode: ApiErrorCode }
+> = {
+  translation_enabled: {
+    error:
+      'Translation feature is not available on your current plan. Please upgrade to Pro or Business.',
+    errorCode: API_ERROR_CODES.PLAN_TRANSLATION,
+  },
+  pdf_export_enabled: {
+    error:
+      'PDF export is not available on your current plan. Please upgrade to Pro or Business.',
+    errorCode: API_ERROR_CODES.PLAN_PDF_EXPORT,
+  },
+  reminders_enabled: {
+    error:
+      'Email reminders are not available on your current plan. Please upgrade to Pro or Business.',
+    errorCode: API_ERROR_CODES.PLAN_REMINDERS,
+  },
 };
 
 export function resolveActivePlan(
@@ -51,11 +65,15 @@ export async function assertPlanFeature(
   supabase: SupabaseClient,
   userId: string,
   feature: PlanFeature
-): Promise<{ ok: true; plan: PlanType } | { ok: false; plan: PlanType; error: string }> {
+): Promise<
+  | { ok: true; plan: PlanType }
+  | { ok: false; plan: PlanType; error: string; errorCode: ApiErrorCode }
+> {
   const plan = await getUserActivePlan(supabase, userId);
   const enabled = await isPlanFeatureEnabled(plan, feature);
   if (!enabled) {
-    return { ok: false, plan, error: FEATURE_ERRORS[feature] };
+    const { error, errorCode } = FEATURE_ERRORS[feature];
+    return { ok: false, plan, error, errorCode };
   }
   return { ok: true, plan };
 }
@@ -89,19 +107,26 @@ export async function getMonthlyUsage(userId: string, actionType: string) {
 export async function checkUsageLimit(
   userId: string,
   plan: PlanType,
-  actionType: 'document_analysis' | 'letter_generation'
+  actionType: 'document_analysis' | 'letter_generation',
+  supabase?: SupabaseClient
 ): Promise<{ allowed: boolean; used: number; limit: number }> {
-  const limits = await getPlanLimits(plan);
+  const limits = await getPlanLimits(plan, supabase);
   if (!limits) return { allowed: true, used: 0, limit: 9999 };
 
-  const limitField = actionType === 'document_analysis'
-    ? limits.monthly_document_limit
-    : limits.monthly_letter_limit;
+  const limitField =
+    actionType === 'document_analysis'
+      ? limits.monthly_document_limit
+      : limits.monthly_letter_limit;
 
   // -1 = limitsiz
   if (limitField === -1) return { allowed: true, used: 0, limit: -1 };
 
-  const used = await getMonthlyUsage(userId, actionType);
+  const client = supabase ?? (await createClient());
+  const used =
+    actionType === 'document_analysis'
+      ? await countMonthlyDocuments(client, userId)
+      : await countMonthlyLetters(client, userId);
+
   return { allowed: used < limitField, used, limit: limitField };
 }
 

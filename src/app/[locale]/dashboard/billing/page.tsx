@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { getUserSubscription, getUsageSummary } from '@/actions/billing';
+import { getUserSubscription, getUsageSummary, getAllPlanLimits } from '@/actions/billing';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { PricingCard } from '@/components/billing/pricing-card';
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 import { getApiBaseUrl, readApiError, readApiJson } from '@/lib/utils/api-response';
-import type { Subscription } from '@/types/database';
+import type { Subscription, PlanLimit } from '@/types/database';
 
 interface UsageSummary {
   documentsUsed: number;
@@ -30,17 +30,20 @@ export default function BillingPage() {
   const searchParams = useSearchParams();
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [usage, setUsage] = useState<UsageSummary | null>(null);
+  const [planLimits, setPlanLimits] = useState<PlanLimit[]>([]);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
-      const [sub, usageData] = await Promise.all([
+      const [sub, usageData, limits] = await Promise.all([
         getUserSubscription(),
         getUsageSummary(),
+        getAllPlanLimits(),
       ]);
       setSubscription(sub);
       setUsage(usageData);
+      setPlanLimits(limits);
       setLoading(false);
     }
     loadData();
@@ -169,6 +172,7 @@ export default function BillingPage() {
             isActive={usage?.currentPlan === plan}
             isLoading={upgrading === plan}
             onUpgrade={() => handleUpgrade(plan)}
+            planLimit={planLimits.find((l) => l.plan === plan) ?? null}
           />
         ))}
       </div>

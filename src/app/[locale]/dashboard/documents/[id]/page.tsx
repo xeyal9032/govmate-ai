@@ -2,14 +2,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getDocument } from '@/actions/documents';
 import { notFound } from 'next/navigation';
 import { DocumentAnalysisView } from '@/components/documents/document-analysis-view';
+import { DocumentRetryAnalysis } from '@/components/documents/document-retry-analysis';
+import { DocumentDeleteButton } from '@/components/documents/document-delete-button';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Link } from '@/i18n/navigation';
-import { ArrowLeft, Shield, Mail } from 'lucide-react';
+import { ArrowLeft, Shield } from 'lucide-react';
 import { formatDate } from '@/lib/utils/format';
-import { getRecommendedLetterType } from '@/lib/letters/recommended-letter-type';
-import type { AnalysisResult } from '@/types/database';
 
 export default async function DocumentDetailPage({
   params,
@@ -30,16 +30,9 @@ export default async function DocumentDetailPage({
 
   const { document: doc, analysis, deadlines } = data;
 
-  const recommendedType = analysis
-    ? getRecommendedLetterType(analysis.analysis_json as AnalysisResult)
-    : null;
-  const letterHref = recommendedType
-    ? `/dashboard/letters/new?documentId=${doc.id}&letterType=${recommendedType}&auto=1`
-    : `/dashboard/letters/new?documentId=${doc.id}`;
-
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 items-start gap-2 sm:flex-1">
           <Link href="/dashboard/documents" className="shrink-0">
             <Button variant="ghost" size="icon" className="touch-target">
@@ -61,16 +54,7 @@ export default async function DocumentDetailPage({
             </div>
           </div>
         </div>
-        {analysis && (
-          <Link href={letterHref} className="w-full shrink-0 sm:w-auto">
-            <Button className="h-11 w-full sm:w-auto">
-              <Mail className="mr-2 h-4 w-4 shrink-0" />
-              <span className="truncate">
-                {recommendedType ? t('createLetterButtonAuto') : t('generateReply')}
-              </span>
-            </Button>
-          </Link>
-        )}
+        <DocumentDeleteButton documentId={doc.id} redirectAfter />
       </div>
 
       {analysis ? (
@@ -92,9 +76,10 @@ export default async function DocumentDetailPage({
           </CardContent>
         </Card>
       ) : doc.status === 'failed' ? (
-        <Alert variant="destructive">
-          <AlertDescription>{t('analysisFailed')}</AlertDescription>
-        </Alert>
+        <DocumentRetryAnalysis
+          documentId={doc.id}
+          targetLanguage={doc.target_language || locale}
+        />
       ) : (
         <Card>
           <CardContent className="p-12 text-center text-muted-foreground">

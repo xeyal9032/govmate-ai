@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getDocuments } from '@/actions/documents';
-import { DocumentCard } from '@/components/documents/document-card';
+import { DocumentList } from '@/components/documents/document-list';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Upload, FileText } from 'lucide-react';
@@ -39,11 +39,7 @@ export default async function DocumentsPage({
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {documents.map((doc) => (
-            <DocumentCard key={doc.id} document={doc} />
-          ))}
-        </div>
+        <DocumentList documents={documents} />
       )}
     </div>
   );

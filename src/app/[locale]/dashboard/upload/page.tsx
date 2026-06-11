@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { getUsageSummary } from '@/actions/billing';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { UploadDropzone } from '@/components/documents/upload-dropzone';
+import { UsageBanner } from '@/components/billing/usage-banner';
 import { useUpload } from '@/hooks/use-upload';
 import { localeNames, type Locale } from '@/lib/utils/language';
 import { Loader2, AlertCircle } from 'lucide-react';
@@ -20,7 +22,14 @@ export default function UploadPage() {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [targetLang, setTargetLang] = useState<string>(locale);
+  const [maxFileSizeMb, setMaxFileSizeMb] = useState<number | undefined>();
   const { uploading, analyzing, progress, error, uploadAndAnalyze } = useUpload();
+
+  useEffect(() => {
+    getUsageSummary().then((data) => {
+      if (data?.maxFileSizeMb) setMaxFileSizeMb(data.maxFileSizeMb);
+    });
+  }, []);
 
   async function handleUpload() {
     if (!file) return;
@@ -36,6 +45,8 @@ export default function UploadPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold">{t('title')}</h1>
 
+      <UsageBanner variant="documents" />
+
       <Card>
         <CardHeader>
           <CardTitle>{t('title')}</CardTitle>
@@ -45,6 +56,7 @@ export default function UploadPage() {
             onFileSelect={setFile}
             selectedFile={file}
             disabled={isProcessing}
+            maxSizeMb={maxFileSizeMb}
           />
 
           <div className="space-y-2">

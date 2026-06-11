@@ -15,6 +15,9 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import { UsageBanner } from '@/components/billing/usage-banner';
+import { readApiErrorBody } from '@/lib/utils/api-response';
+import { mapApiError } from '@/lib/utils/map-api-error';
 import { toast } from 'sonner';
 import { getRecommendedLetterType, isLetterType } from '@/lib/letters/recommended-letter-type';
 import type { AnalysisResult } from '@/types/database';
@@ -37,6 +40,7 @@ interface GeneratedLetter {
 
 export default function NewLetterPage() {
   const t = useTranslations('letters');
+  const tRoot = useTranslations();
   const tCommon = useTranslations('common');
   const tErrors = useTranslations('errors');
   const locale = useLocale();
@@ -178,8 +182,8 @@ export default function NewLetterPage() {
       });
 
       if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || `Server error (${response.status})`);
+        const body = await readApiErrorBody(response, tRoot('errors.generic'));
+        throw new Error(mapApiError(body, (key, values) => tRoot(key, values)));
       }
 
       const data = await response.json();
@@ -214,7 +218,7 @@ export default function NewLetterPage() {
     locale,
     router,
     t,
-    tErrors,
+    tRoot,
   ]);
 
   useEffect(() => {
@@ -248,6 +252,8 @@ export default function NewLetterPage() {
         </Link>
         <h1 className="text-xl font-bold sm:text-2xl">{t('generate.title')}</h1>
       </div>
+
+      <UsageBanner variant="letters" />
 
       {!result ? (
         <div className="space-y-6">

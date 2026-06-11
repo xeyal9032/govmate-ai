@@ -42,7 +42,8 @@
     "admin": "Yönetim",
     "logout": "Çıkış Yap",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "openMenu": "Menüyü aç"
   },
   "landing": {
     "hero": {
@@ -70,10 +71,22 @@
     },
     "howItWorks": {
       "title": "Nasıl Çalışır?",
-      "step1": { "title": "Belgeyi Yükle", "description": "PDF, fotoğraf veya metin olarak resmi mektubu yükleyin" },
-      "step2": { "title": "AI Analiz Etsin", "description": "Yapay zeka mektubu okur, anlar ve basit dilde açıklar" },
-      "step3": { "title": "Yanıt Mektubu Hazırla", "description": "Profesyonel Almanca yanıt mektubu otomatik oluşturulur" },
-      "step4": { "title": "Son Tarihleri Takip Et", "description": "Önemli tarihleri kaçırmamak için hatırlatıcılar ayarlayın" }
+      "step1": {
+        "title": "Belgeyi Yükle",
+        "description": "PDF, fotoğraf veya metin olarak resmi mektubu yükleyin"
+      },
+      "step2": {
+        "title": "AI Analiz Etsin",
+        "description": "Yapay zeka mektubu okur, anlar ve basit dilde açıklar"
+      },
+      "step3": {
+        "title": "Yanıt Mektubu Hazırla",
+        "description": "Profesyonel Almanca yanıt mektubu otomatik oluşturulur"
+      },
+      "step4": {
+        "title": "Son Tarihleri Takip Et",
+        "description": "Önemli tarihleri kaçırmamak için hatırlatıcılar ayarlayın"
+      }
     },
     "authorities": {
       "title": "Desteklenen Kurumlar",
@@ -165,7 +178,11 @@
       "remainingAnalyses": "Kalan Analiz Hakkı"
     },
     "noDocuments": "Henüz belge yüklemediniz",
-    "noDeadlines": "Açık son tarih bulunmuyor"
+    "noDeadlines": "Açık son tarih bulunmuyor",
+    "feedback": {
+      "repliesTitle": "Destek yanıtları",
+      "adminReply": "Yanıt:"
+    }
   },
   "documents": {
     "title": "Belgeler",
@@ -182,7 +199,9 @@
       "upgradePlan": "Planınızı yükseltin",
       "analysisComplete": "Belge başarıyla analiz edildi!",
       "heicNotSupported": "iPhone HEIC formatı desteklenmiyor. Ayarlar > Kamera > Biçimler > En Uyumlu (JPEG) seçin veya JPG/PNG/PDF yükleyin.",
-      "unsupportedOnDevice": "Bu dosya türü cihazınızda tanınamadı. Lütfen JPG, PNG, PDF veya TXT deneyin."
+      "unsupportedOnDevice": "Bu dosya türü cihazınızda tanınamadı. Lütfen JPG, PNG, PDF veya TXT deneyin.",
+      "maxFileSizeHint": "Maksimum dosya boyutu: {size} MB",
+      "cameraCapture": "Kamera ile çek"
     },
     "detail": {
       "overview": "Genel Bakış",
@@ -220,7 +239,10 @@
       "createLetterButtonAuto": "Mektubu hemen oluştur",
       "customizeLetter": "Türü kendim seçeyim",
       "recommendedTypeLabel": "Önerilen mektup türü",
-      "noResponseNeededHint": "Analiz yanıt gerektirmeyebilir; yine de mektup oluşturabilirsiniz."
+      "noResponseNeededHint": "Analiz yanıt gerektirmeyebilir; yine de mektup oluşturabilirsiniz.",
+      "retryAnalysis": "Tekrar analiz et",
+      "retryingAnalysis": "Analiz ediliyor...",
+      "retrySuccess": "Analiz başlatıldı"
     },
     "status": {
       "uploaded": "Yüklendi",
@@ -240,7 +262,12 @@
       "insurance": "Sigorta",
       "school": "Okul/Kreş/Üniversite",
       "unknown": "Bilinmeyen"
-    }
+    },
+    "deleteDocument": "Belgeyi Sil",
+    "deleteConfirm": "Bu belge kalıcı olarak silinecek.",
+    "deleteSuccess": "Belge silindi",
+    "deleteFailed": "Belge silinemedi",
+    "cancelDelete": "İptal"
   },
   "letters": {
     "title": "Mektuplar",
@@ -321,7 +348,11 @@
     "urgencyLevel": "Aciliyet",
     "reminderEnabled": "Hatırlatma",
     "deadlineCreated": "Son tarih oluşturuldu",
-    "deadlineCreateError": "Son tarih oluşturulamadı"
+    "deadlineCreateError": "Son tarih oluşturulamadı",
+    "deleteDeadline": "Son tarihi sil",
+    "deadlineDeleted": "Son tarih silindi",
+    "deadlineDeleteError": "Son tarih silinemedi",
+    "viewDocument": "Belgeye git"
   },
   "templates": {
     "title": "Şablonlar",
@@ -465,7 +496,8 @@
       "versicherungsverlauf": "Emeklilik sigorta geçmişi talebi",
       "allgemeinerWiderspruch": "Herhangi bir kuruma genel itiraz mektubu",
       "vollmacht": "Başka bir kişiye resmi işlemler için yetki verme belgesi"
-    }
+    },
+    "upgradeForTranslation": "Çeviri için Pro veya Business plana yükseltin"
   },
   "billing": {
     "title": "Abonelik",
@@ -524,6 +556,24 @@
           "Maks. 100 MB yükleme"
         ]
       }
+    },
+    "usageBanner": {
+      "title": "Aylık kullanım kotanız",
+      "limitReached": "Plan limitine ulaştınız",
+      "documents": "Belgeler: {count}",
+      "letters": "Mektuplar: {count}",
+      "maxFileSize": "Maks. dosya boyutu: {size} MB",
+      "upgrade": "Planı yükselt"
+    },
+    "planFeatures": {
+      "documents": "Ayda {count} belge analizi",
+      "unlimitedDocuments": "Sınırsız belge analizi",
+      "maxUpload": "Maks. {size} MB yükleme",
+      "letters": "Ayda {count} mektup",
+      "unlimitedLetters": "Sınırsız mektup",
+      "translation": "AI çeviri",
+      "reminders": "E-posta hatırlatmaları",
+      "pdfExport": "PDF dışa aktarma"
     }
   },
   "settings": {
@@ -549,7 +599,22 @@
     "deleteAccountFailed": "Hesap silinemedi",
     "deleteWarning": "Bu işlem geri alınamaz. Tüm verileriniz silinecektir.",
     "deleteConfirm": "Hesabınız ve tüm belgeleriniz kalıcı olarak silinecektir.",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "address": "Adres",
+    "addressPlaceholder": "Mektup PDF için adresiniz",
+    "changePassword": "Şifre Değiştir",
+    "newPassword": "Yeni Şifre",
+    "confirmPassword": "Şifre Tekrar",
+    "passwordUpdated": "Şifre güncellendi",
+    "passwordUpdateFailed": "Şifre güncellenemedi",
+    "passwordTooShort": "Şifre en az 8 karakter olmalı",
+    "passwordMismatch": "Şifreler eşleşmiyor",
+    "emailReminders": "E-posta hatırlatmaları",
+    "emailRemindersDesc": "Son tarih hatırlatmalarını e-posta ile al",
+    "notificationsSaved": "Bildirim tercihi kaydedildi",
+    "deleteAllDocumentsConfirm": "Tüm belgeleriniz kalıcı olarak silinecek.",
+    "deleteAllDocumentsSuccess": "Tüm belgeler silindi",
+    "deleteAllDocumentsFailed": "Belgeler silinemedi"
   },
   "admin": {
     "title": "Yönetim Paneli",
@@ -728,7 +793,6 @@
     "statusResolved": "Çözüldü",
     "statusDismissed": "Reddedildi",
     "feedback": "Geri Bildirimler",
-    "statusColumn": "Durum",
     "operationError": "İşlem başarısız oldu",
     "featureFlagsTitle": "Özellik Yönetimi",
     "featureFlagsDesc": "Uygulama özelliklerini açıp kapatın.",
@@ -838,7 +902,14 @@
     "tryAgain": "Tekrar Dene",
     "pdfFailed": "PDF indirme başarısız",
     "pdfGenerationFailed": "PDF oluşturma başarısız",
-    "pdfDownloadFailed": "PDF indirme başarısız oldu"
+    "pdfDownloadFailed": "PDF indirme başarısız oldu",
+    "planLimit": {
+      "documentLimit": "Aylık belge limitinize ulaştınız. Planınızı yükseltin.",
+      "letterLimit": "Aylık mektup limitinize ulaştınız. Planınızı yükseltin.",
+      "pdfExport": "PDF dışa aktarma mevcut planınızda yok. Pro veya Business plana yükseltin.",
+      "translation": "Çeviri özelliği mevcut planınızda yok. Pro veya Business plana yükseltin.",
+      "reminders": "E-posta hatırlatmaları mevcut planınızda yok."
+    }
   },
   "legal": {
     "disclaimer": "Bu uygulama hukuki danışmanlık sağlamaz. Resmi kararlar için bir uzmana veya yetkili kuruma başvurun.",
@@ -857,7 +928,13 @@
       "s2Usage": "Kullanım Verileri: Analiz sayısı, oluşturulan mektuplar, son tarihler",
       "s2Technical": "Teknik Veriler: IP adresi, tarayıcı türü, erişim zamanları (güvenlik kayıtları için)",
       "s3Title": "3. Verilerinizi Nasıl Kullanıyoruz",
-      "s3Items": ["AI belge analizi sağlama", "Yanıt mektupları oluşturma", "Son tarih yönetimi ve hatırlatmalar", "Hesap yönetimi ve faturalandırma", "Hizmetlerimizi iyileştirme"],
+      "s3Items": [
+        "AI belge analizi sağlama",
+        "Yanıt mektupları oluşturma",
+        "Son tarih yönetimi ve hatırlatmalar",
+        "Hesap yönetimi ve faturalandırma",
+        "Hizmetlerimizi iyileştirme"
+      ],
       "s4Title": "4. Veri Depolama",
       "s4Text": "Verileriniz Supabase Inc. sunucularında güvenli bir şekilde saklanmaktadır. Tüm veri aktarımları şifrelidir (TLS/SSL). Belgeler Row Level Security ile korunur – yalnızca siz kendi belgelerinize erişebilirsiniz.",
       "s5Title": "5. AI İşleme",
@@ -876,7 +953,12 @@
       "s1Title": "1. Hizmet Açıklaması",
       "s1Text": "GovMate AI, Almanya'daki göçmenlerin resmi mektupları anlamalarına ve yanıt yazmalarına yardımcı olan AI destekli bir belge asistanıdır. Hizmet hukuki danışmanlık SUNMAMAKTADIR.",
       "s2Title": "2. Kullanım Koşulları",
-      "s2Items": ["En az 18 yaşında olmalısınız", "Yüklenen belgelerin doğruluğundan siz sorumlusunuz", "Hizmeti yasadışı amaçlarla kullanamazsınız", "Sahte belge yükleyemezsiniz"],
+      "s2Items": [
+        "En az 18 yaşında olmalısınız",
+        "Yüklenen belgelerin doğruluğundan siz sorumlusunuz",
+        "Hizmeti yasadışı amaçlarla kullanamazsınız",
+        "Sahte belge yükleyemezsiniz"
+      ],
       "s3Title": "3. Sorumluluk Reddi",
       "s3Text": "GovMate AI hukuki danışmanlık SUNMAZ. AI tarafından oluşturulan açıklamalar ve mektup taslakları yalnızca bilgi amaçlıdır. Bağlayıcı hukuki bilgi için bir avukata veya yetkili makama başvurun.",
       "s4Title": "4. Abonelik ve Ödeme",
@@ -903,7 +985,13 @@
       "s4Title": "4. Mektup Taslakları",
       "s4Text": "Oluşturulan mektup taslakları öneridir ve göndermeden önce kontrol edilmeli ve gerekirse düzenlenmelidir. Özellikle itirazlarda profesyonel yardım almanızı şiddetle tavsiye ederiz.",
       "s5Title": "5. Önerilen Danışmanlık Merkezleri",
-      "s5Items": ["Yetişkin Göçmenler İçin Göç Danışmanlığı (MBE)", "Gençlik Göç Hizmetleri (JMD)", "Tüketici Danışma Merkezi", "Yabancılar Hukuku Avukatı", "Sosyal Yardım Kuruluşları Danışmanlığı"],
+      "s5Items": [
+        "Yetişkin Göçmenler İçin Göç Danışmanlığı (MBE)",
+        "Gençlik Göç Hizmetleri (JMD)",
+        "Tüketici Danışma Merkezi",
+        "Yabancılar Hukuku Avukatı",
+        "Sosyal Yardım Kuruluşları Danışmanlığı"
+      ],
       "s6Title": "6. İletişim",
       "s6Text": "Soru veya endişeleriniz için bize ulaşın:"
     }

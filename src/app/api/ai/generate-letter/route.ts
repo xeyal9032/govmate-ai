@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { generateLetter } from '@/lib/ai/generate-letter';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
-import { checkUsageLimit, incrementUsage } from '@/lib/utils/plan-limits';
+import { checkUsageLimit, incrementUsage, resolveActivePlan } from '@/lib/utils/plan-limits';
+import { API_ERROR_CODES } from '@/lib/utils/api-error-codes';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,10 +32,21 @@ export async function POST(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
-    const plan = (subscription?.status === 'active' ? subscription?.plan : 'free') || 'free';
-    const usageCheck = await checkUsageLimit(user.id, plan as 'free' | 'pro' | 'business', 'letter_generation');
+    const plan = resolveActivePlan(subscription);
+    const usageCheck = await checkUsageLimit(
+      user.id,
+      plan,
+      'letter_generation',
+      supabase
+    );
     if (!usageCheck.allowed) {
-      return NextResponse.json({ error: 'Letter generation limit reached' }, { status: 403 });
+      return NextResponse.json(
+        {
+          error: 'Letter generation limit reached',
+          errorCode: API_ERROR_CODES.LETTER_LIMIT,
+        },
+        { status: 403 }
+      );
     }
 
     const result = await generateLetter(body);

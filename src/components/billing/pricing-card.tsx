@@ -6,20 +6,29 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Check, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPlanFeatureDescriptors } from '@/lib/utils/plan-feature-labels';
+import type { PlanLimit } from '@/types/database';
 
 interface PricingCardProps {
   plan: 'free' | 'pro' | 'business';
   isActive: boolean;
   isLoading?: boolean;
   onUpgrade: () => void;
+  planLimit?: PlanLimit | null;
 }
 
-export function PricingCard({ plan, isActive, isLoading, onUpgrade }: PricingCardProps) {
+export function PricingCard({ plan, isActive, isLoading, onUpgrade, planLimit }: PricingCardProps) {
   const t = useTranslations('billing');
 
   const planName = t(`plans.${plan}.name`);
   const planPrice = t(`plans.${plan}.price`);
-  const features = t.raw(`plans.${plan}.features`) as string[];
+  const staticFeatures = t.raw(`plans.${plan}.features`) as string[];
+  const dynamicFeatures = planLimit
+    ? getPlanFeatureDescriptors(planLimit).map((d) =>
+        t(`planFeatures.${d.key}`, d.params)
+      )
+    : null;
+  const features = dynamicFeatures?.length ? dynamicFeatures : staticFeatures;
   const isPopular = plan === 'pro';
 
   return (

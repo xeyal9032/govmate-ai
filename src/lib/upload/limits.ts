@@ -1,6 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { validateFile, validateMagicBytes } from '@/lib/security/file-validation';
 import { resolveServerFileMeta } from '@/lib/utils/upload-file';
+import { resolveActivePlan } from '@/lib/utils/plan-limits';
+import { API_ERROR_CODES } from '@/lib/utils/api-error-codes';
+import { countMonthlyDocuments } from '@/lib/utils/usage-counts';
 
 export interface UploadLimits {
   plan: string;
@@ -18,8 +21,7 @@ export async function getUserUploadLimits(
     .eq('user_id', userId)
     .single();
 
-  const plan =
-    (subscription?.status === 'active' ? subscription?.plan : 'free') || 'free';
+  const plan = resolveActivePlan(subscription);
 
   const { data: limits } = await supabase
     .from('plan_limits')
@@ -38,21 +40,20 @@ export async function assertMonthlyDocumentQuota(
   supabase: SupabaseClient,
   userId: string,
   monthlyDocumentLimit: number
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<
+  | { ok: true }
+  | { ok: false; error: string; errorCode: typeof API_ERROR_CODES.DOCUMENT_LIMIT }
+> {
   if (monthlyDocumentLimit <= 0) return { ok: true };
 
-  const startOfMonth = new Date();
-  startOfMonth.setDate(1);
-  startOfMonth.setHours(0, 0, 0, 0);
+  const count = await countMonthlyDocuments(supabase, userId);
 
-  const { count } = await supabase
-    .from('documents')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId)
-    .gte('created_at', startOfMonth.toISOString());
-
-  if ((count || 0) >= monthlyDocumentLimit) {
-    return { ok: false, error: 'Monthly document limit reached' };
+  if (count >= monthlyDocumentLimit) {
+    return {
+      ok: false,
+      error: 'Monthly document limit reached',
+      errorCode: API_ERROR_CODES.DOCUMENT_LIMIT,
+    };
   }
 
   return { ok: true };

@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { Upload, FileText, X } from 'lucide-react';
+import { Upload, FileText, X, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatFileSize } from '@/lib/utils/format';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,7 @@ interface UploadDropzoneProps {
   onFileSelect: (file: File | null) => void;
   selectedFile: File | null;
   disabled?: boolean;
+  maxSizeMb?: number;
 }
 
 const ACCEPTED_TYPES = {
@@ -24,12 +25,21 @@ const ACCEPTED_TYPES = {
   'text/plain': ['.txt'],
 };
 
-export function UploadDropzone({ onFileSelect, selectedFile, disabled }: UploadDropzoneProps) {
+export function UploadDropzone({ onFileSelect, selectedFile, disabled, maxSizeMb }: UploadDropzoneProps) {
   const t = useTranslations('documents.upload');
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
-  const onDrop = useCallback((files: File[]) => {
-    if (files.length === 0) return;
-    const normalized = normalizeUploadFile(files[0]);
+  // capture mobilde arka kamerayı tercih eder; JSX'te statik yazmıyoruz (Edge Tools uyumluluk uyarısı)
+  useEffect(() => {
+    const input = cameraInputRef.current;
+    if (!input) return;
+    input.setAttribute('capture', 'environment');
+  }, []);
+
+  const handleFile = useCallback((files: FileList | File[] | null) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const normalized = normalizeUploadFile(file);
     if (!normalized.ok) {
       if (normalized.reason === 'heic') {
         toast.error(t('heicNotSupported'));
@@ -40,6 +50,10 @@ export function UploadDropzone({ onFileSelect, selectedFile, disabled }: UploadD
     }
     onFileSelect(normalized.file);
   }, [onFileSelect, t]);
+
+  const onDrop = useCallback((files: File[]) => {
+    handleFile(files);
+  }, [handleFile]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -63,6 +77,34 @@ export function UploadDropzone({ onFileSelect, selectedFile, disabled }: UploadD
           <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
           <p className="text-sm font-medium">{t('dropzone')}</p>
           <p className="text-xs text-muted-foreground mt-2">{t('supportedFormats')}</p>
+          {maxSizeMb != null && (
+            <p className="text-xs text-muted-foreground mt-1">
+              {t('maxFileSizeHint', { size: maxSizeMb })}
+            </p>
+          )}
+          <div
+            className="mt-4 sm:hidden"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            <label
+              className={cn(
+                'inline-flex cursor-pointer items-center justify-center rounded-md bg-secondary px-3 py-2 text-sm font-medium',
+                disabled && 'pointer-events-none opacity-50'
+              )}
+            >
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                disabled={disabled}
+                onChange={(e) => handleFile(e.target.files)}
+              />
+              <Camera className="mr-2 h-4 w-4" />
+              {t('cameraCapture')}
+            </label>
+          </div>
         </div>
       ) : (
         <div className="border rounded-2xl p-6">

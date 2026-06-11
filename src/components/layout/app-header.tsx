@@ -43,7 +43,7 @@ export function AppHeader() {
           size="icon"
           className="touch-target shrink-0 lg:hidden"
           onClick={toggleSidebar}
-          aria-label="Menü"
+          aria-label={t('openMenu')}
         >
           <Menu className="h-5 w-5" />
         </Button>

@@ -42,7 +42,8 @@
     "admin": "Admin",
     "logout": "Log Out",
     "login": "Log In",
-    "register": "Sign Up"
+    "register": "Sign Up",
+    "openMenu": "Open menu"
   },
   "landing": {
     "hero": {
@@ -70,10 +71,22 @@
     },
     "howItWorks": {
       "title": "How Does It Work?",
-      "step1": { "title": "Upload Document", "description": "Upload the official letter as PDF, photo or text" },
-      "step2": { "title": "AI Analyzes", "description": "AI reads the letter, understands it and explains it in simple language" },
-      "step3": { "title": "Generate Reply Letter", "description": "A professional German reply letter is automatically created" },
-      "step4": { "title": "Track Deadlines", "description": "Set reminders so you never miss important dates" }
+      "step1": {
+        "title": "Upload Document",
+        "description": "Upload the official letter as PDF, photo or text"
+      },
+      "step2": {
+        "title": "AI Analyzes",
+        "description": "AI reads the letter, understands it and explains it in simple language"
+      },
+      "step3": {
+        "title": "Generate Reply Letter",
+        "description": "A professional German reply letter is automatically created"
+      },
+      "step4": {
+        "title": "Track Deadlines",
+        "description": "Set reminders so you never miss important dates"
+      }
     },
     "authorities": {
       "title": "Supported Authorities",
@@ -165,7 +178,11 @@
       "remainingAnalyses": "Remaining Analyses"
     },
     "noDocuments": "You haven't uploaded any documents yet",
-    "noDeadlines": "No open deadlines"
+    "noDeadlines": "No open deadlines",
+    "feedback": {
+      "repliesTitle": "Support replies",
+      "adminReply": "Reply:"
+    }
   },
   "documents": {
     "title": "Documents",
@@ -182,7 +199,9 @@
       "upgradePlan": "Upgrade your plan",
       "analysisComplete": "Document analyzed successfully!",
       "heicNotSupported": "iPhone HEIC format is not supported. Use Settings > Camera > Formats > Most Compatible (JPEG), or upload JPG/PNG/PDF.",
-      "unsupportedOnDevice": "This file type could not be recognized on your device. Please try JPG, PNG, PDF, or TXT."
+      "unsupportedOnDevice": "This file type could not be recognized on your device. Please try JPG, PNG, PDF, or TXT.",
+      "maxFileSizeHint": "Maximum file size: {size} MB",
+      "cameraCapture": "Take photo"
     },
     "detail": {
       "overview": "Overview",
@@ -220,7 +239,10 @@
       "createLetterButtonAuto": "Create letter now",
       "customizeLetter": "Choose letter type myself",
       "recommendedTypeLabel": "Suggested letter type",
-      "noResponseNeededHint": "Analysis suggests no reply may be needed; you can still create a letter."
+      "noResponseNeededHint": "Analysis suggests no reply may be needed; you can still create a letter.",
+      "retryAnalysis": "Retry analysis",
+      "retryingAnalysis": "Analyzing...",
+      "retrySuccess": "Analysis started"
     },
     "status": {
       "uploaded": "Uploaded",
@@ -240,7 +262,12 @@
       "insurance": "Insurance",
       "school": "School/Daycare/University",
       "unknown": "Unknown"
-    }
+    },
+    "deleteDocument": "Delete Document",
+    "deleteConfirm": "This document will be permanently deleted.",
+    "deleteSuccess": "Document deleted",
+    "deleteFailed": "Failed to delete document",
+    "cancelDelete": "Cancel"
   },
   "letters": {
     "title": "Letters",
@@ -321,7 +348,11 @@
     "urgencyLevel": "Urgency",
     "reminderEnabled": "Reminder",
     "deadlineCreated": "Deadline created",
-    "deadlineCreateError": "Failed to create deadline"
+    "deadlineCreateError": "Failed to create deadline",
+    "deleteDeadline": "Delete deadline",
+    "deadlineDeleted": "Deadline deleted",
+    "deadlineDeleteError": "Failed to delete deadline",
+    "viewDocument": "View document"
   },
   "templates": {
     "title": "Templates",
@@ -465,7 +496,8 @@
       "versicherungsverlauf": "Request pension insurance history",
       "allgemeinerWiderspruch": "General objection against any authority decision",
       "vollmacht": "Grant power of attorney for official matters"
-    }
+    },
+    "upgradeForTranslation": "Upgrade to Pro or Business for translation"
   },
   "billing": {
     "title": "Subscription",
@@ -524,6 +556,24 @@
           "Max. 100 MB upload"
         ]
       }
+    },
+    "usageBanner": {
+      "title": "Your monthly usage",
+      "limitReached": "Plan limit reached",
+      "documents": "Documents: {count}",
+      "letters": "Letters: {count}",
+      "maxFileSize": "Max file size: {size} MB",
+      "upgrade": "Upgrade plan"
+    },
+    "planFeatures": {
+      "documents": "{count} document analyses per month",
+      "unlimitedDocuments": "Unlimited document analyses",
+      "maxUpload": "Max {size} MB upload",
+      "letters": "{count} letters per month",
+      "unlimitedLetters": "Unlimited letters",
+      "translation": "AI translation",
+      "reminders": "Email reminders",
+      "pdfExport": "PDF export"
     }
   },
   "settings": {
@@ -549,7 +599,22 @@
     "deleteAccountFailed": "Could not delete account",
     "deleteWarning": "This action cannot be undone. All your data will be deleted.",
     "deleteConfirm": "Your account and all documents will be permanently deleted.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "address": "Address",
+    "addressPlaceholder": "Your address for letter PDFs",
+    "changePassword": "Change Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "passwordUpdated": "Password updated",
+    "passwordUpdateFailed": "Password update failed",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match",
+    "emailReminders": "Email reminders",
+    "emailRemindersDesc": "Receive deadline reminders by email",
+    "notificationsSaved": "Notification preference saved",
+    "deleteAllDocumentsConfirm": "All your documents will be permanently deleted.",
+    "deleteAllDocumentsSuccess": "All documents deleted",
+    "deleteAllDocumentsFailed": "Failed to delete documents"
   },
   "admin": {
     "title": "Admin Panel",
@@ -728,7 +793,6 @@
     "statusResolved": "Resolved",
     "statusDismissed": "Dismissed",
     "feedback": "Feedback",
-    "statusColumn": "Status",
     "operationError": "Operation failed",
     "featureFlagsTitle": "Feature Management",
     "featureFlagsDesc": "Enable or disable application features.",
@@ -838,7 +902,14 @@
     "tryAgain": "Try Again",
     "pdfFailed": "PDF download failed",
     "pdfGenerationFailed": "PDF generation failed",
-    "pdfDownloadFailed": "PDF download failed"
+    "pdfDownloadFailed": "PDF download failed",
+    "planLimit": {
+      "documentLimit": "Monthly document limit reached. Please upgrade your plan.",
+      "letterLimit": "Monthly letter limit reached. Please upgrade your plan.",
+      "pdfExport": "PDF export is not available on your plan. Upgrade to Pro or Business.",
+      "translation": "Translation is not available on your plan. Upgrade to Pro or Business.",
+      "reminders": "Email reminders are not available on your plan."
+    }
   },
   "legal": {
     "disclaimer": "This app does not provide legal advice. For official decisions, please consult an expert or the relevant authority.",
@@ -857,7 +928,13 @@
       "s2Usage": "Usage Data: Number of analyses, created letters, deadlines",
       "s2Technical": "Technical Data: IP address, browser type, access times (for security logs)",
       "s3Title": "3. How We Use Your Data",
-      "s3Items": ["Providing AI document analysis", "Creating response letters", "Deadline management and reminders", "Account management and billing", "Improving our services"],
+      "s3Items": [
+        "Providing AI document analysis",
+        "Creating response letters",
+        "Deadline management and reminders",
+        "Account management and billing",
+        "Improving our services"
+      ],
       "s4Title": "4. Data Storage",
       "s4Text": "Your data is securely stored on Supabase Inc. servers. All data transfers are encrypted (TLS/SSL). Documents are protected with Row Level Security – only you can access your own documents.",
       "s5Title": "5. AI Processing",
@@ -876,7 +953,12 @@
       "s1Title": "1. Service Description",
       "s1Text": "GovMate AI is an AI-powered document assistant that helps immigrants in Germany understand official letters and compose responses. The service does NOT provide legal advice.",
       "s2Title": "2. Terms of Use",
-      "s2Items": ["You must be at least 18 years old", "You are responsible for the accuracy of uploaded documents", "You may not use the service for illegal purposes", "You may not upload forged documents"],
+      "s2Items": [
+        "You must be at least 18 years old",
+        "You are responsible for the accuracy of uploaded documents",
+        "You may not use the service for illegal purposes",
+        "You may not upload forged documents"
+      ],
       "s3Title": "3. Disclaimer",
       "s3Text": "GovMate AI does NOT provide legal advice. AI-generated explanations and letter drafts are for informational purposes only. For binding legal information, consult a lawyer or the relevant authority.",
       "s4Title": "4. Subscription and Payment",
@@ -903,7 +985,13 @@
       "s4Title": "4. Letter Drafts",
       "s4Text": "Generated letter drafts are suggestions and should be reviewed and adjusted before sending. We strongly recommend seeking professional help, especially for appeals.",
       "s5Title": "5. Recommended Advisory Centers",
-      "s5Items": ["Migration Advisory for Adult Immigrants (MBE)", "Youth Migration Services (JMD)", "Consumer Advice Center", "Immigration Law Attorney", "Social Welfare Advisory Services"],
+      "s5Items": [
+        "Migration Advisory for Adult Immigrants (MBE)",
+        "Youth Migration Services (JMD)",
+        "Consumer Advice Center",
+        "Immigration Law Attorney",
+        "Social Welfare Advisory Services"
+      ],
       "s6Title": "6. Contact",
       "s6Text": "For questions or concerns, contact us:"
     }

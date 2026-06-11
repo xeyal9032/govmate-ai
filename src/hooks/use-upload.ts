@@ -4,7 +4,8 @@ import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
-import { getApiBaseUrl, readApiError, readApiJson } from '@/lib/utils/api-response';
+import { getApiBaseUrl, readApiErrorBody, readApiJson } from '@/lib/utils/api-response';
+import { mapApiError } from '@/lib/utils/map-api-error';
 
 interface UploadState {
   uploading: boolean;
@@ -19,27 +20,11 @@ async function readMagicPrefix(file: File): Promise<number[]> {
   return Array.from(new Uint8Array(buffer));
 }
 
-function mapUploadError(message: string, t: ReturnType<typeof useTranslations>): string {
-  if (message.includes('Monthly document limit')) {
-    return t('errors.planLimitReached');
-  }
-  if (message.includes('Dosya çok büyük') || message.toLowerCase().includes('too large')) {
-    const match = message.match(/(\d+)\s*MB/i);
-    return t('errors.fileTooLarge', { size: match?.[1] ? `${match[1]} MB` : '?' });
-  }
-  if (message.includes('Desteklenmeyen') || message.includes('Unsupported')) {
-    return t('errors.unsupportedFileType');
-  }
-  if (message.includes('HEIC')) {
-    return t('documents.upload.heicNotSupported');
-  }
-  if (message.includes('File content does not match')) {
-    return t('errors.unsupportedFileType');
-  }
-  if (message === 'Unauthorized') {
-    return t('errors.unauthorized');
-  }
-  return message;
+function mapUploadError(
+  body: Parameters<typeof mapApiError>[0],
+  t: ReturnType<typeof useTranslations>
+): string {
+  return mapApiError(body, (key, values) => t(key, values));
 }
 
 export function useUpload() {
@@ -76,8 +61,8 @@ export function useUpload() {
 
       if (!prepareRes.ok) {
         const fallback = t('errors.uploadFailed');
-        const raw = await readApiError(prepareRes, fallback);
-        throw new Error(mapUploadError(raw, t));
+        const body = await readApiErrorBody(prepareRes, fallback);
+        throw new Error(mapUploadError(body, t));
       }
 
       const { storagePath, contentType, targetLanguage: lang } =
@@ -123,8 +108,8 @@ export function useUpload() {
       if (!completeRes.ok) {
         await supabase.storage.from('documents').remove([storagePath]);
         const fallback = t('errors.uploadFailed');
-        const raw = await readApiError(completeRes, fallback);
-        throw new Error(mapUploadError(raw, t));
+        const body = await readApiErrorBody(completeRes, fallback);
+        throw new Error(mapUploadError(body, t));
       }
 
       const { documentId } = await readApiJson<{ documentId: string }>(completeRes);
@@ -142,8 +127,8 @@ export function useUpload() {
         if (analyzeRes.status === 401) {
           throw new Error(t('errors.unauthorized'));
         }
-        const message = await readApiError(analyzeRes, fallback);
-        throw new Error(message);
+        const body = await readApiErrorBody(analyzeRes, fallback);
+        throw new Error(mapUploadError(body, t));
       }
 
       setState(prev => ({ ...prev, progress: 100, analyzing: false }));
