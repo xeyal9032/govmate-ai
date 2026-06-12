@@ -154,7 +154,8 @@
       "emailInUse": "This email is already in use",
       "weakPassword": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
-      "oauthFailed": "Google sign-in failed. Please try again."
+      "oauthFailed": "Google sign-in failed. Please try again.",
+      "oauthConfigError": "Google config error: check Client Secret or redirect URI in Supabase/Google Cloud."
     }
   },
   "dashboard": {

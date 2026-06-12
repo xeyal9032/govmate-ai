@@ -154,7 +154,8 @@
       "emailInUse": "Bu e-posta zaten kullanılıyor",
       "weakPassword": "Şifre en az 8 karakter olmalıdır",
       "passwordMismatch": "Şifreler eşleşmiyor",
-      "oauthFailed": "Google ile giriş başarısız. Lütfen tekrar deneyin."
+      "oauthFailed": "Google ile giriş başarısız. Lütfen tekrar deneyin.",
+      "oauthConfigError": "Google ayar hatası: Supabase Client Secret veya Google redirect URI yanlış olabilir."
     }
   },
   "dashboard": {

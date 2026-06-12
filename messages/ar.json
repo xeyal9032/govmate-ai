@@ -154,7 +154,8 @@
       "emailInUse": "هذا البريد الإلكتروني مستخدم بالفعل",
       "weakPassword": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
       "passwordMismatch": "كلمتا المرور غير متطابقتين",
-      "oauthFailed": "فشل تسجيل الدخول عبر Google. يرجى المحاولة مرة أخرى."
+      "oauthFailed": "فشل تسجيل الدخول عبر Google. يرجى المحاولة مرة أخرى.",
+      "oauthConfigError": "خطأ في إعداد Google: تحقق من Client Secret أو redirect URI."
     }
   },
   "dashboard": {

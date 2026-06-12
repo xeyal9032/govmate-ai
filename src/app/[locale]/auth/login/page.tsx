@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -28,6 +28,20 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === 'auth_callback_failed') {
+      toast.error(tErrors('oauthFailed'));
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    const hash = window.location.hash;
+    if (hash.includes('error=')) {
+      toast.error(tErrors('oauthConfigError'));
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [tErrors]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -154,7 +154,8 @@
       "emailInUse": "Ця ел. пошта вже використовується",
       "weakPassword": "Пароль має містити щонайменше 8 символів",
       "passwordMismatch": "Паролі не збігаються",
-      "oauthFailed": "Не вдалося увійти через Google. Спробуйте ще раз."
+      "oauthFailed": "Не вдалося увійти через Google. Спробуйте ще раз.",
+      "oauthConfigError": "Помилка налаштування Google: перевірте Client Secret або redirect URI."
     }
   },
   "dashboard": {

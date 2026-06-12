@@ -154,7 +154,8 @@
       "emailInUse": "Bu e-poçt artıq istifadə olunur",
       "weakPassword": "Şifrə ən azı 8 simvol olmalıdır",
       "passwordMismatch": "Şifrələr uyğun gəlmir",
-      "oauthFailed": "Google ilə giriş uğursuz oldu. Yenidən cəhd edin."
+      "oauthFailed": "Google ilə giriş uğursuz oldu. Yenidən cəhd edin.",
+      "oauthConfigError": "Google konfiqurasiya xətası: Client Secret və ya redirect URI yoxlayın."
     }
   },
   "dashboard": {
