@@ -28,7 +28,8 @@
     "homePage": "Home",
     "copy": "Copy",
     "user": "User",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "scrollToTop": "Scroll to top"
   },
   "nav": {
     "dashboard": "Dashboard",

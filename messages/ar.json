@@ -28,7 +28,8 @@
     "homePage": "الرئيسية",
     "copy": "نسخ",
     "user": "مستخدم",
-    "toggleTheme": "تبديل المظهر"
+    "toggleTheme": "تبديل المظهر",
+    "scrollToTop": "العودة للأعلى"
   },
   "nav": {
     "dashboard": "لوحة التحكم",

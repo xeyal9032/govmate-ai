@@ -28,7 +28,8 @@
     "homePage": "Головна",
     "copy": "Копіювати",
     "user": "Користувач",
-    "toggleTheme": "Змінити тему"
+    "toggleTheme": "Змінити тему",
+    "scrollToTop": "Вгору"
   },
   "nav": {
     "dashboard": "Панель керування",

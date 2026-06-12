@@ -28,7 +28,8 @@
     "homePage": "Ana Sayfa",
     "copy": "Kopyala",
     "user": "Kullanıcı",
-    "toggleTheme": "Tema değiştir"
+    "toggleTheme": "Tema değiştir",
+    "scrollToTop": "Yukarı çık"
   },
   "nav": {
     "dashboard": "Gösterge Paneli",

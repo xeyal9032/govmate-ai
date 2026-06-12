@@ -28,7 +28,8 @@
     "homePage": "Startseite",
     "copy": "Kopieren",
     "user": "Benutzer",
-    "toggleTheme": "Design wechseln"
+    "toggleTheme": "Design wechseln",
+    "scrollToTop": "Nach oben"
   },
   "nav": {
     "dashboard": "Übersicht",
