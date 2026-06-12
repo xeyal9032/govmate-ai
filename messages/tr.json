@@ -47,11 +47,11 @@
   },
   "landing": {
     "hero": {
-      "title": "Resmi mektupları artık korkmadan anlayın",
-      "subtitle": "Almanya'daki resmi yazışmalarınızı AI ile analiz edin, anlayın ve yanıtlayın",
+      "title": "Almanya'daki kişisel dijital devlet asistanınız",
+      "subtitle": "Resmi mektupları okuyun, basit dilde anlayın, Almanca yanıt yazın ve son tarihleri kaçırmayın",
       "cta": "Ücretsiz Başla",
       "ctaSecondary": "Nasıl Çalışır?",
-      "badge": "AI Belge Asistanı",
+      "badge": "Dijital Devlet Asistanı",
       "demo": {
         "fileName": "Karar_Jobcenter.pdf",
         "aiAnalysis": "AI Analiz...",
@@ -66,8 +66,9 @@
         "deadlineReminder": "Son Tarih Hatırlatması",
         "appealDeadline": "İtiraz süresi",
         "daysLeft": "12 gün kaldı",
-        "securityNote": "Uçtan uca şifreli · GDPR uyumlu · Verileriniz gizli kalır"
-      }
+        "securityNote": "HTTPS · GDPR uyumlu · Verileriniz yalnızca size ait"
+      },
+      "screenshotAlt": "GovMate AI kontrol paneli ekran görüntüsü"
     },
     "howItWorks": {
       "title": "Nasıl Çalışır?",
@@ -114,9 +115,120 @@
       "q4": "Ücretsiz plan ne kadar yeterli?",
       "a4": "Ücretsiz plan ile ayda 20 belge analizi yapabilir ve 2 yanıt mektubu oluşturabilirsiniz. Daha fazlası için Pro veya Business planına geçebilirsiniz.",
       "q5": "AI yanıtları hukuki geçerliliğe sahip mi?",
-      "a5": "Hayır, GovMate AI hukuki danışmanlık sağlamaz. Oluşturulan mektuplar taslak niteliğindedir. Önemli hukuki konularda mutlaka bir avukata danışın."
+      "a5": "Hayır, GovMate AI hukuki danışmanlık sağlamaz. Oluşturulan mektuplar taslak niteliğindedir. Önemli hukuki konularda mutlaka bir avukata danışın.",
+      "q6": "Verilerim nerede saklanıyor?",
+      "a6": "Verileriniz Supabase altyapısında (AB bölgesi) saklanır. Belgeler şifreli depolamada tutulur ve yalnızca hesabınıza bağlıdır.",
+      "q7": "AI belgelerimi eğitim için kullanıyor mu?",
+      "a7": "Hayır. OpenAI API kullanım politikası gereği gönderdiğiniz belgeler model eğitimi için kullanılmaz. Belgeler yalnızca size analiz ve mektup oluşturma hizmeti sunmak için işlenir."
     },
-    "disclaimer": "Bu uygulama hukuki danışmanlık sağlamaz. Resmi kararlar için uzman veya yetkili kuruma başvurun."
+    "disclaimer": "Bu uygulama hukuki danışmanlık sağlamaz. Resmi kararlar için uzman veya yetkili kuruma başvurun.",
+    "stats": {
+      "title": "Platformda neler oluyor?",
+      "subtitle": "Gerçek kullanım verileri — abartılı rakamlar yok",
+      "betaBadge": "Erken erişim (Beta)",
+      "metrics": {
+        "documents": "Analiz edilen belge",
+        "letters": "Oluşturulan mektup",
+        "users": "Kayıtlı kullanıcı"
+      }
+    },
+    "videoDemo": {
+      "title": "60 saniyede GovMate AI",
+      "subtitle": "Belge yüklemeden yanıt mektubuna kadar tüm akışı izleyin",
+      "gifAlt": "GovMate AI ürün demosu"
+    },
+    "showcase": {
+      "title": "Ürünü keşfedin",
+      "subtitle": "Gerçek arayüz ekran görüntüleri — mockup değil",
+      "tabs": {
+        "dashboard": "Kontrol Paneli",
+        "upload": "Belge Yükle",
+        "analysis": "Analiz",
+        "templates": "Şablonlar",
+        "pricing": "Fiyatlandırma"
+      },
+      "alts": {
+        "dashboard": "Kontrol paneli ekran görüntüsü",
+        "upload": "Belge yükleme ekranı",
+        "analysis": "Belge analiz ekranı",
+        "templates": "Mektup şablonları ekranı",
+        "pricing": "Fiyatlandırma ekranı"
+      }
+    },
+    "sampleAnalysis": {
+      "title": "Örnek analiz sonucu",
+      "subtitle": "Jobcenter mektubu için anonim bir analiz özeti — kişisel veri içermez",
+      "card": {
+        "authority": "Jobcenter Essen",
+        "documentType": "Bürgergeld kararı · Anonim örnek",
+        "summaryLabel": "Özet",
+        "summary": "Başvuru, eksik belgeler (kira sözleşmesi ve son 3 ay banka ekstreleri) nedeniyle reddedildi. Widerspruch (itiraz) hakkınız var.",
+        "deadlineLabel": "Son tarih",
+        "deadline": "15 Haziran 2026 — 14 gün içinde itiraz",
+        "actionsLabel": "Gerekli işlemler",
+        "actions": {
+          "1": "Eksik belgeleri PDF olarak yükleyin",
+          "2": "Almanca itiraz mektubu taslağı oluşturun",
+          "3": "Son tarihi takvime ekleyin"
+        }
+      },
+      "downloads": {
+        "title": "Örnek PDF indir",
+        "subtitle": "Anonim örnek belgelerle çıktı kalitesini inceleyin",
+        "analysisPdf": "Analiz özeti (PDF)",
+        "analysisHint": "ornek-analiz-ozeti.pdf",
+        "letterPdf": "Yanıt mektubu taslağı (PDF)",
+        "letterHint": "ornek-cevap-mektubu.pdf",
+        "disclaimer": "Örnek belgeler hukuki danışmanlık değildir. Gerçek durumunuz için uzmana danışın."
+      }
+    },
+    "trustSecurity": {
+      "title": "Güvenlik ve gizlilik",
+      "subtitle": "Doğrulanabilir taahhütler — abartılı iddialar yok",
+      "privacyLink": "Gizlilik politikasını oku",
+      "items": {
+        "gdpr": {
+          "title": "GDPR / DSGVO uyumlu",
+          "description": "Veriler AB standartlarına göre işlenir. Gizlilik politikamızda detaylar mevcuttur."
+        },
+        "encryption": {
+          "title": "Şifreli aktarım ve depolama",
+          "description": "HTTPS üzerinden iletişim; belgeler Supabase Storage'da güvenli saklanır."
+        },
+        "rls": {
+          "title": "Yalnızca size ait",
+          "description": "Satır düzeyinde güvenlik (RLS) ile başka kullanıcılar belgelerinize erişemez."
+        },
+        "noTraining": {
+          "title": "AI eğitiminde kullanılmaz",
+          "description": "OpenAI API politikası gereği belgeleriniz model eğitimi için kullanılmaz."
+        }
+      }
+    },
+    "testimonials": {
+      "title": "Erken kullanıcı deneyimleri",
+      "subtitle": "Gerçekçi persona alıntıları — onaylı müşteri isimleri değil",
+      "items": {
+        "1": {
+          "quote": "Jobcenter mektubunu 10 dakikada anladım. Yanıt mektubunu kendim yazmak saatler sürerdi.",
+          "name": "Ayşe K.",
+          "context": "Essen · Jobcenter mektubu",
+          "badge": "Erken kullanıcı"
+        },
+        "2": {
+          "quote": "Almanca resmi dil beni korkutuyordu. Basit Türkçe açıklama hayat kurtardı.",
+          "name": "Mehmet D.",
+          "context": "Köln · Ausländerbehörde",
+          "badge": "Erken kullanıcı"
+        },
+        "3": {
+          "quote": "Son tarih hatırlatması sayesinde itiraz süresini kaçırmadım.",
+          "name": "Olena S.",
+          "context": "Berlin · Finanzamt",
+          "badge": "Erken kullanıcı"
+        }
+      }
+    }
   },
   "auth": {
     "login": {

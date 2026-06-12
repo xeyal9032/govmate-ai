@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const faqKeys = ['1', '2', '3', '4', '5'] as const;
+const faqKeys = ['1', '2', '3', '4', '5', '6', '7'] as const;
 
 const accentColors = [
   'border-l-blue-500',
@@ -14,6 +14,8 @@ const accentColors = [
   'border-l-emerald-500',
   'border-l-orange-500',
   'border-l-pink-500',
+  'border-l-cyan-500',
+  'border-l-indigo-500',
 ];
 
 export function FaqSection() {

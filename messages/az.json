@@ -47,11 +47,11 @@
   },
   "landing": {
     "hero": {
-      "title": "Rəsmi məktubları artıq qorxmadan başa düşün",
-      "subtitle": "Almaniyadan gələn rəsmi yazışmalarınızı AI ilə analiz edin, anlayın və cavab verin",
+      "title": "Almaniyada şəxsi rəqəmsal dövlət köməkçiniz",
+      "subtitle": "Rəsmi məktubları oxuyun, sadə dildə başa düşün, alman dilində cavab yazın və son tarixləri qaçırmayın",
       "cta": "Pulsuz Başla",
       "ctaSecondary": "Necə İşləyir?",
-      "badge": "AI Sənəd Köməkçisi",
+      "badge": "Rəqəmsal Dövlət Köməkçisi",
       "demo": {
         "fileName": "Qərar_Jobcenter.pdf",
         "aiAnalysis": "AI Təhlil...",
@@ -66,8 +66,9 @@
         "deadlineReminder": "Son Tarix Xatırlatması",
         "appealDeadline": "Etiraz müddəti",
         "daysLeft": "12 gün qalıb",
-        "securityNote": "Uçdan uca şifrələnmiş · GDPR uyğun · Məlumatlarınız gizli qalır"
-      }
+        "securityNote": "HTTPS · GDPR uyğun · Məlumatlarınız yalnız sizə aiddir"
+      },
+      "screenshotAlt": "GovMate AI idarə paneli ekran görüntüsü"
     },
     "howItWorks": {
       "title": "Necə İşləyir?",
@@ -114,9 +115,120 @@
       "q4": "Pulsuz plan nə qədər kifayətdir?",
       "a4": "Pulsuz plan ilə ayda 20 sənəd analizi edə və 2 cavab məktubu yarada bilərsiniz. Daha çoxu üçün Pro və ya Business planına keçə bilərsiniz.",
       "q5": "AI cavabları hüquqi qüvvəyə malikdirmi?",
-      "a5": "Xeyr, GovMate AI hüquqi məsləhət vermir. Yaradılan məktublar qaralama xarakterlidir. Vacib hüquqi məsələlərdə mütləq bir vəkilə müraciət edin."
+      "a5": "Xeyr, GovMate AI hüquqi məsləhət vermir. Yaradılan məktublar qaralama xarakterlidir. Vacib hüquqi məsələlərdə mütləq bir vəkilə müraciət edin.",
+      "q6": "Məlumatlarım harada saxlanılır?",
+      "a6": "Məlumatlarınız Supabase infrastrukturunda (AB regionu) saxlanılır. Sənədlər şifrəli yaddaşda saxlanılır və yalnız hesabınıza bağlıdır.",
+      "q7": "AI sənədlərimi təlim üçün istifadə edir?",
+      "a7": "Xeyr. OpenAI API istifadə siyasətinə görə göndərdiyiniz sənədlər model təlimi üçün istifadə olunmur. Yalnız sizə analiz və məktub yaratma xidməti üçün emal olunur."
     },
-    "disclaimer": "Bu tətbiq hüquqi məsləhət vermir. Rəsmi qərarlar üçün mütəxəssisə və ya səlahiyyətli quruma müraciət edin."
+    "disclaimer": "Bu tətbiq hüquqi məsləhət vermir. Rəsmi qərarlar üçün mütəxəssisə və ya səlahiyyətli quruma müraciət edin.",
+    "stats": {
+      "title": "Platformada nə baş verir?",
+      "subtitle": "Real istifadə rəqəmləri — şişirdilmiş statistika yoxdur",
+      "betaBadge": "Erkən giriş (Beta)",
+      "metrics": {
+        "documents": "Analiz edilmiş sənəd",
+        "letters": "Yaradılmış məktub",
+        "users": "Qeydiyyatlı istifadəçi"
+      }
+    },
+    "videoDemo": {
+      "title": "60 saniyədə GovMate AI",
+      "subtitle": "Yükləmədən cavab məktubuna qədər bütün axını izləyin",
+      "gifAlt": "GovMate AI məhsul demosu"
+    },
+    "showcase": {
+      "title": "Məhsulu kəşf edin",
+      "subtitle": "Real interfeys ekran görüntüləri — mockup deyil",
+      "tabs": {
+        "dashboard": "İdarə paneli",
+        "upload": "Yüklə",
+        "analysis": "Analiz",
+        "templates": "Şablonlar",
+        "pricing": "Qiymətlər"
+      },
+      "alts": {
+        "dashboard": "İdarə paneli ekran görüntüsü",
+        "upload": "Sənəd yükləmə ekranı",
+        "analysis": "Sənəd analizi ekranı",
+        "templates": "Məktub şablonları ekranı",
+        "pricing": "Qiymətləndirmə ekranı"
+      }
+    },
+    "sampleAnalysis": {
+      "title": "Nümunə analiz nəticəsi",
+      "subtitle": "Jobcenter məktubu üçün anonim analiz xülasəsi — şəxsi məlumat yoxdur",
+      "card": {
+        "authority": "Jobcenter Essen",
+        "documentType": "Bürgergeld qərarı · Anonim nümunə",
+        "summaryLabel": "Xülasə",
+        "summary": "Müraciət çatışmayan sənədlər (kirayə müqaviləsi və son 3 ay bank çıxarışları) səbəbindən rədd edildi. Widerspruch (etiraz) hüququnuz var.",
+        "deadlineLabel": "Son tarix",
+        "deadline": "15 iyun 2026 — 14 gün ərzində etiraz",
+        "actionsLabel": "Tələb olunan addımlar",
+        "actions": {
+          "1": "Çatışmayan sənədləri PDF kimi yükləyin",
+          "2": "Alman dilində etiraz məktubu layihəsi yaradın",
+          "3": "Son tarixi təqvimə əlavə edin"
+        }
+      },
+      "downloads": {
+        "title": "Nümunə PDF yüklə",
+        "subtitle": "Anonim nümunə sənədlərlə çıxış keyfiyyətinə baxın",
+        "analysisPdf": "Analiz xülasəsi (PDF)",
+        "analysisHint": "ornek-analiz-ozeti.pdf",
+        "letterPdf": "Cavab məktubu layihəsi (PDF)",
+        "letterHint": "ornek-cevap-mektubu.pdf",
+        "disclaimer": "Nümunə sənədlər hüquqi məsləhət deyil. Öz vəziyyətiniz üçün mütəxəssisə müraciət edin."
+      }
+    },
+    "trustSecurity": {
+      "title": "Təhlükəsizlik və məxfilik",
+      "subtitle": "Yoxlanıla bilən öhdəliklər — abartılı iddialar yoxdur",
+      "privacyLink": "Məxfilik siyasətini oxu",
+      "items": {
+        "gdpr": {
+          "title": "GDPR / DSGVO uyğun",
+          "description": "Məlumatlar AB standartlarına uyğun emal olunur. Detallar məxfilik siyasətindədir."
+        },
+        "encryption": {
+          "title": "Şifrəli ötürmə və saxlama",
+          "description": "HTTPS üzərindən əlaqə; sənədlər Supabase Storage-da təhlükəsiz saxlanılır."
+        },
+        "rls": {
+          "title": "Yalnız sizə aid",
+          "description": "Sətir səviyyəli təhlükəsizlik (RLS) digər istifadəçilərin sənədlərinizə girişini bloklayır."
+        },
+        "noTraining": {
+          "title": "AI təlimində istifadə olunmur",
+          "description": "OpenAI API siyasətinə görə sənədləriniz model təlimi üçün istifadə olunmur."
+        }
+      }
+    },
+    "testimonials": {
+      "title": "Erkən istifadəçi təcrübələri",
+      "subtitle": "Realist persona sitatları — təsdiqlənmiş müştəri adları deyil",
+      "items": {
+        "1": {
+          "quote": "Jobcenter məktubunu 10 dəqiqədə başa düşdüm. Cavabı özüm yazmaq saatlar çəkərdi.",
+          "name": "Ayşe K.",
+          "context": "Essen · Jobcenter məktubu",
+          "badge": "Erkən istifadəçi"
+        },
+        "2": {
+          "quote": "Rəsmi alman dili qorxudurdu. Sadə türk dilində izah həyat qurtardı.",
+          "name": "Mehmet D.",
+          "context": "Köln · Xarici vətəndaşlar idarəsi",
+          "badge": "Erkən istifadəçi"
+        },
+        "3": {
+          "quote": "Son tarix xatırlatması sayəsində etiraz müddətini qaçırmadım.",
+          "name": "Olena S.",
+          "context": "Berlin · Vergi idarəsi",
+          "badge": "Erkən istifadəçi"
+        }
+      }
+    }
   },
   "auth": {
     "login": {

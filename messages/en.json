@@ -47,11 +47,11 @@
   },
   "landing": {
     "hero": {
-      "title": "Finally understand official letters without fear",
-      "subtitle": "Analyze, understand and respond to your official correspondence in Germany with AI",
+      "title": "Your personal digital government assistant in Germany",
+      "subtitle": "Read official letters, understand them in plain language, write German replies, and never miss a deadline",
       "cta": "Start for Free",
       "ctaSecondary": "How Does It Work?",
-      "badge": "AI Document Assistant",
+      "badge": "Digital Government Assistant",
       "demo": {
         "fileName": "Decision_Jobcenter.pdf",
         "aiAnalysis": "AI Analysis...",
@@ -66,8 +66,9 @@
         "deadlineReminder": "Deadline Reminder",
         "appealDeadline": "Appeal deadline",
         "daysLeft": "12 days left",
-        "securityNote": "End-to-end encrypted · GDPR compliant · Your data stays private"
-      }
+        "securityNote": "HTTPS · GDPR compliant · Your data belongs to you alone"
+      },
+      "screenshotAlt": "GovMate AI dashboard screenshot"
     },
     "howItWorks": {
       "title": "How Does It Work?",
@@ -114,9 +115,120 @@
       "q4": "How sufficient is the free plan?",
       "a4": "With the free plan, you can analyze 20 documents per month and create 2 reply letters. For more, you can upgrade to the Pro or Business plan.",
       "q5": "Are AI responses legally valid?",
-      "a5": "No, GovMate AI does not provide legal advice. Generated letters are drafts. For important legal matters, always consult a lawyer."
+      "a5": "No, GovMate AI does not provide legal advice. Generated letters are drafts. For important legal matters, always consult a lawyer.",
+      "q6": "Where is my data stored?",
+      "a6": "Your data is stored on Supabase infrastructure (EU region). Documents are kept in encrypted storage and linked only to your account.",
+      "q7": "Does AI use my documents for training?",
+      "a7": "No. Under OpenAI API usage policy, documents you submit are not used for model training. They are processed only to provide analysis and letter generation for you."
     },
-    "disclaimer": "This app does not provide legal advice. For official decisions, please consult an expert or the relevant authority."
+    "disclaimer": "This app does not provide legal advice. For official decisions, please consult an expert or the relevant authority.",
+    "stats": {
+      "title": "What's happening on the platform?",
+      "subtitle": "Real usage numbers — no inflated stats",
+      "betaBadge": "Early access (Beta)",
+      "metrics": {
+        "documents": "Documents analyzed",
+        "letters": "Letters generated",
+        "users": "Registered users"
+      }
+    },
+    "videoDemo": {
+      "title": "GovMate AI in 60 seconds",
+      "subtitle": "Watch the full flow from upload to reply letter",
+      "gifAlt": "GovMate AI product demo"
+    },
+    "showcase": {
+      "title": "Explore the product",
+      "subtitle": "Real UI screenshots — not mockups",
+      "tabs": {
+        "dashboard": "Dashboard",
+        "upload": "Upload",
+        "analysis": "Analysis",
+        "templates": "Templates",
+        "pricing": "Pricing"
+      },
+      "alts": {
+        "dashboard": "Dashboard screenshot",
+        "upload": "Document upload screen",
+        "analysis": "Document analysis screen",
+        "templates": "Letter templates screen",
+        "pricing": "Pricing screen"
+      }
+    },
+    "sampleAnalysis": {
+      "title": "Sample analysis result",
+      "subtitle": "An anonymized analysis summary for a Jobcenter letter — no personal data",
+      "card": {
+        "authority": "Jobcenter Essen",
+        "documentType": "Bürgergeld decision · Anonymous sample",
+        "summaryLabel": "Summary",
+        "summary": "Application rejected due to missing documents (rental contract and last 3 months bank statements). You have the right to appeal (Widerspruch).",
+        "deadlineLabel": "Deadline",
+        "deadline": "15 June 2026 — appeal within 14 days",
+        "actionsLabel": "Required actions",
+        "actions": {
+          "1": "Upload missing documents as PDF",
+          "2": "Generate a German appeal letter draft",
+          "3": "Add the deadline to your calendar"
+        }
+      },
+      "downloads": {
+        "title": "Download sample PDFs",
+        "subtitle": "Review output quality with anonymized sample documents",
+        "analysisPdf": "Analysis summary (PDF)",
+        "analysisHint": "ornek-analiz-ozeti.pdf",
+        "letterPdf": "Reply letter draft (PDF)",
+        "letterHint": "ornek-cevap-mektubu.pdf",
+        "disclaimer": "Sample documents are not legal advice. Consult a professional for your situation."
+      }
+    },
+    "trustSecurity": {
+      "title": "Security and privacy",
+      "subtitle": "Verifiable commitments — no exaggerated claims",
+      "privacyLink": "Read privacy policy",
+      "items": {
+        "gdpr": {
+          "title": "GDPR / DSGVO compliant",
+          "description": "Data is processed according to EU standards. Details are in our privacy policy."
+        },
+        "encryption": {
+          "title": "Encrypted transfer and storage",
+          "description": "Communication over HTTPS; documents stored securely in Supabase Storage."
+        },
+        "rls": {
+          "title": "Yours alone",
+          "description": "Row-level security (RLS) prevents other users from accessing your documents."
+        },
+        "noTraining": {
+          "title": "Not used for AI training",
+          "description": "Under OpenAI API policy, your documents are not used for model training."
+        }
+      }
+    },
+    "testimonials": {
+      "title": "Early user experiences",
+      "subtitle": "Realistic persona quotes — not verified customer names",
+      "items": {
+        "1": {
+          "quote": "I understood my Jobcenter letter in 10 minutes. Writing the reply myself would have taken hours.",
+          "name": "Ayşe K.",
+          "context": "Essen · Jobcenter letter",
+          "badge": "Early user"
+        },
+        "2": {
+          "quote": "Official German scared me. The plain Turkish explanation was a lifesaver.",
+          "name": "Mehmet D.",
+          "context": "Cologne · Immigration office",
+          "badge": "Early user"
+        },
+        "3": {
+          "quote": "The deadline reminder helped me not miss the appeal period.",
+          "name": "Olena S.",
+          "context": "Berlin · Tax office",
+          "badge": "Early user"
+        }
+      }
+    }
   },
   "auth": {
     "login": {

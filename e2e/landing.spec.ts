@@ -26,9 +26,33 @@ test.describe('Landing sayfası', () => {
 
   test('giriş sayfasına link çalışır', async ({ page }) => {
     await page.goto('/tr');
-    const loginLink = page.getByRole('link', { name: /giriş|login|anmelden/i }).first();
-    await loginLink.scrollIntoViewIfNeeded();
-    await loginLink.click();
-    await expect(page).toHaveURL(/\/auth\/login/);
+    const loginLink = page.locator('nav').getByRole('link', { name: /giriş|login|anmelden/i });
+    await expect(loginLink).toBeVisible();
+    await Promise.all([
+      page.waitForURL(/\/auth\/login/),
+      loginLink.click(),
+    ]);
+  });
+
+  test('yeni güven bölümleri görünür', async ({ page }) => {
+    await page.goto('/tr');
+
+    await expect(page.locator('#stats')).toBeVisible();
+    await expect(page.locator('#video-demo')).toBeVisible();
+    await expect(page.locator('#showcase')).toBeVisible();
+    await expect(page.locator('#sample-analysis')).toBeVisible();
+    await expect(page.locator('#trust-security')).toBeVisible();
+    await expect(page.locator('#testimonials')).toBeVisible();
+  });
+
+  test('demo gif ve örnek PDF linkleri mevcut', async ({ page }) => {
+    await page.goto('/tr');
+
+    await page.locator('#video-demo').scrollIntoViewIfNeeded();
+    await expect(page.locator('#video-demo img[src="/marketing/demo.gif"]')).toBeVisible();
+
+    await page.locator('#sample-analysis').scrollIntoViewIfNeeded();
+    await expect(page.locator('a[href="/samples/ornek-analiz-ozeti.pdf"]')).toBeVisible();
+    await expect(page.locator('a[href="/samples/ornek-cevap-mektubu.pdf"]')).toBeVisible();
   });
 });

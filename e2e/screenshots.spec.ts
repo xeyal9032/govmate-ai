@@ -4,12 +4,37 @@ import { test, expect } from '@playwright/test';
 import { getE2ECredentials, loginAsE2EUser } from './helpers/auth';
 
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'screenshots');
+const MARKETING_DIR = path.join(__dirname, '..', 'public', 'marketing');
+
+const MARKETING_FILES = [
+  'dashboard.png',
+  'demo.gif',
+  'landing-hero.png',
+  'landing-how-it-works.png',
+  'landing-pricing.png',
+  'templates.png',
+  'upload.png',
+] as const;
+
+function syncToMarketing() {
+  fs.mkdirSync(MARKETING_DIR, { recursive: true });
+  for (const file of MARKETING_FILES) {
+    const src = path.join(OUT_DIR, file);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, path.join(MARKETING_DIR, file));
+    }
+  }
+}
 
 test.describe('README ekran görüntüleri', () => {
   test.describe.configure({ mode: 'serial' });
 
   test.beforeAll(() => {
     fs.mkdirSync(OUT_DIR, { recursive: true });
+  });
+
+  test.afterAll(() => {
+    syncToMarketing();
   });
 
   test.use({
@@ -89,10 +114,12 @@ test.describe('README ekran görüntüleri', () => {
     await page.waitForTimeout(500);
     await page.screenshot({ path: path.join(framesDir, 'frame-03.png') });
 
-    const loginLink = page.getByRole('link', { name: /giriş|login|anmelden/i }).first();
-    await loginLink.scrollIntoViewIfNeeded();
-    await loginLink.click();
-    await expect(page).toHaveURL(/\/auth\/login/);
+    const loginLink = page.locator('nav').getByRole('link', { name: /giriş|login|anmelden/i });
+    await expect(loginLink).toBeVisible();
+    await Promise.all([
+      page.waitForURL(/\/auth\/login/),
+      loginLink.click(),
+    ]);
     await page.waitForTimeout(400);
     await page.screenshot({ path: path.join(framesDir, 'frame-04.png') });
   });

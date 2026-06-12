@@ -17,6 +17,7 @@
     "test:e2e:report": "playwright show-report",
     "screenshots": "playwright test e2e/screenshots.spec.ts",
     "screenshots:gif": "node scripts/make-demo-gif.mjs",
+    "sync:marketing": "node scripts/sync-marketing-screenshots.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:sentry": "node scripts/check-sentry.mjs",
     "gen:types": "node scripts/gen-supabase-types.mjs",

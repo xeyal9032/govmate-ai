@@ -47,11 +47,11 @@
   },
   "landing": {
     "hero": {
-      "title": "Behördenbriefe endlich verstehen – ohne Angst",
-      "subtitle": "Analysieren, verstehen und beantworten Sie Ihre amtlichen Schreiben in Deutschland mit KI",
+      "title": "Ihr persönlicher digitaler Behörden-Assistent in Deutschland",
+      "subtitle": "Lesen Sie Behördenbriefe, verstehen Sie sie in einfacher Sprache, schreiben Sie Antworten auf Deutsch und verpassen Sie keine Frist",
       "cta": "Kostenlos starten",
       "ctaSecondary": "Wie funktioniert es?",
-      "badge": "KI-Dokumentenassistent",
+      "badge": "Digitaler Behörden-Assistent",
       "demo": {
         "fileName": "Bescheid_Jobcenter.pdf",
         "aiAnalysis": "KI Analyse...",
@@ -66,8 +66,9 @@
         "deadlineReminder": "Frist-Erinnerung",
         "appealDeadline": "Widerspruchsfrist",
         "daysLeft": "12 Tage übrig",
-        "securityNote": "Ende-zu-Ende verschlüsselt · DSGVO-konform · Ihre Daten bleiben privat"
-      }
+        "securityNote": "HTTPS · DSGVO-konform · Ihre Daten gehören nur Ihnen"
+      },
+      "screenshotAlt": "GovMate AI Dashboard-Screenshot"
     },
     "howItWorks": {
       "title": "Wie funktioniert es?",
@@ -114,9 +115,120 @@
       "q4": "Wie ausreichend ist der kostenlose Plan?",
       "a4": "Mit dem kostenlosen Plan können Sie monatlich 20 Dokumente analysieren und 2 Antwortbriefe erstellen. Für mehr können Sie auf den Pro- oder Business-Plan upgraden.",
       "q5": "Sind KI-Antworten rechtlich gültig?",
-      "a5": "Nein, GovMate AI bietet keine Rechtsberatung. Erstellte Briefe sind Entwürfe. Konsultieren Sie bei wichtigen rechtlichen Angelegenheiten immer einen Anwalt."
+      "a5": "Nein, GovMate AI bietet keine Rechtsberatung. Erstellte Briefe sind Entwürfe. Konsultieren Sie bei wichtigen rechtlichen Angelegenheiten immer einen Anwalt.",
+      "q6": "Wo werden meine Daten gespeichert?",
+      "a6": "Ihre Daten werden in der Supabase-Infrastruktur (EU-Region) gespeichert. Dokumente liegen in verschlüsseltem Storage und sind nur Ihrem Konto zugeordnet.",
+      "q7": "Nutzt die KI meine Dokumente zum Training?",
+      "a7": "Nein. Gemäß OpenAI-API-Nutzungsrichtlinie werden Ihre Dokumente nicht zum Modelltraining verwendet. Sie werden nur für Analyse und Briefgenerierung für Sie verarbeitet."
     },
-    "disclaimer": "Diese App bietet keine Rechtsberatung. Wenden Sie sich für offizielle Entscheidungen an einen Experten oder die zuständige Behörde."
+    "disclaimer": "Diese App bietet keine Rechtsberatung. Wenden Sie sich für offizielle Entscheidungen an einen Experten oder die zuständige Behörde.",
+    "stats": {
+      "title": "Was passiert auf der Plattform?",
+      "subtitle": "Echte Nutzungszahlen — keine aufgeblähten Statistiken",
+      "betaBadge": "Früher Zugang (Beta)",
+      "metrics": {
+        "documents": "Analysierte Dokumente",
+        "letters": "Erstellte Briefe",
+        "users": "Registrierte Nutzer"
+      }
+    },
+    "videoDemo": {
+      "title": "GovMate AI in 60 Sekunden",
+      "subtitle": "Sehen Sie den gesamten Ablauf vom Upload bis zum Antwortbrief",
+      "gifAlt": "GovMate AI Produktdemo"
+    },
+    "showcase": {
+      "title": "Produkt entdecken",
+      "subtitle": "Echte UI-Screenshots — keine Mockups",
+      "tabs": {
+        "dashboard": "Dashboard",
+        "upload": "Upload",
+        "analysis": "Analyse",
+        "templates": "Vorlagen",
+        "pricing": "Preise"
+      },
+      "alts": {
+        "dashboard": "Dashboard-Screenshot",
+        "upload": "Dokument-Upload-Bildschirm",
+        "analysis": "Dokumentanalyse-Bildschirm",
+        "templates": "Briefvorlagen-Bildschirm",
+        "pricing": "Preisseite"
+      }
+    },
+    "sampleAnalysis": {
+      "title": "Beispiel-Analyseergebnis",
+      "subtitle": "Anonymisierte Analysezusammenfassung für einen Jobcenter-Brief — keine Personendaten",
+      "card": {
+        "authority": "Jobcenter Essen",
+        "documentType": "Bürgergeld-Bescheid · Anonymes Beispiel",
+        "summaryLabel": "Zusammenfassung",
+        "summary": "Antrag abgelehnt wegen fehlender Unterlagen (Mietvertrag und Kontoauszüge der letzten 3 Monate). Widerspruch ist möglich.",
+        "deadlineLabel": "Frist",
+        "deadline": "15. Juni 2026 — Widerspruch innerhalb von 14 Tagen",
+        "actionsLabel": "Erforderliche Maßnahmen",
+        "actions": {
+          "1": "Fehlende Unterlagen als PDF hochladen",
+          "2": "Deutschen Widerspruchsbrief-Entwurf erstellen",
+          "3": "Frist im Kalender markieren"
+        }
+      },
+      "downloads": {
+        "title": "Beispiel-PDFs herunterladen",
+        "subtitle": "Ausgabequalität mit anonymisierten Beispieldokumenten prüfen",
+        "analysisPdf": "Analyse-Zusammenfassung (PDF)",
+        "analysisHint": "ornek-analiz-ozeti.pdf",
+        "letterPdf": "Antwortbrief-Entwurf (PDF)",
+        "letterHint": "ornek-cevap-mektubu.pdf",
+        "disclaimer": "Beispieldokumente sind keine Rechtsberatung. Konsultieren Sie einen Fachmann für Ihren Fall."
+      }
+    },
+    "trustSecurity": {
+      "title": "Sicherheit und Datenschutz",
+      "subtitle": "Nachprüfbare Zusagen — keine übertriebenen Behauptungen",
+      "privacyLink": "Datenschutzerklärung lesen",
+      "items": {
+        "gdpr": {
+          "title": "DSGVO-konform",
+          "description": "Daten werden nach EU-Standards verarbeitet. Details in unserer Datenschutzerklärung."
+        },
+        "encryption": {
+          "title": "Verschlüsselte Übertragung und Speicherung",
+          "description": "Kommunikation über HTTPS; Dokumente sicher in Supabase Storage gespeichert."
+        },
+        "rls": {
+          "title": "Nur Ihnen zugeordnet",
+          "description": "Row-Level Security (RLS) verhindert Zugriff anderer Nutzer auf Ihre Dokumente."
+        },
+        "noTraining": {
+          "title": "Nicht für KI-Training verwendet",
+          "description": "Gemäß OpenAI-API-Richtlinie werden Ihre Dokumente nicht zum Modelltraining genutzt."
+        }
+      }
+    },
+    "testimonials": {
+      "title": "Erfahrungen früher Nutzer",
+      "subtitle": "Realistische Persona-Zitate — keine verifizierten Kundennamen",
+      "items": {
+        "1": {
+          "quote": "Ich habe den Jobcenter-Brief in 10 Minuten verstanden. Die Antwort selbst zu schreiben hätte Stunden gedauert.",
+          "name": "Ayşe K.",
+          "context": "Essen · Jobcenter-Brief",
+          "badge": "Früher Nutzer"
+        },
+        "2": {
+          "quote": "Das Amtsdeutsch hat mich verunsichert. Die einfache türkische Erklärung war eine Rettung.",
+          "name": "Mehmet D.",
+          "context": "Köln · Ausländerbehörde",
+          "badge": "Früher Nutzer"
+        },
+        "3": {
+          "quote": "Dank der Frist-Erinnerung habe ich die Widerspruchsfrist nicht verpasst.",
+          "name": "Olena S.",
+          "context": "Berlin · Finanzamt",
+          "badge": "Früher Nutzer"
+        }
+      }
+    }
   },
   "auth": {
     "login": {

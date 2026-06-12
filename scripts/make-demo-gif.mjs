@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const framesDir = path.join(root, 'docs', 'screenshots', 'gif-frames');
 const outGif = path.join(root, 'docs', 'screenshots', 'demo.gif');
+const marketingGif = path.join(root, 'public', 'marketing', 'demo.gif');
 
 if (!fs.existsSync(framesDir)) {
   console.error('Önce: npm run screenshots');
@@ -56,6 +57,9 @@ const result = spawnSync(
 
 if (result.status === 0) {
   console.log('Oluşturuldu:', outGif);
+  fs.mkdirSync(path.dirname(marketingGif), { recursive: true });
+  fs.copyFileSync(outGif, marketingGif);
+  console.log('Kopyalandı:', marketingGif);
 } else {
   process.exit(result.status ?? 1);
 }

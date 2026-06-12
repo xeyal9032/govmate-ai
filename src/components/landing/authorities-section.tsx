@@ -6,19 +6,19 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 
 const authorities = [
-  { name: 'Jobcenter', logo: '/authorities/ba.png', url: 'https://www.arbeitsagentur.de' },
-  { name: 'Agentur für Arbeit', logo: '/authorities/ba.png', url: 'https://www.arbeitsagentur.de' },
-  { name: 'Ausländerbehörde', logo: '/authorities/bmi.png', url: 'https://www.bamf.de' },
-  { name: 'Finanzamt', logo: '/authorities/bmf.png', url: 'https://www.bzst.de' },
-  { name: 'Krankenkasse', logo: '/authorities/aok.png', url: 'https://www.aok.de' },
-  { name: 'Rentenversicherung', logo: '/authorities/drv.png', url: 'https://www.deutsche-rentenversicherung.de' },
-  { name: 'Familienkasse', logo: '/authorities/ba.png', url: 'https://www.familienkasse.de' },
-  { name: 'BAMF', logo: '/authorities/bmi.png', url: 'https://www.bamf.de' },
-  { name: 'Bürgeramt', logo: '/authorities/adler.png', url: 'https://service.berlin.de' },
-  { name: 'Wohnungsamt', logo: '/authorities/adler.png', url: 'https://www.bmwsb.bund.de' },
-  { name: 'Versicherung', logo: '/authorities/tk.png', url: 'https://www.tk.de' },
-  { name: 'Schule / Kita / Universität', logo: '/authorities/bmbf.png', url: 'https://www.bmbf.de' },
-  { name: 'Vermieter / Wohnung', logo: '/authorities/adler.png', url: 'https://www.mieterbund.de' },
+  { name: 'Jobcenter', logo: '/authorities/ba.svg', url: 'https://www.arbeitsagentur.de' },
+  { name: 'Agentur für Arbeit', logo: '/authorities/ba.svg', url: 'https://www.arbeitsagentur.de' },
+  { name: 'Ausländerbehörde', logo: '/authorities/bmi.svg', url: 'https://www.bamf.de' },
+  { name: 'Finanzamt', logo: '/authorities/bmf.svg', url: 'https://www.bzst.de' },
+  { name: 'Krankenkasse', logo: '/authorities/aok.svg', url: 'https://www.aok.de' },
+  { name: 'Rentenversicherung', logo: '/authorities/drv.svg', url: 'https://www.deutsche-rentenversicherung.de' },
+  { name: 'Familienkasse', logo: '/authorities/ba.svg', url: 'https://www.familienkasse.de' },
+  { name: 'BAMF', logo: '/authorities/bmi.svg', url: 'https://www.bamf.de' },
+  { name: 'Bürgeramt', logo: '/authorities/adler.svg', url: 'https://service.berlin.de' },
+  { name: 'Wohnungsamt', logo: '/authorities/adler.svg', url: 'https://www.bmwsb.bund.de' },
+  { name: 'Versicherung', logo: '/authorities/tk.svg', url: 'https://www.tk.de' },
+  { name: 'Schule / Kita / Universität', logo: '/authorities/bmbf.svg', url: 'https://www.bmbf.de' },
+  { name: 'Vermieter / Wohnung', logo: '/authorities/adler.svg', url: 'https://www.mieterbund.de' },
 ] as const;
 
 const containerVariants = {
