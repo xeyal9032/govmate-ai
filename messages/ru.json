@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (vision + высокое качество)",
     "aiModelGpt4oMini": "GPT-4o Mini (быстро, дешевле)",
     "aiModelGpt41": "GPT-4.1 (продвинутая)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (быстро)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (быстро)",
+    "createUser": "Создать пользователя",
+    "createUserTitle": "Новый пользователь",
+    "createUserDesc": "Создайте новую учётную запись с email и паролем.",
+    "passwordLabel": "Пароль",
+    "userCreated": "Пользователь создан",
+    "userCreateError": "Не удалось создать пользователя",
+    "deleteDocumentConfirm": "Вы уверены, что хотите навсегда удалить этот документ?",
+    "documentDeleted": "Документ удалён",
+    "deleteLetterConfirm": "Вы уверены, что хотите навсегда удалить это письмо?",
+    "letterDeleted": "Письмо удалено",
+    "deleteLogConfirm": "Вы уверены, что хотите удалить эту запись аудита?",
+    "logDeleted": "Запись аудита удалена",
+    "deleteLog": "Удалить запись"
   },
   "feedback": {
     "title": "Обратная связь",

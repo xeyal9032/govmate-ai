@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import {
   updateUserRole,
   updateUserProfile,
+  updateUserEmail,
   updateSubscriptionPlan,
   updateSubscriptionStatus,
 } from '@/actions/admin';
@@ -25,6 +26,7 @@ import { toast } from 'sonner';
 interface Props {
   userId: string;
   initialFullName: string;
+  initialEmail: string;
   initialAddress: string;
   initialRole: string;
   subscriptionId: string | null;
@@ -36,6 +38,7 @@ interface Props {
 export function AdminUserDetailPanel({
   userId,
   initialFullName,
+  initialEmail,
   initialAddress,
   initialRole,
   subscriptionId,
@@ -46,6 +49,7 @@ export function AdminUserDetailPanel({
   const t = useTranslations('admin');
   const [isPending, startTransition] = useTransition();
   const [fullName, setFullName] = useState(initialFullName);
+  const [email, setEmail] = useState(initialEmail);
   const [address, setAddress] = useState(initialAddress);
   const [role, setRole] = useState(initialRole);
   const [plan, setPlan] = useState(initialPlan);
@@ -55,6 +59,10 @@ export function AdminUserDetailPanel({
     if (!isAdmin) return;
     startTransition(async () => {
       try {
+        const emailChanged = email.trim().toLowerCase() !== initialEmail.trim().toLowerCase();
+        if (emailChanged) {
+          await updateUserEmail(userId, email);
+        }
         await updateUserProfile(userId, { full_name: fullName, address });
         toast.success(t('profileUpdated'));
       } catch {
@@ -120,6 +128,18 @@ export function AdminUserDetailPanel({
               disabled={!isAdmin || isPending}
             />
           </div>
+          <div className="space-y-2">
+            <Label>{t('emailColumn')}</Label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={!isAdmin || isPending}
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label>{t('roleColumn')}</Label>
             <Select

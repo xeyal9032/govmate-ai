@@ -13,10 +13,10 @@ export function isStaff(role: UserRole): boolean {
 }
 
 export function canAccessAdmin(role: UserRole): boolean {
-  return isAdmin(role);
+  return isStaff(role);
 }
 
-export function canAccessSupport(role: UserRole): boolean {
+export function canAccessSupportPanel(role: UserRole): boolean {
   return isStaff(role);
 }
 
@@ -25,6 +25,10 @@ export function canManageTemplates(role: UserRole): boolean {
 }
 
 export function canViewAllUsers(role: UserRole): boolean {
+  return isStaff(role);
+}
+
+export function canManageUsers(role: UserRole): boolean {
   return isAdmin(role);
 }
 
@@ -32,6 +36,18 @@ export function canViewAuditLogs(role: UserRole): boolean {
   return isAdmin(role);
 }
 
+export function canDeleteAuditLogs(role: UserRole): boolean {
+  return isAdmin(role);
+}
+
 export function canEditAISettings(role: UserRole): boolean {
+  return isAdmin(role);
+}
+
+export function canManageSiteContent(role: UserRole): boolean {
+  return isAdmin(role);
+}
+
+export function canManageSubscriptions(role: UserRole): boolean {
   return isAdmin(role);
 }

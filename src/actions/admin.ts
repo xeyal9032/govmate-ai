@@ -253,10 +253,122 @@ export async function getAdminSubscriptions() {
 
 export async function adminDeleteUser(userId: string) {
   await requireAdmin();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user?.id === userId) throw new Error('Kendi hesabınızı silemezsiniz');
+
   const admin = createAdminClient();
   const { error } = await admin.auth.admin.deleteUser(userId);
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/users');
+}
+
+export async function adminCreateUser(data: {
+  email: string;
+  password: string;
+  full_name: string;
+  role?: 'user' | 'admin' | 'support';
+}) {
+  await requireAdmin();
+  const email = data.email.trim().toLowerCase();
+  if (!email || data.password.length < 8) {
+    throw new Error('Geçersiz e-posta veya şifre (min. 8 karakter)');
+  }
+
+  const admin = createAdminClient();
+  const { data: created, error } = await admin.auth.admin.createUser({
+    email,
+    password: data.password,
+    email_confirm: true,
+    user_metadata: { full_name: data.full_name.trim() },
+  });
+  if (error) throw new Error(error.message);
+
+  const userId = created.user.id;
+  const role = data.role ?? 'user';
+
+  await admin
+    .from('profiles')
+    .update({
+      full_name: data.full_name.trim(),
+      ...(role !== 'user' ? { role } : {}),
+    })
+    .eq('id', userId);
+
+  revalidatePath('/[locale]/admin/users');
+  return { id: userId, email };
+}
+
+export async function updateUserEmail(userId: string, email: string) {
+  await requireAdmin();
+  const normalized = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+    throw new Error('Geçersiz e-posta adresi');
+  }
+
+  const admin = createAdminClient();
+  const { error: authError } = await admin.auth.admin.updateUserById(userId, {
+    email: normalized,
+  });
+  if (authError) throw new Error(authError.message);
+
+  const { error } = await admin.from('profiles').update({ email: normalized }).eq('id', userId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/[locale]/admin/users');
+  revalidatePath(`/[locale]/admin/users/${userId}`);
+}
+
+export async function adminDeleteDocument(documentId: string, userId: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+
+  const { data: document } = await admin
+    .from('documents')
+    .select('id, user_id, file_path')
+    .eq('id', documentId)
+    .single();
+
+  if (!document || document.user_id !== userId) {
+    throw new Error('Belge bulunamadı');
+  }
+
+  if (document.file_path) {
+    await admin.storage.from('documents').remove([document.file_path]);
+  }
+
+  const { error } = await admin.from('documents').delete().eq('id', documentId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/[locale]/admin/users/${userId}`);
+}
+
+export async function adminDeleteLetter(letterId: string, userId: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+
+  const { data: letter } = await admin
+    .from('generated_letters')
+    .select('id, user_id')
+    .eq('id', letterId)
+    .single();
+
+  if (!letter || letter.user_id !== userId) {
+    throw new Error('Mektup bulunamadı');
+  }
+
+  const { error } = await admin.from('generated_letters').delete().eq('id', letterId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/[locale]/admin/users/${userId}`);
+}
+
+export async function deleteAuditLog(id: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from('audit_logs').delete().eq('id', id);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[locale]/admin/logs');
 }
 
 export async function updateFeedbackStatus(id: string, status: string) {
@@ -340,16 +452,24 @@ export async function updateSubscriptionStatus(
 
 export async function updateUserProfile(
   userId: string,
-  data: { full_name?: string; address?: string }
+  data: { full_name?: string; address?: string; email?: string }
 ) {
   await requireAdmin();
+  if (data.email !== undefined) {
+    await updateUserEmail(userId, data.email);
+  }
+
   const admin = createAdminClient();
   const updates: Record<string, string> = {};
   if (data.full_name !== undefined) updates.full_name = data.full_name;
   if (data.address !== undefined) updates.address = data.address;
+
+  if (Object.keys(updates).length === 0) return;
+
   const { error } = await admin.from('profiles').update(updates).eq('id', userId);
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/users');
+  revalidatePath(`/[locale]/admin/users/${userId}`);
 }
 
 export async function deleteFeedback(id: string) {

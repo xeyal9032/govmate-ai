@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (vision + yüksək keyfiyyət)",
     "aiModelGpt4oMini": "GPT-4o Mini (sürətli, aşağı xərc)",
     "aiModelGpt41": "GPT-4.1 (təkmilləşdirilmiş)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (sürətli)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (sürətli)",
+    "createUser": "İstifadəçi yarat",
+    "createUserTitle": "Yeni istifadəçi",
+    "createUserDesc": "E-poçt və şifrə ilə yeni hesab yaradın.",
+    "passwordLabel": "Şifrə",
+    "userCreated": "İstifadəçi yaradıldı",
+    "userCreateError": "İstifadəçi yaradıla bilmədi",
+    "deleteDocumentConfirm": "Bu sənədi həmişəlik silmək istədiyinizə əminsiniz?",
+    "documentDeleted": "Sənəd silindi",
+    "deleteLetterConfirm": "Bu məktubu həmişəlik silmək istədiyinizə əminsiniz?",
+    "letterDeleted": "Məktub silindi",
+    "deleteLogConfirm": "Bu audit qeydini silmək istədiyinizə əminsiniz?",
+    "logDeleted": "Audit qeydi silindi",
+    "deleteLog": "Qeydi sil"
   },
   "feedback": {
     "title": "Geri Bildiriş",

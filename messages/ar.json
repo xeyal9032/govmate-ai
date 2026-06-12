@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (رؤية + جودة عالية)",
     "aiModelGpt4oMini": "GPT-4o Mini (سريع، تكلفة أقل)",
     "aiModelGpt41": "GPT-4.1 (متقدم)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (سريع)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (سريع)",
+    "createUser": "إنشاء مستخدم",
+    "createUserTitle": "مستخدم جديد",
+    "createUserDesc": "أنشئ حسابًا جديدًا بالبريد الإلكتروني وكلمة المرور.",
+    "passwordLabel": "كلمة المرور",
+    "userCreated": "تم إنشاء المستخدم",
+    "userCreateError": "تعذّر إنشاء المستخدم",
+    "deleteDocumentConfirm": "هل أنت متأكد أنك تريد حذف هذا المستند نهائيًا؟",
+    "documentDeleted": "تم حذف المستند",
+    "deleteLetterConfirm": "هل أنت متأكد أنك تريد حذف هذه الرسالة نهائيًا؟",
+    "letterDeleted": "تم حذف الرسالة",
+    "deleteLogConfirm": "هل أنت متأكد أنك تريد حذف سجل التدقيق هذا؟",
+    "logDeleted": "تم حذف سجل التدقيق",
+    "deleteLog": "حذف السجل"
   },
   "feedback": {
     "title": "التعليقات",

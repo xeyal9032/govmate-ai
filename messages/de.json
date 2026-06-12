@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (Vision + hohe Qualität)",
     "aiModelGpt4oMini": "GPT-4o Mini (schnell, günstig)",
     "aiModelGpt41": "GPT-4.1 (erweitert)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (schnell)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (schnell)",
+    "createUser": "Benutzer erstellen",
+    "createUserTitle": "Neuer Benutzer",
+    "createUserDesc": "Erstellen Sie ein neues Konto mit E-Mail und Passwort.",
+    "passwordLabel": "Passwort",
+    "userCreated": "Benutzer erstellt",
+    "userCreateError": "Benutzer konnte nicht erstellt werden",
+    "deleteDocumentConfirm": "Möchten Sie dieses Dokument dauerhaft löschen?",
+    "documentDeleted": "Dokument gelöscht",
+    "deleteLetterConfirm": "Möchten Sie diesen Brief dauerhaft löschen?",
+    "letterDeleted": "Brief gelöscht",
+    "deleteLogConfirm": "Möchten Sie diesen Audit-Log-Eintrag löschen?",
+    "logDeleted": "Audit-Log gelöscht",
+    "deleteLog": "Log löschen"
   },
   "feedback": {
     "title": "Feedback",

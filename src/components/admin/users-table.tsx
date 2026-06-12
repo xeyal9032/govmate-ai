@@ -57,6 +57,7 @@ interface UsersTableProps {
   total: number;
   page: number;
   perPage: number;
+  isAdmin?: boolean;
 }
 
 const roleBadgeVariant: Record<string, 'default' | 'secondary' | 'outline'> = {
@@ -65,7 +66,7 @@ const roleBadgeVariant: Record<string, 'default' | 'secondary' | 'outline'> = {
   user: 'outline',
 };
 
-export function UsersTable({ users, total, page, perPage }: UsersTableProps) {
+export function UsersTable({ users, total, page, perPage, isAdmin = true }: UsersTableProps) {
   const t = useTranslations('admin');
   const tCommon = useTranslations('common');
   const tBilling = useTranslations('billing.plans');
@@ -156,14 +157,14 @@ export function UsersTable({ users, total, page, perPage }: UsersTableProps) {
               <TableHead>{t('roleColumn')}</TableHead>
               <TableHead>{t('planColumn')}</TableHead>
               <TableHead>{t('dateColumn')}</TableHead>
-              <TableHead className="w-[140px]">{t('changeRole')}</TableHead>
+              {isAdmin && <TableHead className="w-[140px]">{t('changeRole')}</TableHead>}
               <TableHead className="w-[100px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredUsers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={isAdmin ? 7 : 6} className="h-24 text-center text-muted-foreground">
                   {t('noUsersFound')}
                 </TableCell>
               </TableRow>
@@ -190,57 +191,63 @@ export function UsersTable({ users, total, page, perPage }: UsersTableProps) {
                     </Badge>
                   </TableCell>
                   <TableCell>{formatDate(user.created_at)}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={user.role}
-                      onValueChange={(val) =>
-                        val && handleRoleChange(user.id, val as 'user' | 'admin' | 'support')
-                      }
-                      disabled={isPending}
-                    >
-                      <SelectTrigger size="sm" className="h-7 w-[120px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="user">{t('roles.user')}</SelectItem>
-                        <SelectItem value="admin">{t('roles.admin')}</SelectItem>
-                        <SelectItem value="support">{t('roles.support')}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
+                  {isAdmin && (
+                    <TableCell>
+                      <Select
+                        value={user.role}
+                        onValueChange={(val) =>
+                          val && handleRoleChange(user.id, val as 'user' | 'admin' | 'support')
+                        }
+                        disabled={isPending}
+                      >
+                        <SelectTrigger size="sm" className="h-7 w-[120px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="user">{t('roles.user')}</SelectItem>
+                          <SelectItem value="admin">{t('roles.admin')}</SelectItem>
+                          <SelectItem value="support">{t('roles.support')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  )}
                   <TableCell className="flex gap-1">
                     <Link href={`/admin/users/${user.id}`}>
                       <Button variant="ghost" size="icon-sm">
                         <Eye className="size-3.5" />
                       </Button>
                     </Link>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => {
-                        startTransition(async () => {
-                          try {
-                            const result = await adminResetPassword(user.id);
-                            toast.success(t('passwordResetSent', { email: result.email }));
-                          } catch {
-                            toast.error(t('passwordResetError'));
-                          }
-                        });
-                      }}
-                      title={t('resetPassword')}
-                    >
-                      <KeyRound className="size-3.5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => {
-                        setDeletingUser(user);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="size-3.5 text-destructive" />
-                    </Button>
+                    {isAdmin && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          onClick={() => {
+                            startTransition(async () => {
+                              try {
+                                const result = await adminResetPassword(user.id);
+                                toast.success(t('passwordResetSent', { email: result.email }));
+                              } catch {
+                                toast.error(t('passwordResetError'));
+                              }
+                            });
+                          }}
+                          title={t('resetPassword')}
+                        >
+                          <KeyRound className="size-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          onClick={() => {
+                            setDeletingUser(user);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="size-3.5 text-destructive" />
+                        </Button>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               ))

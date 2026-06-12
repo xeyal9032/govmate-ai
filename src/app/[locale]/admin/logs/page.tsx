@@ -1,5 +1,6 @@
 import { getAuditLogs } from '@/actions/admin';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { createClient } from '@/lib/supabase/server';
 import { LogsTable } from '@/components/admin/logs-table';
 
 interface Props {
@@ -15,13 +16,18 @@ export default async function AdminLogsPage({ params, searchParams }: Props) {
   const page = Number(pageParam) || 1;
   const { logs, total, perPage } = await getAuditLogs(page, 50);
 
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: profile } = user
+    ? await supabase.from('profiles').select('role').eq('id', user.id).single()
+    : { data: null };
+  const isAdmin = profile?.role === 'admin';
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">{t('logsTitle')}</h1>
-        <p className="text-muted-foreground">
-          {t('logsDesc')}
-        </p>
+        <p className="text-muted-foreground">{t('logsDesc')}</p>
       </div>
 
       <LogsTable
@@ -29,6 +35,7 @@ export default async function AdminLogsPage({ params, searchParams }: Props) {
         total={total}
         page={page}
         perPage={perPage}
+        isAdmin={isAdmin}
       />
     </div>
   );

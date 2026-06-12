@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (vision + висока якість)",
     "aiModelGpt4oMini": "GPT-4o Mini (швидко, дешевше)",
     "aiModelGpt41": "GPT-4.1 (розширена)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (швидко)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (швидко)",
+    "createUser": "Створити користувача",
+    "createUserTitle": "Новий користувач",
+    "createUserDesc": "Створіть новий обліковий запис з email і паролем.",
+    "passwordLabel": "Пароль",
+    "userCreated": "Користувача створено",
+    "userCreateError": "Не вдалося створити користувача",
+    "deleteDocumentConfirm": "Ви впевнені, що хочете назавжди видалити цей документ?",
+    "documentDeleted": "Документ видалено",
+    "deleteLetterConfirm": "Ви впевнені, що хочете назавжди видалити цей лист?",
+    "letterDeleted": "Лист видалено",
+    "deleteLogConfirm": "Ви впевнені, що хочете видалити цей запис аудиту?",
+    "logDeleted": "Запис аудиту видалено",
+    "deleteLog": "Видалити запис"
   },
   "feedback": {
     "title": "Зворотний зв'язок",

@@ -983,7 +983,20 @@
     "subscriptionStatus": "Abonelik Durumu",
     "feedbackDeleted": "Geri bildirim silindi",
     "deleteFeedbackConfirm": "Bu geri bildirimi silmek istediğinizden emin misiniz?",
-    "deleteFeedback": "Sil"
+    "deleteFeedback": "Sil",
+    "createUser": "Kullanıcı Oluştur",
+    "createUserTitle": "Yeni Kullanıcı",
+    "createUserDesc": "E-posta ve şifre ile yeni bir hesap oluşturun.",
+    "passwordLabel": "Şifre",
+    "userCreated": "Kullanıcı oluşturuldu",
+    "userCreateError": "Kullanıcı oluşturulamadı",
+    "deleteDocumentConfirm": "Bu belgeyi kalıcı olarak silmek istediğinizden emin misiniz?",
+    "documentDeleted": "Belge silindi",
+    "deleteLetterConfirm": "Bu mektubu kalıcı olarak silmek istediğinizden emin misiniz?",
+    "letterDeleted": "Mektup silindi",
+    "deleteLogConfirm": "Bu denetim kaydını silmek istediğinizden emin misiniz?",
+    "logDeleted": "Log kaydı silindi",
+    "deleteLog": "Logu Sil"
   },
   "feedback": {
     "title": "Geri Bildirim",

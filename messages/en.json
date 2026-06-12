@@ -983,7 +983,20 @@
     "aiModelGpt4o": "GPT-4o (vision + high quality)",
     "aiModelGpt4oMini": "GPT-4o Mini (fast, lower cost)",
     "aiModelGpt41": "GPT-4.1 (advanced)",
-    "aiModelGpt41Mini": "GPT-4.1 Mini (fast)"
+    "aiModelGpt41Mini": "GPT-4.1 Mini (fast)",
+    "createUser": "Create User",
+    "createUserTitle": "New User",
+    "createUserDesc": "Create a new account with email and password.",
+    "passwordLabel": "Password",
+    "userCreated": "User created",
+    "userCreateError": "Failed to create user",
+    "deleteDocumentConfirm": "Are you sure you want to permanently delete this document?",
+    "documentDeleted": "Document deleted",
+    "deleteLetterConfirm": "Are you sure you want to permanently delete this letter?",
+    "letterDeleted": "Letter deleted",
+    "deleteLogConfirm": "Are you sure you want to delete this audit log entry?",
+    "logDeleted": "Audit log deleted",
+    "deleteLog": "Delete Log"
   },
   "feedback": {
     "title": "Feedback",

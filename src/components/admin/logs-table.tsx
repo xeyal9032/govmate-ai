@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
+import { deleteAuditLog } from '@/actions/admin';
 import {
   Table,
   TableBody,
@@ -28,8 +29,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, Download, Eye, Filter, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Eye, Filter, Trash2, X } from 'lucide-react';
 import { downloadCSV } from '@/lib/utils/csv-export';
+import { toast } from 'sonner';
 
 interface AuditLog {
   id: string;
@@ -45,6 +47,7 @@ interface LogsTableProps {
   total: number;
   page: number;
   perPage: number;
+  isAdmin?: boolean;
 }
 
 const actionColors: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
@@ -55,8 +58,9 @@ const actionColors: Record<string, 'default' | 'secondary' | 'destructive' | 'ou
   create: 'default',
 };
 
-export function LogsTable({ logs, total, page, perPage }: LogsTableProps) {
+export function LogsTable({ logs, total, page, perPage, isAdmin = true }: LogsTableProps) {
   const t = useTranslations('admin');
+  const [isPending, startTransition] = useTransition();
   const [selectedMeta, setSelectedMeta] = useState<Record<string, unknown> | null>(null);
   const [metaDialogOpen, setMetaDialogOpen] = useState(false);
   const [actionFilter, setActionFilter] = useState<string>('all');
@@ -115,6 +119,18 @@ export function LogsTable({ logs, total, page, perPage }: LogsTableProps) {
   const showMetadata = (meta: Record<string, unknown> | null) => {
     setSelectedMeta(meta);
     setMetaDialogOpen(true);
+  };
+
+  const handleDeleteLog = (id: string) => {
+    if (!confirm(t('deleteLogConfirm'))) return;
+    startTransition(async () => {
+      try {
+        await deleteAuditLog(id);
+        toast.success(t('logDeleted'));
+      } catch {
+        toast.error(t('operationError'));
+      }
+    });
   };
 
   return (
@@ -184,12 +200,13 @@ export function LogsTable({ logs, total, page, perPage }: LogsTableProps) {
                 <TableHead>{t('ipColumn')}</TableHead>
                 <TableHead>{t('dateColumn')}</TableHead>
                 <TableHead className="w-[80px]">{t('detailColumn')}</TableHead>
+                {isAdmin && <TableHead className="w-[60px]" />}
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredLogs.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={isAdmin ? 6 : 5} className="h-24 text-center text-muted-foreground">
                     {t('noLogsFound')}
                   </TableCell>
                 </TableRow>
@@ -223,6 +240,19 @@ export function LogsTable({ logs, total, page, perPage }: LogsTableProps) {
                         <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </TableCell>
+                    {isAdmin && (
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          disabled={isPending}
+                          onClick={() => handleDeleteLog(log.id)}
+                          title={t('deleteLog')}
+                        >
+                          <Trash2 className="size-3.5 text-destructive" />
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               )}
