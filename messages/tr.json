@@ -153,7 +153,8 @@
       "invalidCredentials": "Geçersiz e-posta veya şifre",
       "emailInUse": "Bu e-posta zaten kullanılıyor",
       "weakPassword": "Şifre en az 8 karakter olmalıdır",
-      "passwordMismatch": "Şifreler eşleşmiyor"
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "oauthFailed": "Google ile giriş başarısız. Lütfen tekrar deneyin."
     }
   },
   "dashboard": {
@@ -644,6 +645,14 @@
     "activeSubscriptions": "Aktif Abonelikler",
     "aiSettingsTitle": "AI Ayarları",
     "aiSettingsDesc": "Yapay zeka sistem komutlarını ve yasal uyarı metinlerini düzenleyin.",
+    "aiModelTitle": "AI Model Seçimi",
+    "aiModelDesc": "Belge analizi, mektup üretimi ve çeviri için kullanılacak OpenAI modelleri.",
+    "aiModelLabel": "Analiz ve mektup modeli",
+    "aiTranslationModelLabel": "Çeviri modeli",
+    "aiModelGpt4o": "GPT-4o (vision + yüksek kalite)",
+    "aiModelGpt4oMini": "GPT-4o Mini (hızlı, düşük maliyet)",
+    "aiModelGpt41": "GPT-4.1 (gelişmiş)",
+    "aiModelGpt41Mini": "GPT-4.1 Mini (hızlı)",
     "systemPrompt": "Sistem Komutu (System Prompt)",
     "systemPromptDesc": "AI modelinin davranışını belirleyen temel komut metni.",
     "promptText": "Prompt Metni",

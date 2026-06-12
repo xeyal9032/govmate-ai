@@ -8,13 +8,16 @@ import type { AILetterRequest, AILetterResponse } from '@/types/ai';
 
 const MAX_RETRIES = 3;
 
-export async function generateLetter(request: AILetterRequest): Promise<AILetterResponse> {
+export async function generateLetter(
+  request: AILetterRequest,
+  model: string = 'gpt-4o'
+): Promise<AILetterResponse> {
   const openai = getOpenAIClient();
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model,
         messages: [
           { role: 'system', content: LETTER_REPLY_SYSTEM_PROMPT },
           {

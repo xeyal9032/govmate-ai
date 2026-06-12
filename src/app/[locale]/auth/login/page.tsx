@@ -18,6 +18,7 @@ import {
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
+import { OAuthButtons } from '@/components/auth/oauth-buttons';
 
 export default function LoginPage() {
   const t = useTranslations('auth.login');
@@ -101,6 +102,8 @@ export default function LoginPage() {
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t('submit')}
           </Button>
+
+          <OAuthButtons />
         </CardContent>
       </form>
 

@@ -153,7 +153,8 @@
       "invalidCredentials": "Yanlış e-poçt və ya şifrə",
       "emailInUse": "Bu e-poçt artıq istifadə olunur",
       "weakPassword": "Şifrə ən azı 8 simvol olmalıdır",
-      "passwordMismatch": "Şifrələr uyğun gəlmir"
+      "passwordMismatch": "Şifrələr uyğun gəlmir",
+      "oauthFailed": "Google ilə giriş uğursuz oldu. Yenidən cəhd edin."
     }
   },
   "dashboard": {
@@ -861,7 +862,15 @@
     "subscriptionStatus": "Abunəlik statusu",
     "feedbackDeleted": "Rəy silindi",
     "deleteFeedbackConfirm": "Bu rəyi silmək istədiyinizə əminsiniz?",
-    "deleteFeedback": "Sil"
+    "deleteFeedback": "Sil",
+    "aiModelTitle": "AI Model Seçimi",
+    "aiModelDesc": "Sənəd analizi, məktub yaradılması və tərcümə üçün OpenAI modelləri.",
+    "aiModelLabel": "Analiz və məktub modeli",
+    "aiTranslationModelLabel": "Tərcümə modeli",
+    "aiModelGpt4o": "GPT-4o (vision + yüksək keyfiyyət)",
+    "aiModelGpt4oMini": "GPT-4o Mini (sürətli, aşağı xərc)",
+    "aiModelGpt41": "GPT-4.1 (təkmilləşdirilmiş)",
+    "aiModelGpt41Mini": "GPT-4.1 Mini (sürətli)"
   },
   "feedback": {
     "title": "Geri Bildiriş",

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { DocumentAnalysisView } from '@/components/documents/document-analysis-view';
 import { DocumentRetryAnalysis } from '@/components/documents/document-retry-analysis';
 import { DocumentDeleteButton } from '@/components/documents/document-delete-button';
+import { DocumentAnalysisPoll } from '@/components/documents/document-analysis-poll';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -65,7 +66,9 @@ export default async function DocumentDetailPage({
           authorityName={doc.authority_name}
         />
       ) : doc.status === 'analyzing' ? (
-        <Card>
+        <>
+          <DocumentAnalysisPoll />
+          <Card>
           <CardContent className="p-12 text-center">
             <div className="animate-pulse space-y-4">
               <div className="h-4 bg-muted rounded w-3/4 mx-auto" />
@@ -75,6 +78,7 @@ export default async function DocumentDetailPage({
             <p className="text-sm text-muted-foreground mt-4">{t('analyzing')}</p>
           </CardContent>
         </Card>
+        </>
       ) : doc.status === 'failed' ? (
         <DocumentRetryAnalysis
           documentId={doc.id}

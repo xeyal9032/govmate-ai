@@ -153,7 +153,8 @@
       "invalidCredentials": "بريد إلكتروني أو كلمة مرور غير صحيحة",
       "emailInUse": "هذا البريد الإلكتروني مستخدم بالفعل",
       "weakPassword": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-      "passwordMismatch": "كلمتا المرور غير متطابقتين"
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "oauthFailed": "فشل تسجيل الدخول عبر Google. يرجى المحاولة مرة أخرى."
     }
   },
   "dashboard": {
@@ -861,7 +862,15 @@
     "subscriptionStatus": "حالة الاشتراك",
     "feedbackDeleted": "تم حذف الملاحظة",
     "deleteFeedbackConfirm": "هل تريد حذف هذه الملاحظة؟",
-    "deleteFeedback": "حذف"
+    "deleteFeedback": "حذف",
+    "aiModelTitle": "اختيار نموذج الذكاء الاصطناعي",
+    "aiModelDesc": "نماذج OpenAI لتحليل المستندات وإنشاء الرسائل والترجمة.",
+    "aiModelLabel": "نموذج التحليل والرسائل",
+    "aiTranslationModelLabel": "نموذج الترجمة",
+    "aiModelGpt4o": "GPT-4o (رؤية + جودة عالية)",
+    "aiModelGpt4oMini": "GPT-4o Mini (سريع، تكلفة أقل)",
+    "aiModelGpt41": "GPT-4.1 (متقدم)",
+    "aiModelGpt41Mini": "GPT-4.1 Mini (سريع)"
   },
   "feedback": {
     "title": "التعليقات",

@@ -153,7 +153,8 @@
       "invalidCredentials": "Невірна ел. пошта або пароль",
       "emailInUse": "Ця ел. пошта вже використовується",
       "weakPassword": "Пароль має містити щонайменше 8 символів",
-      "passwordMismatch": "Паролі не збігаються"
+      "passwordMismatch": "Паролі не збігаються",
+      "oauthFailed": "Не вдалося увійти через Google. Спробуйте ще раз."
     }
   },
   "dashboard": {
@@ -861,7 +862,15 @@
     "subscriptionStatus": "Статус підписки",
     "feedbackDeleted": "Відгук видалено",
     "deleteFeedbackConfirm": "Видалити цей відгук?",
-    "deleteFeedback": "Видалити"
+    "deleteFeedback": "Видалити",
+    "aiModelTitle": "Вибір моделі ШІ",
+    "aiModelDesc": "Моделі OpenAI для аналізу документів, генерації листів і перекладу.",
+    "aiModelLabel": "Модель аналізу та листів",
+    "aiTranslationModelLabel": "Модель перекладу",
+    "aiModelGpt4o": "GPT-4o (vision + висока якість)",
+    "aiModelGpt4oMini": "GPT-4o Mini (швидко, дешевше)",
+    "aiModelGpt41": "GPT-4.1 (розширена)",
+    "aiModelGpt41Mini": "GPT-4.1 Mini (швидко)"
   },
   "feedback": {
     "title": "Зворотний зв'язок",

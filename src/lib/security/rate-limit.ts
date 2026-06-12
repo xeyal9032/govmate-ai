@@ -10,8 +10,25 @@ export const AI_RATE_LIMIT: RateLimitConfig = { maxRequests: 5, windowMs: 60 * 1
 export const UPLOAD_RATE_LIMIT: RateLimitConfig = { maxRequests: 10, windowMs: 60 * 1000 };
 export const AUTH_RATE_LIMIT: RateLimitConfig = { maxRequests: 5, windowMs: 5 * 60 * 1000 };
 
-const isRedisConfigured =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
+export type RateLimitCheckResult = {
+  allowed: boolean;
+  remaining: number;
+  resetIn: number;
+  /** Production'da Upstash yapılandırılmadığında true */
+  unavailable?: boolean;
+};
+
+/** Upstash Redis ortam değişkenleri tanımlı mı */
+export function isRateLimitRedisConfigured(): boolean {
+  return Boolean(
+    process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+  );
+}
+
+/** Production'da Redis olmadan rate limit devre dışı bırakılmamalı */
+export function isProductionWithoutRateLimitRedis(): boolean {
+  return process.env.NODE_ENV === 'production' && !isRateLimitRedisConfigured();
+}
 
 let redis: Redis | null = null;
 const rateLimiters = new Map<string, Ratelimit>();
@@ -55,7 +72,7 @@ const memoryStore = new Map<string, RateLimitEntry>();
 function checkMemoryRateLimit(
   key: string,
   config: RateLimitConfig
-): { allowed: boolean; remaining: number; resetIn: number } {
+): RateLimitCheckResult {
   const now = Date.now();
   const entry = memoryStore.get(key);
 
@@ -69,14 +86,22 @@ function checkMemoryRateLimit(
   }
 
   entry.count++;
-  return { allowed: true, remaining: config.maxRequests - entry.count, resetIn: entry.resetTime - now };
+  return {
+    allowed: true,
+    remaining: config.maxRequests - entry.count,
+    resetIn: entry.resetTime - now,
+  };
 }
 
 export async function checkRateLimitAsync(
   key: string,
   config: RateLimitConfig = AI_RATE_LIMIT
-): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
-  if (isRedisConfigured) {
+): Promise<RateLimitCheckResult> {
+  if (isProductionWithoutRateLimitRedis()) {
+    return { allowed: false, remaining: 0, resetIn: 60_000, unavailable: true };
+  }
+
+  if (isRateLimitRedisConfigured()) {
     try {
       const limiter = getUpstashLimiter(config);
       const result = await limiter.limit(key);
@@ -87,8 +112,12 @@ export async function checkRateLimitAsync(
       };
     } catch (error) {
       console.warn('Redis rate limit failed, falling back to memory:', error);
+      if (process.env.NODE_ENV === 'production') {
+        return { allowed: false, remaining: 0, resetIn: 60_000, unavailable: true };
+      }
     }
   }
+
   return checkMemoryRateLimit(key, config);
 }
 
@@ -96,7 +125,10 @@ export async function checkRateLimitAsync(
 export function checkRateLimit(
   key: string,
   config: RateLimitConfig = AI_RATE_LIMIT
-): { allowed: boolean; remaining: number; resetIn: number } {
+): RateLimitCheckResult {
+  if (isProductionWithoutRateLimitRedis()) {
+    return { allowed: false, remaining: 0, resetIn: 60_000, unavailable: true };
+  }
   return checkMemoryRateLimit(key, config);
 }
 

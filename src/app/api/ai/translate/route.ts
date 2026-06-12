@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { translateText } from '@/lib/ai/translate';
+import { resolveTranslationModel } from '@/lib/ai/settings';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import { assertPlanFeature } from '@/lib/utils/plan-limits';
 
@@ -41,7 +42,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await translateText(body);
+    const translationModel = await resolveTranslationModel(supabase);
+    const result = await translateText(body, translationModel);
 
     return NextResponse.json({ success: true, ...result });
   } catch (error) {

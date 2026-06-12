@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { generateLetter } from '@/lib/ai/generate-letter';
+import { resolveAnalysisModel } from '@/lib/ai/settings';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import { checkUsageLimit, incrementUsage, resolveActivePlan } from '@/lib/utils/plan-limits';
 import { API_ERROR_CODES } from '@/lib/utils/api-error-codes';
@@ -49,7 +50,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await generateLetter(body);
+    const analysisModel = await resolveAnalysisModel(supabase);
+    const result = await generateLetter(body, analysisModel);
 
     // Save letter
     const { data: letter } = await supabase

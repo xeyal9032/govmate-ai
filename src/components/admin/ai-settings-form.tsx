@@ -3,13 +3,25 @@
 import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { updateAppSetting } from '@/actions/admin';
+import {
+  AI_MODEL_OPTIONS,
+  DEFAULT_AI_MODEL,
+  DEFAULT_TRANSLATION_MODEL,
+} from '@/lib/ai/model-options';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-import { Bot, FileWarning, Save, RotateCcw, Shield } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Bot, Cpu, FileWarning, Save, RotateCcw, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 
 const defaultPrompt = `You are an AI assistant helping immigrants in Germany understand official letters. You are NOT a lawyer and must never provide legal advice.`;
@@ -25,10 +37,20 @@ export function AISettingsForm({ initialSettings }: Props) {
   const [isPending, startTransition] = useTransition();
   const [prompt, setPrompt] = useState(initialSettings.ai_system_prompt || defaultPrompt);
   const [disclaimer, setDisclaimer] = useState(initialSettings.ai_disclaimer || defaultDisclaimer);
+  const [analysisModel, setAnalysisModel] = useState(
+    initialSettings.ai_model || DEFAULT_AI_MODEL
+  );
+  const [translationModel, setTranslationModel] = useState(
+    initialSettings.ai_translation_model || DEFAULT_TRANSLATION_MODEL
+  );
   const [maintenance, setMaintenance] = useState(initialSettings.maintenance_mode === 'true');
-  const [featureTranslation, setFeatureTranslation] = useState(initialSettings.feature_translation !== 'false');
+  const [featureTranslation, setFeatureTranslation] = useState(
+    initialSettings.feature_translation !== 'false'
+  );
   const [featurePdf, setFeaturePdf] = useState(initialSettings.feature_pdf_export !== 'false');
-  const [featureReminders, setFeatureReminders] = useState(initialSettings.feature_reminders !== 'false');
+  const [featureReminders, setFeatureReminders] = useState(
+    initialSettings.feature_reminders !== 'false'
+  );
 
   const handleSave = () => {
     startTransition(async () => {
@@ -36,6 +58,8 @@ export function AISettingsForm({ initialSettings }: Props) {
         await Promise.all([
           updateAppSetting('ai_system_prompt', prompt),
           updateAppSetting('ai_disclaimer', disclaimer),
+          updateAppSetting('ai_model', analysisModel),
+          updateAppSetting('ai_translation_model', translationModel),
           updateAppSetting('maintenance_mode', String(maintenance)),
           updateAppSetting('feature_translation', String(featureTranslation)),
           updateAppSetting('feature_pdf_export', String(featurePdf)),
@@ -51,6 +75,8 @@ export function AISettingsForm({ initialSettings }: Props) {
   const handleReset = () => {
     setPrompt(defaultPrompt);
     setDisclaimer(defaultDisclaimer);
+    setAnalysisModel(DEFAULT_AI_MODEL);
+    setTranslationModel(DEFAULT_TRANSLATION_MODEL);
     setMaintenance(false);
     setFeatureTranslation(true);
     setFeaturePdf(true);
@@ -59,6 +85,48 @@ export function AISettingsForm({ initialSettings }: Props) {
 
   return (
     <div className="grid gap-6">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Cpu className="size-5 text-primary" />
+            <CardTitle>{t('aiModelTitle')}</CardTitle>
+          </div>
+          <CardDescription>{t('aiModelDesc')}</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="analysis-model">{t('aiModelLabel')}</Label>
+            <Select value={analysisModel} onValueChange={(v) => v && setAnalysisModel(v)}>
+              <SelectTrigger id="analysis-model">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {AI_MODEL_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {t(option.labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="translation-model">{t('aiTranslationModelLabel')}</Label>
+            <Select value={translationModel} onValueChange={(v) => v && setTranslationModel(v)}>
+              <SelectTrigger id="translation-model">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {AI_MODEL_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {t(option.labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">

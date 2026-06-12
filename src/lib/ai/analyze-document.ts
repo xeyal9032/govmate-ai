@@ -13,7 +13,8 @@ export async function analyzeDocument(
   targetLanguage: string,
   fileUrl?: string,
   mimeType?: string,
-  visionImages?: string[]
+  visionImages?: string[],
+  model: string = 'gpt-4o'
 ): Promise<AnalysisResult> {
   const openai = getOpenAIClient();
 
@@ -58,7 +59,7 @@ export async function analyzeDocument(
       }
 
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model,
         messages,
         temperature: 0.1,
         max_tokens: 4000,

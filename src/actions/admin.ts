@@ -289,6 +289,10 @@ export async function updateAppSetting(key: string, value: string) {
     const { clearMaintenanceCache } = await import('@/lib/maintenance');
     clearMaintenanceCache();
   }
+  if (key === 'ai_model' || key === 'ai_translation_model') {
+    const { clearAiSettingsCache } = await import('@/lib/ai/settings');
+    clearAiSettingsCache();
+  }
   revalidatePath('/[locale]/admin/ai-settings');
 }
 

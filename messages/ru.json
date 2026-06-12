@@ -153,7 +153,8 @@
       "invalidCredentials": "Неверная эл. почта или пароль",
       "emailInUse": "Эта эл. почта уже используется",
       "weakPassword": "Пароль должен содержать минимум 8 символов",
-      "passwordMismatch": "Пароли не совпадают"
+      "passwordMismatch": "Пароли не совпадают",
+      "oauthFailed": "Не удалось войти через Google. Попробуйте снова."
     }
   },
   "dashboard": {
@@ -861,7 +862,15 @@
     "subscriptionStatus": "Статус подписки",
     "feedbackDeleted": "Отзыв удалён",
     "deleteFeedbackConfirm": "Удалить этот отзыв?",
-    "deleteFeedback": "Удалить"
+    "deleteFeedback": "Удалить",
+    "aiModelTitle": "Выбор модели ИИ",
+    "aiModelDesc": "Модели OpenAI для анализа документов, генерации писем и перевода.",
+    "aiModelLabel": "Модель анализа и писем",
+    "aiTranslationModelLabel": "Модель перевода",
+    "aiModelGpt4o": "GPT-4o (vision + высокое качество)",
+    "aiModelGpt4oMini": "GPT-4o Mini (быстро, дешевле)",
+    "aiModelGpt41": "GPT-4.1 (продвинутая)",
+    "aiModelGpt41Mini": "GPT-4.1 Mini (быстро)"
   },
   "feedback": {
     "title": "Обратная связь",

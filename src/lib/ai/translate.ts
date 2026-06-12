@@ -8,13 +8,16 @@ import type { AITranslationRequest, AITranslationResponse } from '@/types/ai';
 
 const MAX_RETRIES = 3;
 
-export async function translateText(request: AITranslationRequest): Promise<AITranslationResponse> {
+export async function translateText(
+  request: AITranslationRequest,
+  model: string = 'gpt-4o-mini'
+): Promise<AITranslationResponse> {
   const openai = getOpenAIClient();
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model,
         messages: [
           { role: 'system', content: TRANSLATION_SYSTEM_PROMPT },
           {

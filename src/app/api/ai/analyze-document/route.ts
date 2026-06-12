@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { analyzeDocument } from '@/lib/ai/analyze-document';
+import { resolveAnalysisModel } from '@/lib/ai/settings';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import { checkUsageLimit, incrementUsage } from '@/lib/utils/plan-limits';
 import { writeAuditLog } from '@/lib/security/audit-log';
@@ -95,6 +96,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const analysisModel = await resolveAnalysisModel(supabase);
+
     // Run AI analysis
     const lang = targetLanguage || document.target_language || 'tr';
     const analysis = await analyzeDocument(
@@ -102,7 +105,8 @@ export async function POST(request: NextRequest) {
       lang,
       fileUrl,
       document.file_type,
-      visionImages
+      visionImages,
+      analysisModel
     );
 
     // Save results
@@ -116,7 +120,7 @@ export async function POST(request: NextRequest) {
       required_documents: analysis.required_documents as unknown as Record<string, unknown>[],
       risks_if_ignored: analysis.risks_if_ignored,
       confidence_score: analysis.confidence_score,
-      ai_model: 'gpt-4o',
+      ai_model: analysisModel,
     });
 
     // Save deadlines
