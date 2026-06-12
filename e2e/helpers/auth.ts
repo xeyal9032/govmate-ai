@@ -19,9 +19,9 @@ export async function loginWithCredentials(
   locale = 'tr'
 ) {
   await page.goto(`/${locale}/auth/login`);
-  await page.getByLabel(/e-posta|email/i).fill(email);
-  await page.getByLabel(/şifre|password/i).fill(password);
-  await page.getByRole('button', { name: /giriş|login|anmelden/i }).click();
+  await page.locator('#email').fill(email);
+  await page.locator('#password').fill(password);
+  await page.locator('form button[type="submit"]').click();
   await expect(page).toHaveURL(/\/dashboard/, { timeout: 45_000 });
   return true;
 }

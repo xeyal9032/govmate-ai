@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight, Upload, Brain, CheckCircle, FileText, MessageSquare, Mail, CalendarClock, Shield } from 'lucide-react';
@@ -305,25 +304,6 @@ export function HeroSection() {
                   <span>{t('demo.securityNote')}</span>
                 </motion.div>
               </div>
-            </div>
-          </motion.div>
-
-          {/* Gerçek dashboard ekran görüntüsü */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="mt-10"
-          >
-            <div className="overflow-hidden rounded-2xl border bg-card shadow-xl">
-              <Image
-                src="/marketing/dashboard.png"
-                alt={t('screenshotAlt')}
-                width={1280}
-                height={800}
-                className="h-auto w-full"
-                priority
-              />
             </div>
           </motion.div>
         </div>
