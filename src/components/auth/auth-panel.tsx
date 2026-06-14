@@ -155,14 +155,15 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps) {
   const inputClass =
     'w-full rounded-lg border-0 bg-muted px-4 py-3 text-sm text-foreground outline-none ring-1 ring-border focus:ring-2 focus:ring-primary';
 
-  const formShell = 'flex h-full flex-col items-center justify-center px-6 py-8 text-center sm:px-10';
+  const formShell =
+    'flex h-full w-full flex-col items-center justify-center px-4 py-6 text-center sm:px-10 sm:py-8';
 
   return (
     <div
       className={cn(
         styles.container,
         isRegister && styles.rightPanelActive,
-        'mx-auto',
+        'mx-auto w-full max-w-full',
       )}
     >
       {/* Kayıt formu */}
@@ -178,7 +179,7 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps) {
           onSubmit={handleSubmit(onRegister)}
           className={cn(formShell, 'bg-card')}
         >
-          <Link href="/" className="mb-4 flex items-center gap-2">
+          <Link href="/" className="mb-4 hidden items-center gap-2 md:flex">
             <Logo size="sm" />
             <span className="text-base font-bold">GovMate AI</span>
           </Link>
@@ -274,7 +275,7 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps) {
         )}
       >
         <form onSubmit={handleLogin} className={cn(formShell, 'bg-card')}>
-          <Link href="/" className="mb-4 flex items-center gap-2">
+          <Link href="/" className="mb-4 hidden items-center gap-2 md:flex">
             <Logo size="sm" />
             <span className="text-base font-bold">GovMate AI</span>
           </Link>
@@ -289,6 +290,8 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps) {
           <span className="my-3 text-xs text-muted-foreground">{tPanel('orUseEmail')}</span>
 
           <input
+            id="email"
+            name="email"
             className={inputClass}
             type="email"
             placeholder={tLogin('email')}
@@ -299,6 +302,8 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps) {
           />
 
           <input
+            id="password"
+            name="password"
             className={cn(inputClass, 'mt-2')}
             type="password"
             placeholder={tLogin('password')}

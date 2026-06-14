@@ -36,7 +36,7 @@ export function VideoDemoSection() {
   const activeSlide = DEMO_VIDEO_SLIDES[activeIndex];
 
   return (
-    <section id="video-demo" className="py-24 sm:py-32">
+    <section id="video-demo" className="overflow-x-hidden py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -48,8 +48,8 @@ export function VideoDemoSection() {
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10">
             <Images className="h-6 w-6 text-blue-600 dark:text-blue-400" />
           </div>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t('title')}</h2>
-          <p className="mt-4 text-lg text-muted-foreground">{t('subtitle')}</p>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{t('title')}</h2>
+          <p className="mt-3 text-base text-muted-foreground sm:mt-4 sm:text-lg">{t('subtitle')}</p>
         </motion.div>
 
         <motion.div

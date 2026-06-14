@@ -3,7 +3,6 @@
   overflow: hidden;
   width: 100%;
   max-width: 48rem;
-  min-height: 32rem;
   border-radius: 1rem;
   background: hsl(var(--card));
   box-shadow:
@@ -12,6 +11,9 @@
 }
 
 @media (min-width: 768px) {
+  .container {
+    min-height: 32rem;
+  }
   .formContainer {
     position: absolute;
     top: 0;
