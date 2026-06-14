@@ -59,6 +59,9 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
+            className="touch-target"
+            aria-label={t('nav.openMenu')}
+            aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

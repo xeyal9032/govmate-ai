@@ -1,3 +1,7 @@
+/**
+ * Uygulama domain tipleri.
+ * Supabase şema tipleri için: npm run gen:types → src/types/supabase.generated.ts
+ */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type UserRole = 'user' | 'admin' | 'support';

@@ -20,6 +20,7 @@
     "sync:marketing": "node scripts/sync-marketing-screenshots.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:sentry": "node scripts/check-sentry.mjs",
+    "check:upstash": "node scripts/check-upstash.mjs",
     "gen:types": "node scripts/gen-supabase-types.mjs",
     "gen:types:local": "npx supabase gen types typescript --local > src/types/supabase.generated.ts",
     "verify": "npm run check:i18n && npm run test && npm run lint && npm run build",
