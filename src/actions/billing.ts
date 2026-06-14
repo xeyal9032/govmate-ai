@@ -3,9 +3,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { resolveActivePlan } from '@/lib/utils/plan-limits';
 import { countMonthlyDocuments, countMonthlyLetters } from '@/lib/utils/usage-counts';
-import type { PlanType, PlanLimit } from '@/types/database';
+import type { PlanType, PlanLimit, Subscription } from '@/types/database';
+import { toPlanLimit, toSubscription } from '@/lib/supabase-mappers';
 
-export async function getUserSubscription() {
+export async function getUserSubscription(): Promise<Subscription | null> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
@@ -16,7 +17,7 @@ export async function getUserSubscription() {
     .eq('user_id', user.id)
     .single();
 
-  return subscription;
+  return subscription ? toSubscription(subscription) : null;
 }
 
 export async function getUsageSummary() {
@@ -67,5 +68,5 @@ export async function getAllPlanLimits(): Promise<PlanLimit[]> {
     .select('*')
     .order('plan');
 
-  return (data as PlanLimit[]) || [];
+  return (data || []).map(toPlanLimit);
 }

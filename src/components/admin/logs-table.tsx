@@ -32,15 +32,10 @@ import {
 import { ChevronLeft, ChevronRight, Download, Eye, Filter, Trash2, X } from 'lucide-react';
 import { downloadCSV } from '@/lib/utils/csv-export';
 import { toast } from 'sonner';
+import type { Database } from '@/types/supabase.generated';
+import { asJsonRecord } from '@/lib/localized-json';
 
-interface AuditLog {
-  id: string;
-  action: string;
-  user_id: string | null;
-  ip_address: string | null;
-  metadata: Record<string, unknown> | null;
-  created_at: string;
-}
+type AuditLog = Database['public']['Tables']['audit_logs']['Row'];
 
 interface LogsTableProps {
   logs: AuditLog[];
@@ -228,17 +223,20 @@ export function LogsTable({ logs, total, page, perPage, isAdmin = true }: LogsTa
                       {formatDate(log.created_at)}
                     </TableCell>
                     <TableCell>
-                      {log.metadata && Object.keys(log.metadata).length > 0 ? (
+                      {(() => {
+                        const metadata = asJsonRecord(log.metadata);
+                        return metadata && Object.keys(metadata).length > 0 ? (
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          onClick={() => showMetadata(log.metadata)}
+                          onClick={() => showMetadata(metadata)}
                         >
                           <Eye className="size-3.5" />
                         </Button>
                       ) : (
                         <span className="text-xs text-muted-foreground">—</span>
-                      )}
+                      );
+                      })()}
                     </TableCell>
                     {isAdmin && (
                       <TableCell>

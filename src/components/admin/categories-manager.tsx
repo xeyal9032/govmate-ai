@@ -16,17 +16,13 @@ import {
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { adminCreateCategory, adminUpdateCategory, adminDeleteCategory } from '@/actions/admin';
+import type { Database } from '@/types/supabase.generated';
+import { asLocalizedRecord } from '@/lib/localized-json';
 
 const LANGS = ['de', 'tr', 'en', 'az', 'ru', 'uk', 'ar'] as const;
 type Lang = (typeof LANGS)[number];
 
-interface Category {
-  id: string;
-  slug: string;
-  name: Record<string, string>;
-  description: Record<string, string>;
-  created_at: string;
-}
+type Category = Database['public']['Tables']['template_categories']['Row'];
 
 interface CategoriesManagerProps {
   categories: Category[];
@@ -60,10 +56,12 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
   const openEditDialog = (cat: Category) => {
     setEditingId(cat.id);
     const next = emptyForm();
+    const name = asLocalizedRecord(cat.name);
+    const description = asLocalizedRecord(cat.description);
     next.slug = cat.slug;
     for (const lang of LANGS) {
-      next[`name_${lang}`] = cat.name?.[lang] || '';
-      next[`description_${lang}`] = cat.description?.[lang] || '';
+      next[`name_${lang}`] = name[lang] || '';
+      next[`description_${lang}`] = description[lang] || '';
     }
     setForm(next);
     setDialogOpen(true);
@@ -155,12 +153,14 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
                 </TableCell>
               </TableRow>
             ) : (
-              categories.map((cat) => (
+              categories.map((cat) => {
+                const name = asLocalizedRecord(cat.name);
+                return (
                 <TableRow key={cat.id}>
                   <TableCell className="font-mono text-xs">{cat.slug}</TableCell>
-                  <TableCell className="font-medium">{cat.name?.de || '—'}</TableCell>
-                  <TableCell>{cat.name?.tr || '—'}</TableCell>
-                  <TableCell>{cat.name?.en || '—'}</TableCell>
+                  <TableCell className="font-medium">{name.de || '—'}</TableCell>
+                  <TableCell>{name.tr || '—'}</TableCell>
+                  <TableCell>{name.en || '—'}</TableCell>
                   <TableCell className="text-sm">
                     {new Date(cat.created_at).toLocaleDateString()}
                   </TableCell>
@@ -175,7 +175,8 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
                     </div>
                   </TableCell>
                 </TableRow>
-              ))
+              );
+              })
             )}
           </TableBody>
         </Table>

@@ -2,8 +2,14 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import type { Deadline } from '@/types/database';
+import { toDeadline } from '@/lib/supabase-mappers';
 
-export async function getDeadlines(filter?: { status?: string; urgency?: string }) {
+export type DeadlineWithDocument = Deadline & {
+  documents?: { title: string | null; authority_name: string | null } | null;
+};
+
+export async function getDeadlines(filter?: { status?: string; urgency?: string }): Promise<DeadlineWithDocument[]> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Yetkisiz');
@@ -18,7 +24,10 @@ export async function getDeadlines(filter?: { status?: string; urgency?: string 
   if (filter?.urgency) query = query.eq('urgency', filter.urgency);
 
   const { data } = await query;
-  return data || [];
+  return (data || []).map((row) => ({
+    ...toDeadline(row),
+    documents: row.documents,
+  }));
 }
 
 export async function updateDeadlineStatus(id: string, status: 'open' | 'done' | 'expired') {
@@ -63,7 +72,7 @@ export async function deleteDeadline(id: string) {
   revalidatePath('/[locale]/dashboard/deadlines');
 }
 
-export async function getOpenDeadlines(limit = 5) {
+export async function getOpenDeadlines(limit = 5): Promise<Deadline[]> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
@@ -76,5 +85,5 @@ export async function getOpenDeadlines(limit = 5) {
     .order('deadline_date', { ascending: true })
     .limit(limit);
 
-  return data || [];
+  return (data || []).map(toDeadline);
 }

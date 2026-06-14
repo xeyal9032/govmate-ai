@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { resolveActivePlan } from '@/lib/utils/plan-limits';
 import type { Subscription, PlanLimit } from '@/types/database';
+import { toPlanLimit, toSubscription } from '@/lib/supabase-mappers';
 
 interface PlanData {
   subscription: Subscription | null;
@@ -41,8 +42,8 @@ export function usePlan(userId: string | undefined) {
         .single();
 
       setData({
-        subscription: sub,
-        limits,
+        subscription: sub ? toSubscription(sub) : null,
+        limits: limits ? toPlanLimit(limits) : null,
         activePlan,
         loading: false,
       });

@@ -3,6 +3,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
+import type { Database, Json } from '@/types/supabase.generated';
+
+type PlanLimitUpdate = Database['public']['Tables']['plan_limits']['Update'];
+type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+type SiteContentUpdate = Database['public']['Tables']['site_content']['Update'];
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -141,7 +146,11 @@ export async function adminCreateTemplate(data: {
   const admin = createAdminClient();
 
   await admin.from('templates').insert({
-    ...data,
+    category: data.category,
+    title: data.title,
+    description: data.description,
+    content: data.content,
+    variables: data.variables as Json,
     language: data.language || 'de',
     is_active: true,
   });
@@ -149,7 +158,18 @@ export async function adminCreateTemplate(data: {
   revalidatePath('/[locale]/admin/templates');
 }
 
-export async function adminUpdateTemplate(id: string, data: Record<string, unknown>) {
+export async function adminUpdateTemplate(
+  id: string,
+  data: {
+    category?: string;
+    title?: string;
+    description?: string | null;
+    content?: string;
+    variables?: Json;
+    language?: string;
+    is_active?: boolean | null;
+  }
+) {
   await requireAdmin();
   const admin = createAdminClient();
 
@@ -187,7 +207,7 @@ export async function getFeedbacks(status?: string) {
 
   let query = admin
     .from('feedback')
-    .select('*, profiles(full_name, email)')
+    .select('*, profiles!feedback_user_id_fkey(full_name, email)')
     .order('created_at', { ascending: false });
 
   if (status) query = query.eq('status', status);
@@ -203,7 +223,11 @@ export async function adminCreateCategory(data: {
 }) {
   await requireAdmin();
   const admin = createAdminClient();
-  const { error } = await admin.from('template_categories').insert(data);
+  const { error } = await admin.from('template_categories').insert({
+    slug: data.slug,
+    name: data.name as Json,
+    description: data.description as Json,
+  });
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/categories');
 }
@@ -227,7 +251,7 @@ export async function adminUpdateCategory(id: string, data: {
 
   const { error } = await admin
     .from('template_categories')
-    .update({ slug: data.slug, name: mergedName, description: mergedDesc })
+    .update({ slug: data.slug, name: mergedName as Json, description: mergedDesc as Json })
     .eq('id', id);
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/categories');
@@ -415,7 +439,7 @@ export async function getAdminPlanLimits() {
   return data || [];
 }
 
-export async function updatePlanLimit(id: string, updates: Record<string, unknown>) {
+export async function updatePlanLimit(id: string, updates: PlanLimitUpdate) {
   await requireAdmin();
   const admin = createAdminClient();
   const { error } = await admin.from('plan_limits').update(updates).eq('id', id);
@@ -460,7 +484,7 @@ export async function updateUserProfile(
   }
 
   const admin = createAdminClient();
-  const updates: Record<string, string> = {};
+  const updates: ProfileUpdate = {};
   if (data.full_name !== undefined) updates.full_name = data.full_name;
   if (data.address !== undefined) updates.address = data.address;
 
@@ -524,7 +548,7 @@ export async function getSiteContent(contentType?: string) {
   return data || [];
 }
 
-export async function updateSiteContent(id: string, updates: Record<string, unknown>) {
+export async function updateSiteContent(id: string, updates: SiteContentUpdate) {
   await requireAdmin();
   const admin = createAdminClient();
   const { error } = await admin.from('site_content').update(updates).eq('id', id);
@@ -542,7 +566,11 @@ export async function createSiteContent(data: {
 }) {
   await requireAdmin();
   const admin = createAdminClient();
-  const { error } = await admin.from('site_content').insert(data);
+  const { error } = await admin.from('site_content').insert({
+    ...data,
+    title: data.title as Json,
+    body: data.body as Json,
+  });
   if (error) throw new Error(error.message);
   revalidatePath('/[locale]/admin/site-content');
 }

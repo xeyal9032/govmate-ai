@@ -19,16 +19,10 @@ import {
 } from '@/components/ui/select';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import type { Database } from '@/types/supabase.generated';
+import { asLocalizedRecord } from '@/lib/localized-json';
 
-interface SiteContent {
-  id: string;
-  slug: string;
-  content_type: string;
-  title: Record<string, string>;
-  body: Record<string, string>;
-  is_published: boolean;
-  sort_order: number;
-}
+type SiteContent = Database['public']['Tables']['site_content']['Row'];
 
 interface Props { content: SiteContent[]; }
 
@@ -50,11 +44,13 @@ export function SiteContentManager({ content }: Props) {
   const openCreate = () => { setEditingId(null); setForm(emptyForm); setDialogOpen(true); };
 
   const openEdit = (item: SiteContent) => {
+    const title = asLocalizedRecord(item.title);
+    const body = asLocalizedRecord(item.body);
     setEditingId(item.id);
     setForm({
       slug: item.slug, content_type: item.content_type,
-      title_de: item.title?.de || '', title_tr: item.title?.tr || '', title_en: item.title?.en || '',
-      body_de: item.body?.de || '', body_tr: item.body?.tr || '', body_en: item.body?.en || '',
+      title_de: title.de || '', title_tr: title.tr || '', title_en: title.en || '',
+      body_de: body.de || '', body_tr: body.tr || '', body_en: body.en || '',
       is_published: item.is_published ?? true,
       sort_order: item.sort_order ?? 0,
     });
@@ -115,11 +111,14 @@ export function SiteContentManager({ content }: Props) {
         {content.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">{t('noData')}</p>
         ) : (
-          content.map((item) => (
+          content.map((item) => {
+            const title = asLocalizedRecord(item.title);
+            const body = asLocalizedRecord(item.body);
+            return (
             <Card key={item.id}>
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <CardTitle className="text-base">{item.title?.de || item.slug}</CardTitle>
+                  <CardTitle className="text-base">{title.de || item.slug}</CardTitle>
                   <Badge variant="secondary">{typeLabels[item.content_type] || item.content_type}</Badge>
                   <Badge variant="outline">{item.slug}</Badge>
                   <Badge variant={item.is_published ? 'default' : 'outline'}>
@@ -130,7 +129,7 @@ export function SiteContentManager({ content }: Props) {
                   <div className="flex items-center gap-2">
                     <Label className="text-xs">{t('published')}</Label>
                     <Switch
-                      checked={item.is_published}
+                      checked={Boolean(item.is_published)}
                       onCheckedChange={(v) => handleTogglePublished(item.id, v)}
                       disabled={isPending}
                     />
@@ -144,11 +143,12 @@ export function SiteContentManager({ content }: Props) {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-2">{item.body?.de || item.body?.tr || ''}</p>
-                <p className="text-xs text-muted-foreground mt-1">{t('sortOrder')}: {item.sort_order}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2">{body.de || body.tr || ''}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('sortOrder')}: {item.sort_order ?? 0}</p>
               </CardContent>
             </Card>
-          ))
+          );
+          })
         )}
       </div>
 

@@ -24,15 +24,9 @@ import {
 import { Plus, Trash2, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface Announcement {
-  id: string;
-  title: string;
-  message: string;
-  type: string;
-  is_active: boolean;
-  created_at: string;
-  expires_at: string | null;
-}
+import type { Database } from '@/types/supabase.generated';
+
+type Announcement = Database['public']['Tables']['announcements']['Row'];
 
 interface Props { announcements: Announcement[]; }
 
@@ -133,7 +127,7 @@ export function AnnouncementsManager({ announcements }: Props) {
                   <Button variant="ghost" size="icon-sm" onClick={() => openEdit(a)} disabled={isPending}>
                     <Pencil className="size-3.5" />
                   </Button>
-                  <Switch checked={a.is_active} onCheckedChange={(v) => handleToggle(a.id, v)} disabled={isPending} />
+                  <Switch checked={Boolean(a.is_active)} onCheckedChange={(v) => handleToggle(a.id, v)} disabled={isPending} />
                   <Button variant="ghost" size="icon-sm" onClick={() => handleDelete(a.id)} disabled={isPending}>
                     <Trash2 className="size-3.5 text-destructive" />
                   </Button>

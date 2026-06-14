@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,11 +14,8 @@ import {
 
 function LocaleShowcaseImage({ tab, alt }: { tab: ShowcaseTabKey; alt: string }) {
   const locale = useLocale();
-  const [src, setSrc] = useState(() => getShowcaseImagePath(locale, tab));
-
-  useEffect(() => {
-    setSrc(getShowcaseImagePath(locale, tab));
-  }, [locale, tab]);
+  const [useFallback, setUseFallback] = useState(false);
+  const src = getShowcaseImagePath(useFallback ? MARKETING_DEFAULT_LOCALE : locale, tab);
 
   return (
     <Image
@@ -29,8 +26,7 @@ function LocaleShowcaseImage({ tab, alt }: { tab: ShowcaseTabKey; alt: string })
       className="h-auto w-full"
       loading="lazy"
       onError={() => {
-        const fallback = getShowcaseImagePath(MARKETING_DEFAULT_LOCALE, tab);
-        if (src !== fallback) setSrc(fallback);
+        if (!useFallback) setUseFallback(true);
       }}
     />
   );

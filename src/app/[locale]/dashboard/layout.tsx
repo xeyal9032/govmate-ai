@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { DashboardShell } from '@/components/layout/dashboard-shell';
 import { setRequestLocale } from 'next-intl/server';
+import { toProfile, toSubscription } from '@/lib/supabase-mappers';
 
 export default async function DashboardLayout({
   children,
@@ -33,8 +34,8 @@ export default async function DashboardLayout({
 
   return (
     <DashboardShell
-      profile={profile}
-      subscription={subscription}
+      profile={profile ? toProfile(profile) : null}
+      subscription={subscription ? toSubscription(subscription) : null}
     >
       {children}
     </DashboardShell>

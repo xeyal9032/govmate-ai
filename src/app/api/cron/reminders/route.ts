@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { sendDeadlineReminder } from '@/lib/email/send-reminder';
 import { isPlanFeatureEnabled, resolveActivePlan } from '@/lib/utils/plan-limits';
 import type { PlanType, Profile } from '@/types/database';
+import { toDeadline } from '@/lib/supabase-mappers';
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest) {
 
     const { data: deadlines, error: fetchError } = await admin
       .from('deadlines')
-      .select('*, profiles!inner(id, full_name, email, preferred_language)')
+      .select('*, profiles!deadlines_user_id_fkey!inner(id, full_name, email, preferred_language)')
       .eq('status', 'open')
       .eq('reminder_enabled', true)
       .lte('deadline_date', threeDaysFromNow.toISOString().slice(0, 10))
@@ -70,11 +71,24 @@ export async function GET(request: NextRequest) {
 
     for (const deadline of deadlines || []) {
       try {
-        const row = deadline as { user_id: string; profiles: Profile | null };
-        const profile = row.profiles;
-        if (!profile?.email) continue;
+        const embeddedProfile = deadline.profiles;
+        if (!embeddedProfile?.email) continue;
 
-        const plan = userPlanMap.get(row.user_id) ?? 'free';
+        const profile: Profile = {
+          id: embeddedProfile.id,
+          full_name: embeddedProfile.full_name,
+          email: embeddedProfile.email,
+          preferred_language: embeddedProfile.preferred_language,
+          role: 'user',
+          city: null,
+          country_of_origin: null,
+          address: null,
+          avatar_url: null,
+          created_at: '',
+          updated_at: '',
+        };
+
+        const plan = userPlanMap.get(deadline.user_id) ?? 'free';
         const remindersAllowed = await isPlanFeatureEnabled(
           plan,
           'reminders_enabled',
@@ -85,7 +99,7 @@ export async function GET(request: NextRequest) {
           continue;
         }
 
-        await sendDeadlineReminder(profile, deadline);
+        await sendDeadlineReminder(profile, toDeadline(deadline));
         sent++;
       } catch (error) {
         console.error(`Failed to send reminder for deadline ${deadline.id}:`, error);

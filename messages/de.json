@@ -768,7 +768,7 @@
     "disclaimerLabel": "Hinweistext",
     "saving": "Wird gespeichert...",
     "saveChanges": "Änderungen speichern",
-    "settingsSaved": "Einstellungen gespeichert (Platzhalter — Datenbankintegration kommt bald)",
+    "settingsSaved": "Einstellungen gespeichert",
     "roleUpdated": "Benutzerrolle aktualisiert",
     "roleUpdateError": "Fehler beim Aktualisieren der Rolle",
     "searchUsers": "Nach Name oder E-Mail suchen...",

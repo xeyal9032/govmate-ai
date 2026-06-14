@@ -1,7 +1,7 @@
-import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { TemplateForm } from '@/components/templates/template-form';
 import { setRequestLocale } from 'next-intl/server';
+import { getTemplate } from '@/actions/templates';
 
 export default async function TemplateDetailPage({
   params,
@@ -10,20 +10,11 @@ export default async function TemplateDetailPage({
 }) {
   const { id, locale } = await params;
   setRequestLocale(locale);
-  const supabase = await createClient();
+  const template = await getTemplate(id);
 
-  const { data: template } = await supabase
-    .from('templates')
-    .select('*')
-    .eq('id', id)
-    .eq('is_active', true)
-    .single();
-
-  if (!template) {
+  if (!template || !template.is_active) {
     notFound();
   }
-
-  const variables = Array.isArray(template.variables) ? template.variables : [];
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -31,7 +22,7 @@ export default async function TemplateDetailPage({
         templateId={template.id}
         templateTitle={template.title}
         templateBody={template.content}
-        variables={variables}
+        variables={template.variables}
         category={template.category || ''}
       />
     </div>

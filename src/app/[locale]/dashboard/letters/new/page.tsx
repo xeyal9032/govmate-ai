@@ -219,6 +219,7 @@ export default function NewLetterPage() {
     router,
     t,
     tRoot,
+    tErrors,
   ]);
 
   useEffect(() => {

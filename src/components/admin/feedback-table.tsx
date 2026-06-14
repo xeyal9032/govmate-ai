@@ -17,16 +17,11 @@ import {
 } from '@/components/ui/dialog';
 import { MessageSquare, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import type { Database } from '@/types/supabase.generated';
 
-interface Feedback {
-  id: string;
-  type: string;
-  message: string;
-  status: string;
-  admin_reply: string | null;
-  created_at: string;
-  profiles: { full_name: string | null; email: string } | null;
-}
+type Feedback = Database['public']['Tables']['feedback']['Row'] & {
+  profiles: Pick<Database['public']['Tables']['profiles']['Row'], 'full_name' | 'email'> | null;
+};
 
 interface FeedbackTableProps {
   feedbacks: Feedback[];

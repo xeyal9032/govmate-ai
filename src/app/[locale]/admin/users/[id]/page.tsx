@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AdminUserDetailPanel } from '@/components/admin/admin-user-detail-panel';
 import { AdminUserRecordsPanel } from '@/components/admin/admin-user-records-panel';
 import { Card, CardContent } from '@/components/ui/card';
+import { primarySubscription } from '@/lib/subscription-helpers';
 
 export default async function AdminUserDetailPage({
   params,
@@ -41,9 +42,7 @@ export default async function AdminUserDetailPage({
     );
   }
 
-  const subscription = Array.isArray((profile as { subscriptions?: unknown }).subscriptions)
-    ? (profile as { subscriptions: { id: string; plan: string; status: string }[] }).subscriptions[0]
-    : (profile as { subscriptions?: { id: string; plan: string; status: string } | null }).subscriptions;
+  const subscription = primarySubscription(profile.subscriptions);
 
   return (
     <div className="space-y-6">

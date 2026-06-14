@@ -7,6 +7,8 @@ import {
   adminUpdateTemplate,
   adminDeleteTemplate,
 } from '@/actions/admin';
+import type { Database, Json } from '@/types/supabase.generated';
+import { asLocalizedRecord, asVariableList } from '@/lib/localized-json';
 import {
   Table,
   TableBody,
@@ -39,21 +41,15 @@ import {
 import { Plus, Pencil, Trash2, Search, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface Template {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  content: string;
-  is_active: boolean;
-  created_at: string;
-  variables: Record<string, unknown>[];
-  language?: string;
-}
+type Template = Database['public']['Tables']['templates']['Row'];
+type CategoryOption = Pick<
+  Database['public']['Tables']['template_categories']['Row'],
+  'slug' | 'name'
+>;
 
 interface TemplatesTableProps {
   templates: Template[];
-  categories: { slug: string; name: Record<string, string> }[];
+  categories: CategoryOption[];
 }
 
 const emptyForm = {
@@ -97,9 +93,9 @@ export function TemplatesTable({ templates, categories }: TemplatesTableProps) {
     setForm({
       title: template.title,
       category: template.category,
-      description: template.description,
+      description: template.description || '',
       content: template.content,
-      variables: JSON.stringify(template.variables || [], null, 2),
+      variables: JSON.stringify(asVariableList(template.variables), null, 2),
       language: template.language || 'de',
     });
     setDialogOpen(true);
@@ -122,7 +118,7 @@ export function TemplatesTable({ templates, categories }: TemplatesTableProps) {
             category: form.category,
             description: form.description,
             content: form.content,
-            variables: parsedVars,
+            variables: parsedVars as Json,
             language: form.language,
           });
           toast.success(t('templateUpdated'));
@@ -214,7 +210,7 @@ export function TemplatesTable({ templates, categories }: TemplatesTableProps) {
                   </TableCell>
                   <TableCell>
                     <Switch
-                      checked={template.is_active}
+                      checked={Boolean(template.is_active)}
                       onCheckedChange={(checked) =>
                         handleToggleActive(template.id, checked)
                       }
@@ -288,11 +284,14 @@ export function TemplatesTable({ templates, categories }: TemplatesTableProps) {
                   <SelectValue placeholder={t('categoryLabel')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((cat) => (
+                  {categories.map((cat) => {
+                    const name = asLocalizedRecord(cat.name);
+                    return (
                     <SelectItem key={cat.slug} value={cat.slug}>
-                      {cat.name?.de || cat.slug} ({cat.slug})
+                      {name.de || cat.slug} ({cat.slug})
                     </SelectItem>
-                  ))}
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
@@ -366,16 +365,20 @@ export function TemplatesTable({ templates, categories }: TemplatesTableProps) {
             <div className="rounded-md bg-muted p-4">
               <pre className="whitespace-pre-wrap text-sm font-mono">{previewTemplate?.content}</pre>
             </div>
-            {previewTemplate?.variables && previewTemplate.variables.length > 0 && (
+            {(() => {
+              const vars = asVariableList(previewTemplate?.variables);
+              if (vars.length === 0) return null;
+              return (
               <div>
                 <p className="text-sm font-medium mb-2">{t('variablesLabel')}</p>
                 <div className="flex flex-wrap gap-2">
-                  {previewTemplate.variables.map((v: Record<string, unknown>, i: number) => (
+                  {vars.map((v, i) => (
                     <Badge key={i} variant="outline">{(v.name as string) || JSON.stringify(v)}</Badge>
                   ))}
                 </div>
               </div>
-            )}
+              );
+            })()}
           </div>
         </DialogContent>
       </Dialog>

@@ -1,16 +1,9 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getSiteContent } from '@/actions/admin';
 import { SiteContentManager } from '@/components/admin/site-content-manager';
+import type { Database } from '@/types/supabase.generated';
 
-interface SiteContentItem {
-  id: string;
-  slug: string;
-  content_type: string;
-  title: Record<string, string>;
-  body: Record<string, string>;
-  is_published: boolean;
-  sort_order: number;
-}
+type SiteContentItem = Database['public']['Tables']['site_content']['Row'];
 
 export default async function AdminSiteContentPage({
   params,

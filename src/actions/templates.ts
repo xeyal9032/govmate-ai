@@ -1,8 +1,10 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import type { Template, TemplateCategory } from '@/types/database';
+import { toTemplate, toTemplateCategory } from '@/lib/supabase-mappers';
 
-export async function getTemplates(category?: string) {
+export async function getTemplates(category?: string): Promise<Template[]> {
   const supabase = await createClient();
 
   let query = supabase
@@ -14,24 +16,24 @@ export async function getTemplates(category?: string) {
   if (category) query = query.eq('category', category);
 
   const { data } = await query;
-  return data || [];
+  return (data || []).map(toTemplate);
 }
 
-export async function getTemplate(id: string) {
+export async function getTemplate(id: string): Promise<Template | null> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('templates')
     .select('*')
     .eq('id', id)
     .single();
-  return data;
+  return data ? toTemplate(data) : null;
 }
 
-export async function getTemplateCategories() {
+export async function getTemplateCategories(): Promise<TemplateCategory[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('template_categories')
     .select('*')
     .order('slug', { ascending: true });
-  return data || [];
+  return (data || []).map(toTemplateCategory);
 }

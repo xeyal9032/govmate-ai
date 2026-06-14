@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { Profile } from '@/types/database';
+import { toProfile } from '@/lib/supabase-mappers';
 
 export function useUser() {
   const [user, setUser] = useState<Profile | null>(null);
@@ -25,7 +26,7 @@ export function useUser() {
         .eq('id', authUser.id)
         .single();
 
-      setUser(profile);
+      setUser(profile ? toProfile(profile) : null);
       setLoading(false);
     }
 

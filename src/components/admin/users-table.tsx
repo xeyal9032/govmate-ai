@@ -42,15 +42,18 @@ import {
 import { Link } from '@/i18n/navigation';
 import { toast } from 'sonner';
 import { isPlanKey, isUserRoleKey } from '@/lib/utils/plan-keys';
+import type { Database } from '@/types/supabase.generated';
+import { primarySubscription } from '@/lib/subscription-helpers';
 
-interface User {
-  id: string;
-  full_name: string | null;
-  email: string;
-  role: string;
-  created_at: string;
-  subscriptions: { plan: string; status: string } | null;
-}
+type User = Database['public']['Tables']['profiles']['Row'] & {
+  subscriptions: Pick<
+    Database['public']['Tables']['subscriptions']['Row'],
+    'plan' | 'status'
+  > | Pick<
+    Database['public']['Tables']['subscriptions']['Row'],
+    'plan' | 'status'
+  >[] | null;
+};
 
 interface UsersTableProps {
   users: User[];
@@ -135,7 +138,7 @@ export function UsersTable({ users, total, page, perPage, isAdmin = true }: User
             name: u.full_name || '',
             email: u.email,
             role: u.role,
-            plan: u.subscriptions?.plan || 'free',
+            plan: primarySubscription(u.subscriptions)?.plan || 'free',
             created_at: u.created_at,
           })),
           'users'
@@ -183,7 +186,7 @@ export function UsersTable({ users, total, page, perPage, isAdmin = true }: User
                   <TableCell>
                     <Badge variant="secondary">
                       {(() => {
-                        const plan = user.subscriptions?.plan || 'free';
+                        const plan = primarySubscription(user.subscriptions)?.plan || 'free';
                         return isPlanKey(plan)
                           ? tBilling(`${plan}.name`)
                           : plan;

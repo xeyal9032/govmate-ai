@@ -768,7 +768,7 @@
     "disclaimerLabel": "Disclaimer Text",
     "saving": "Saving...",
     "saveChanges": "Save Changes",
-    "settingsSaved": "Settings saved (placeholder — database integration coming soon)",
+    "settingsSaved": "Settings saved",
     "roleUpdated": "User role updated",
     "roleUpdateError": "Error updating role",
     "searchUsers": "Search by name or email...",

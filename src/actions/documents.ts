@@ -2,8 +2,10 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import type { Document, DocumentAnalysis, Deadline } from '@/types/database';
+import { toDocument, toDocumentAnalysis, toDeadline } from '@/lib/supabase-mappers';
 
-export async function getDocuments() {
+export async function getDocuments(): Promise<Document[]> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Yetkisiz');
@@ -15,7 +17,7 @@ export async function getDocuments() {
     .order('created_at', { ascending: false });
 
   if (error) throw error;
-  return data;
+  return (data || []).map(toDocument);
 }
 
 export async function getDocument(id: string) {
@@ -55,7 +57,12 @@ export async function getDocument(id: string) {
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  return { document, analysis, deadlines: deadlines || [], letters: letters || [] };
+  return {
+    document: toDocument(document),
+    analysis: analysis ? toDocumentAnalysis(analysis) : null,
+    deadlines: (deadlines || []).map(toDeadline),
+    letters: letters || [],
+  };
 }
 
 export async function deleteDocument(id: string) {
@@ -101,7 +108,7 @@ export async function deleteAllDocuments() {
   revalidatePath('/[locale]/dashboard');
 }
 
-export async function getRecentDocuments(limit = 5) {
+export async function getRecentDocuments(limit = 5): Promise<Document[]> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
@@ -113,5 +120,5 @@ export async function getRecentDocuments(limit = 5) {
     .order('created_at', { ascending: false })
     .limit(limit);
 
-  return data || [];
+  return (data || []).map(toDocument);
 }

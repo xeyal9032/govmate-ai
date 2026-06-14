@@ -5,6 +5,7 @@ import { resolveAnalysisModel } from '@/lib/ai/settings';
 import { rateLimitOrNull, AI_RATE_LIMIT } from '@/lib/security/rate-limit-response';
 import { checkUsageLimit, incrementUsage } from '@/lib/utils/plan-limits';
 import { writeAuditLog } from '@/lib/security/audit-log';
+import { toJson } from '@/lib/supabase-mappers';
 
 export const maxDuration = 60;
 export const runtime = 'nodejs';
@@ -113,12 +114,12 @@ export async function POST(request: NextRequest) {
     await supabase.from('document_analyses').insert({
       document_id: documentId,
       user_id: user.id,
-      analysis_json: analysis as unknown as Record<string, unknown>,
+      analysis_json: toJson(analysis),
       summary_simple: analysis.summary_simple,
       summary_detailed: analysis.summary_detailed,
-      required_actions: analysis.required_actions as unknown as Record<string, unknown>[],
-      required_documents: analysis.required_documents as unknown as Record<string, unknown>[],
-      risks_if_ignored: analysis.risks_if_ignored,
+      required_actions: toJson(analysis.required_actions),
+      required_documents: toJson(analysis.required_documents),
+      risks_if_ignored: toJson(analysis.risks_if_ignored),
       confidence_score: analysis.confidence_score,
       ai_model: analysisModel,
     });

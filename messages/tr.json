@@ -776,7 +776,7 @@
     "disclaimerLabel": "Uyarı Metni",
     "saving": "Kaydediliyor...",
     "saveChanges": "Değişiklikleri Kaydet",
-    "settingsSaved": "Ayarlar kaydedildi (placeholder — veritabanı entegrasyonu yakında)",
+    "settingsSaved": "Ayarlar kaydedildi",
     "roleUpdated": "Kullanıcı rolü güncellendi",
     "roleUpdateError": "Rol güncellenirken hata oluştu",
     "searchUsers": "İsim veya e-posta ara...",
