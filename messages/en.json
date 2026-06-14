@@ -139,9 +139,10 @@
       }
     },
     "videoDemo": {
-      "title": "GovMate AI in 60 seconds",
-      "subtitle": "Watch the full flow from upload to reply letter",
-      "gifAlt": "GovMate AI product demo"
+      "title": "Step-by-step product tour",
+      "subtitle": "From document upload to reply letter — real UI screenshots",
+      "gifAlt": "GovMate AI product tour screenshot",
+      "slideAlt": "{step} — GovMate AI demo"
     },
     "showcase": {
       "title": "Explore the product",

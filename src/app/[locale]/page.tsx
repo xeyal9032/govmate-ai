@@ -4,7 +4,6 @@ import { Navbar } from '@/components/landing/navbar';
 import { HeroSection } from '@/components/landing/hero-section';
 import { StatsSection } from '@/components/landing/stats-section';
 import { VideoDemoSection } from '@/components/landing/video-demo-section';
-import { ProductShowcaseSection } from '@/components/landing/product-showcase-section';
 import { SampleAnalysisSection } from '@/components/landing/sample-analysis-section';
 import { HowItWorksSection } from '@/components/landing/how-it-works-section';
 import { TrustSecuritySection } from '@/components/landing/trust-security-section';
@@ -30,7 +29,6 @@ export default async function LandingPage({
         <HeroSection />
         <StatsSection />
         <VideoDemoSection />
-        <ProductShowcaseSection />
         <SampleAnalysisSection />
         <HowItWorksSection />
         <TrustSecuritySection />

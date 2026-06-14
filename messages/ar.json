@@ -139,9 +139,10 @@
       }
     },
     "videoDemo": {
-      "title": "GovMate AI في 60 ثانية",
-      "subtitle": "شاهد المسار الكامل من الرفع إلى خطاب الرد",
-      "gifAlt": "عرض توضيحي لمنتج GovMate AI"
+      "title": "جولة في المنتج خطوة بخطوة",
+      "subtitle": "من رفع المستند إلى خطاب الرد — لقطات شاشة حقيقية",
+      "gifAlt": "لقطة شاشة من جولة GovMate AI",
+      "slideAlt": "{step} — عرض GovMate AI"
     },
     "showcase": {
       "title": "استكشف المنتج",

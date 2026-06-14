@@ -39,17 +39,16 @@ test.describe('Landing sayfası', () => {
 
     await expect(page.locator('#stats')).toBeVisible();
     await expect(page.locator('#video-demo')).toBeVisible();
-    await expect(page.locator('#showcase')).toBeVisible();
     await expect(page.locator('#sample-analysis')).toBeVisible();
     await expect(page.locator('#trust-security')).toBeVisible();
     await expect(page.locator('#testimonials')).toBeVisible();
   });
 
-  test('demo gif ve örnek PDF linkleri mevcut', async ({ page }) => {
+  test('demo slayt gösterisi ve örnek PDF linkleri mevcut', async ({ page }) => {
     await page.goto('/tr');
 
     await page.locator('#video-demo').scrollIntoViewIfNeeded();
-    await expect(page.locator('#video-demo img[src="/marketing/demo.gif"]')).toBeVisible();
+    await expect(page.locator('#video-demo img[src="/marketing/en/upload.png"]')).toBeVisible();
 
     await page.locator('#sample-analysis').scrollIntoViewIfNeeded();
     await expect(page.locator('a[href="/samples/ornek-analiz-ozeti.pdf"]')).toBeVisible();

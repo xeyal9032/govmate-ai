@@ -139,9 +139,10 @@
       }
     },
     "videoDemo": {
-      "title": "60 saniyədə GovMate AI",
-      "subtitle": "Yükləmədən cavab məktubuna qədər bütün axını izləyin",
-      "gifAlt": "GovMate AI məhsul demosu"
+      "title": "Addım-addım məhsul turu",
+      "subtitle": "Sənəd yükləməsindən cavab məktubuna — real ekran görüntüləri",
+      "gifAlt": "GovMate AI məhsul turu ekran görüntüsü",
+      "slideAlt": "{step} — GovMate AI demosu"
     },
     "showcase": {
       "title": "Məhsulu kəşf edin",

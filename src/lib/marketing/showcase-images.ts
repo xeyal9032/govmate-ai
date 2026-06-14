@@ -1,20 +1,16 @@
-/** Landing vitrininde kullanılan pazarlama görselleri (locale alt klasörü). */
-export const MARKETING_DEFAULT_LOCALE = 'tr';
+/** Landing ürün turu slaytları — İngilizce arayüz ekran görüntüleri */
+export const DEMO_VIDEO_LOCALE = 'en';
 
-export const SHOWCASE_IMAGE_FILES = {
-  dashboard: 'dashboard.png',
-  upload: 'upload.png',
-  analysis: 'landing-how-it-works.png',
-  templates: 'templates.png',
-  pricing: 'landing-pricing.png',
-} as const;
+export const DEMO_VIDEO_SLIDES = [
+  { file: 'upload.png', labelKey: 'upload' },
+  { file: 'dashboard.png', labelKey: 'dashboard' },
+  { file: 'templates.png', labelKey: 'templates' },
+  { file: 'landing-how-it-works.png', labelKey: 'analysis' },
+  { file: 'landing-pricing.png', labelKey: 'pricing' },
+] as const;
 
-export type ShowcaseTabKey = keyof typeof SHOWCASE_IMAGE_FILES;
+export type DemoVideoSlideKey = (typeof DEMO_VIDEO_SLIDES)[number]['labelKey'];
 
-export const SHOWCASE_TAB_KEYS = Object.keys(
-  SHOWCASE_IMAGE_FILES
-) as ShowcaseTabKey[];
-
-export function getShowcaseImagePath(locale: string, tab: ShowcaseTabKey): string {
-  return `/marketing/${locale}/${SHOWCASE_IMAGE_FILES[tab]}`;
+export function getDemoVideoSlidePath(file: string): string {
+  return `/marketing/${DEMO_VIDEO_LOCALE}/${file}`;
 }
