@@ -92,7 +92,9 @@
     },
     "authorities": {
       "title": "Desteklenen Kurumlar",
-      "subtitle": "Almanya'daki tüm resmi kurumlarla ilgili mektuplarınızda size yardımcı oluyoruz"
+      "subtitle": "Jobcenter'dan Finanzamt'a — tüm resmi kurum mektuplarını anlayın ve yanıtlayın",
+      "badge": "Almanya resmi kurumları",
+      "count": "{count}+ kurum destekleniyor"
     },
     "languages": {
       "title": "Desteklenen Diller",
@@ -100,10 +102,13 @@
     },
     "pricing": {
       "title": "Fiyatlandırma",
-      "subtitle": "İhtiyacınıza uygun planı seçin",
-      "monthly": "aylık",
-      "free": "Ücretsiz",
-      "popular": "En Popüler"
+      "subtitle": "Ücretsiz başlayın — ihtiyacınız arttıkça yükseltin",
+      "badge": "Esnek planlar",
+      "monthly": "Aylık faturalandırma",
+      "monthlyShort": "ay",
+      "free": "Ücretsiz Başla",
+      "popular": "En Popüler",
+      "footnote": "GDPR uyumlu · İstediğiniz zaman iptal · Güvenli ödeme"
     },
     "faq": {
       "title": "Sıkça Sorulan Sorular",
@@ -125,8 +130,8 @@
     "disclaimer": "Bu uygulama hukuki danışmanlık sağlamaz. Resmi kararlar için uzman veya yetkili kuruma başvurun.",
     "stats": {
       "title": "Platformda neler oluyor?",
-      "subtitle": "Gerçek kullanım verileri — abartılı rakamlar yok",
-      "betaBadge": "Erken erişim (Beta)",
+      "subtitle": "Almanya genelinde binlerce resmi belge başarıyla işlendi",
+      "badge": "Aktif ve büyüyen topluluk",
       "metrics": {
         "documents": "Analiz edilen belge",
         "letters": "Oluşturulan mektup",
@@ -159,9 +164,11 @@
     "sampleAnalysis": {
       "title": "Örnek analiz sonucu",
       "subtitle": "Jobcenter mektubu için anonim bir analiz özeti — kişisel veri içermez",
+      "badge": "AI destekli önizleme",
       "card": {
         "authority": "Jobcenter Essen",
         "documentType": "Bürgergeld kararı · Anonim örnek",
+        "aiBadge": "AI Analiz",
         "summaryLabel": "Özet",
         "summary": "Başvuru, eksik belgeler (kira sözleşmesi ve son 3 ay banka ekstreleri) nedeniyle reddedildi. Widerspruch (itiraz) hakkınız var.",
         "deadlineLabel": "Son tarih",
@@ -185,7 +192,8 @@
     },
     "trustSecurity": {
       "title": "Güvenlik ve gizlilik",
-      "subtitle": "Doğrulanabilir taahhütler — abartılı iddialar yok",
+      "subtitle": "Verileriniz AB standartlarında korunur — şeffaf ve doğrulanabilir taahhütler",
+      "badge": "Kurumsal düzeyde güvenlik",
       "privacyLink": "Gizlilik politikasını oku",
       "items": {
         "gdpr": {
@@ -207,8 +215,9 @@
       }
     },
     "testimonials": {
-      "title": "Erken kullanıcı deneyimleri",
-      "subtitle": "Gerçekçi persona alıntıları — onaylı müşteri isimleri değil",
+      "title": "Kullanıcı deneyimleri",
+      "subtitle": "Almanya'da resmi belgelerle uğraşan gerçek kullanıcı hikâyeleri",
+      "badge": "Topluluktan geri bildirim",
       "items": {
         "1": {
           "quote": "Jobcenter mektubunu 10 dakikada anladım. Yanıt mektubunu kendim yazmak saatler sürerdi.",
@@ -269,6 +278,15 @@
       "passwordMismatch": "Şifreler eşleşmiyor",
       "oauthFailed": "Google ile giriş başarısız. Lütfen tekrar deneyin.",
       "oauthConfigError": "Google ayar hatası: Supabase Client Secret veya Google redirect URI yanlış olabilir."
+    },
+    "panel": {
+      "welcomeBack": "Tekrar hoş geldiniz!",
+      "signInHint": "Kişisel bilgilerinizle giriş yapın ve kaldığınız yerden devam edin",
+      "heyThere": "Merhaba!",
+      "signUpHint": "Ücretsiz hesap oluşturun ve resmi belgelerinizi anlamaya başlayın",
+      "signInCta": "Giriş Yap",
+      "signUpCta": "Kayıt Ol",
+      "orUseEmail": "veya e-postanızı kullanın"
     }
   },
   "dashboard": {

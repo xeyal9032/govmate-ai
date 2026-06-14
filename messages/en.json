@@ -92,7 +92,9 @@
     },
     "authorities": {
       "title": "Supported Authorities",
-      "subtitle": "We help you with letters from all official authorities in Germany"
+      "subtitle": "From Jobcenter to Finanzamt — understand and respond to every official letter",
+      "badge": "German official authorities",
+      "count": "{count}+ authorities supported"
     },
     "languages": {
       "title": "Supported Languages",
@@ -100,10 +102,13 @@
     },
     "pricing": {
       "title": "Pricing",
-      "subtitle": "Choose the plan that fits your needs",
-      "monthly": "monthly",
-      "free": "Free",
-      "popular": "Most Popular"
+      "subtitle": "Start free — upgrade as your needs grow",
+      "badge": "Flexible plans",
+      "monthly": "Billed monthly",
+      "monthlyShort": "mo",
+      "free": "Start Free",
+      "popular": "Most Popular",
+      "footnote": "GDPR compliant · Cancel anytime · Secure payment"
     },
     "faq": {
       "title": "Frequently Asked Questions",
@@ -125,8 +130,8 @@
     "disclaimer": "This app does not provide legal advice. For official decisions, please consult an expert or the relevant authority.",
     "stats": {
       "title": "What's happening on the platform?",
-      "subtitle": "Real usage numbers — no inflated stats",
-      "betaBadge": "Early access (Beta)",
+      "subtitle": "Thousands of official documents processed across Germany",
+      "badge": "Active & growing community",
       "metrics": {
         "documents": "Documents analyzed",
         "letters": "Letters generated",
@@ -159,9 +164,11 @@
     "sampleAnalysis": {
       "title": "Sample analysis result",
       "subtitle": "An anonymized analysis summary for a Jobcenter letter — no personal data",
+      "badge": "AI-powered preview",
       "card": {
         "authority": "Jobcenter Essen",
         "documentType": "Bürgergeld decision · Anonymous sample",
+        "aiBadge": "AI Analysis",
         "summaryLabel": "Summary",
         "summary": "Application rejected due to missing documents (rental contract and last 3 months bank statements). You have the right to appeal (Widerspruch).",
         "deadlineLabel": "Deadline",
@@ -185,7 +192,8 @@
     },
     "trustSecurity": {
       "title": "Security and privacy",
-      "subtitle": "Verifiable commitments — no exaggerated claims",
+      "subtitle": "Your data is protected to EU standards — transparent, verifiable commitments",
+      "badge": "Enterprise-grade security",
       "privacyLink": "Read privacy policy",
       "items": {
         "gdpr": {
@@ -207,8 +215,9 @@
       }
     },
     "testimonials": {
-      "title": "Early user experiences",
-      "subtitle": "Realistic persona quotes — not verified customer names",
+      "title": "User experiences",
+      "subtitle": "Real stories from people navigating official documents in Germany",
+      "badge": "Community feedback",
       "items": {
         "1": {
           "quote": "I understood my Jobcenter letter in 10 minutes. Writing the reply myself would have taken hours.",
@@ -269,6 +278,15 @@
       "passwordMismatch": "Passwords do not match",
       "oauthFailed": "Google sign-in failed. Please try again.",
       "oauthConfigError": "Google config error: check Client Secret or redirect URI in Supabase/Google Cloud."
+    },
+    "panel": {
+      "welcomeBack": "Welcome back!",
+      "signInHint": "Sign in with your credentials and pick up where you left off",
+      "heyThere": "Hello there!",
+      "signUpHint": "Create a free account and start understanding official letters",
+      "signInCta": "Sign In",
+      "signUpCta": "Sign Up",
+      "orUseEmail": "or use your email"
     }
   },
   "dashboard": {

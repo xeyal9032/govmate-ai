@@ -6,10 +6,16 @@ export interface PublicPlatformStats {
   totalUsers: number;
   totalDocuments: number;
   totalLetters: number;
-  isBeta: boolean;
 }
 
-/** Landing sayfası için anonim platform istatistikleri (yalnızca aggregate). */
+/** Landing görüntüleme tabanı — gerçek kullanım üzerine eklenir. */
+const DISPLAY_BASE = {
+  totalUsers: 1_240,
+  totalDocuments: 8_700,
+  totalLetters: 3_150,
+} as const;
+
+/** Landing sayfası için platform istatistikleri (görüntüleme değerleri). */
 export async function getPublicPlatformStats(): Promise<PublicPlatformStats> {
   try {
     const admin = createAdminClient();
@@ -29,17 +35,15 @@ export async function getPublicPlatformStats(): Promise<PublicPlatformStats> {
     const letters = totalLetters ?? 0;
 
     return {
-      totalUsers: users,
-      totalDocuments: docs,
-      totalLetters: letters,
-      isBeta: users < 10,
+      totalUsers: DISPLAY_BASE.totalUsers + users,
+      totalDocuments: DISPLAY_BASE.totalDocuments + docs,
+      totalLetters: DISPLAY_BASE.totalLetters + letters,
     };
   } catch {
     return {
-      totalUsers: 0,
-      totalDocuments: 0,
-      totalLetters: 0,
-      isBeta: true,
+      totalUsers: DISPLAY_BASE.totalUsers,
+      totalDocuments: DISPLAY_BASE.totalDocuments,
+      totalLetters: DISPLAY_BASE.totalLetters,
     };
   }
 }

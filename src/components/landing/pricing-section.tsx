@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Check, Sparkles, Zap, Building2 } from 'lucide-react';
+import { Check, Sparkles, Zap, Building2, CreditCard, Shield } from 'lucide-react';
 
 import { getPlanFeatureDescriptors } from '@/lib/utils/plan-feature-labels';
 import type { PlanLimit } from '@/types/database';
@@ -13,40 +13,41 @@ const plans = [
   {
     key: 'free' as const,
     icon: Zap,
-    gradient: 'from-slate-500 to-slate-600',
-    borderClass: 'border-border',
-    bgClass: '',
-    buttonVariant: 'outline' as const,
+    gradient: 'from-slate-500 to-slate-700',
+    glow: 'hover:shadow-slate-500/10',
+    accentText: 'text-foreground',
   },
   {
     key: 'pro' as const,
     icon: Sparkles,
     gradient: 'from-blue-500 to-indigo-600',
-    borderClass: 'border-blue-500/50',
-    bgClass: 'bg-gradient-to-b from-blue-500/[0.07] to-transparent dark:from-blue-500/[0.12]',
-    buttonVariant: 'default' as const,
+    glow: 'hover:shadow-blue-500/25',
+    accentText: 'bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400',
   },
   {
     key: 'business' as const,
     icon: Building2,
-    gradient: 'from-purple-500 to-pink-500',
-    borderClass: 'border-purple-500/30',
-    bgClass: '',
-    buttonVariant: 'outline' as const,
+    gradient: 'from-violet-500 to-purple-600',
+    glow: 'hover:shadow-violet-500/15',
+    accentText: 'text-foreground',
   },
-];
+] as const;
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.15 },
+    transition: { staggerChildren: 0.12 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+  },
 };
 
 interface PricingSectionProps {
@@ -59,41 +60,40 @@ export function PricingSection({ planLimits = [] }: PricingSectionProps) {
   const billingT = useTranslations('billing');
 
   return (
-    <section id="pricing" className="relative overflow-hidden bg-muted/30 py-24 sm:py-32">
-      <div className="absolute inset-0">
-        <div className="absolute left-1/4 top-0 h-64 w-64 rounded-full bg-blue-500/5 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-purple-500/5 blur-3xl" />
-      </div>
+    <section id="pricing" className="relative overflow-hidden py-16 sm:py-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/25 via-background to-muted/20" />
+      <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-blue-500/8 blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-violet-500/8 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            {landingT('title')}
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-            {landingT('subtitle')}
-          </p>
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-primary">
+            <CreditCard className="h-3.5 w-3.5" />
+            {landingT('badge')}
+          </span>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{landingT('title')}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">{landingT('subtitle')}</p>
         </motion.div>
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="mt-16 grid items-center gap-8 lg:grid-cols-3"
+          viewport={{ once: true, margin: '-40px' }}
+          className="mt-10 grid items-stretch gap-5 lg:grid-cols-3 lg:gap-6"
         >
           {plans.map((plan) => {
             const isPro = plan.key === 'pro';
             const planLimit = planLimits.find((l) => l.plan === plan.key);
             const features: string[] = planLimit
               ? getPlanFeatureDescriptors(planLimit).map((d) =>
-                  billingT(`planFeatures.${d.key}`, d.params)
+                  billingT(`planFeatures.${d.key}`, d.params),
                 )
               : (billingT.raw(`plans.${plan.key}.features`) as string[]);
             const Icon = plan.icon;
@@ -102,75 +102,78 @@ export function PricingSection({ planLimits = [] }: PricingSectionProps) {
               <motion.div
                 key={plan.key}
                 variants={itemVariants}
-                whileHover={{ y: -8 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className={isPro ? 'lg:-my-4 max-lg:mx-auto max-lg:max-w-md' : ''}
+                whileHover={{ y: isPro ? -6 : -4 }}
+                className={`relative flex ${isPro ? 'lg:z-10' : ''}`}
               >
+                {isPro && (
+                  <div className="absolute -inset-px rounded-[1.65rem] bg-gradient-to-b from-blue-500/50 via-indigo-500/30 to-transparent blur-sm" />
+                )}
+
                 <div
-                  className={`relative overflow-hidden rounded-3xl border-2 ${plan.borderClass} ${plan.bgClass} bg-card p-1 shadow-xl transition-shadow duration-300 hover:shadow-2xl`}
+                  className={`relative flex h-full w-full flex-col overflow-hidden rounded-2xl border bg-card/85 shadow-lg backdrop-blur-md transition-shadow ${plan.glow} ${isPro ? 'border-blue-500/40 ring-1 ring-blue-500/20' : 'border-border/60'}`}
                 >
-                  {/* Pro badge */}
                   {isPro && (
                     <div className="absolute inset-x-0 top-0 flex justify-center">
-                      <motion.div
-                        initial={{ y: -20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4, duration: 0.5 }}
-                        className="rounded-b-xl bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-1.5 text-sm font-semibold text-white shadow-lg"
-                      >
+                      <div className="rounded-b-2xl bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
                         {landingT('popular')}
-                      </motion.div>
+                      </div>
                     </div>
                   )}
 
-                  <div className={`rounded-2xl p-6 sm:p-8 ${isPro ? 'pt-12' : ''}`}>
-                    {/* Üst kısım: ikon + plan adı */}
-                    <div className="mb-6 flex items-center gap-3">
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient} shadow-lg`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold">{billingT(`plans.${plan.key}.name`)}</h3>
-                    </div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${isPro ? 'from-blue-500/8 via-indigo-500/4 to-transparent' : 'from-muted/30 via-transparent to-transparent'} opacity-80`} />
 
-                    {/* Fiyat */}
-                    <div className="mb-8">
-                      <div className="flex items-baseline gap-1">
-                        <span className={`text-5xl font-extrabold tracking-tight ${isPro ? 'bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400' : ''}`}>
-                          {billingT(`plans.${plan.key}.price`)}
-                        </span>
+                  <div className={`relative flex flex-1 flex-col p-5 sm:p-6 ${isPro ? 'pt-10' : ''}`}>
+                    <div className="mb-4 flex items-center gap-3">
+                      <div
+                        className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${plan.gradient} shadow-md`}
+                      >
+                        <Icon className="h-5 w-5 text-white" strokeWidth={1.75} />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-bold">{billingT(`plans.${plan.key}.name`)}</h3>
                         {plan.key !== 'free' && (
-                          <span className="ml-1 text-base text-muted-foreground">
-                            / {landingT('monthly')}
-                          </span>
+                          <p className="text-xs text-muted-foreground">{landingT('monthly')}</p>
                         )}
                       </div>
                     </div>
 
-                    {/* Özellikler */}
-                    <ul className="mb-8 space-y-3.5">
+                    <div className="mb-5">
+                      <div className="flex items-end gap-1">
+                        <span className={`text-3xl font-extrabold tabular-nums tracking-tight sm:text-4xl ${plan.accentText}`}>
+                          {billingT(`plans.${plan.key}.price`)}
+                        </span>
+                        {plan.key !== 'free' && (
+                          <span className="mb-2 text-sm text-muted-foreground">/ {landingT('monthlyShort')}</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <ul className="mb-5 flex-1 space-y-2">
                       {features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${plan.gradient}`}>
-                            <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <div
+                            className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${plan.gradient}`}
+                          >
+                            <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />
                           </div>
-                          <span className="text-sm leading-relaxed text-muted-foreground">
-                            {feature}
-                          </span>
+                          <span className="text-sm leading-snug text-muted-foreground">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    {/* Buton */}
                     <Link href="/auth/register" className="block">
                       <Button
-                        className={`w-full py-6 text-base font-semibold ${isPro ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30' : ''}`}
-                        variant={plan.buttonVariant}
-                        size="lg"
+                        className={`w-full font-semibold ${
+                          isPro
+                            ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:from-blue-600 hover:to-indigo-700 hover:shadow-xl'
+                            : plan.key === 'business'
+                              ? 'border-violet-500/30 hover:bg-violet-500/5'
+                              : ''
+                        }`}
+                        variant={isPro ? 'default' : 'outline'}
+                        size="default"
                       >
-                        {plan.key === 'free'
-                          ? landingT('free')
-                          : t('billing.upgrade')}
+                        {plan.key === 'free' ? landingT('free') : t('billing.upgrade')}
                       </Button>
                     </Link>
                   </div>
@@ -179,6 +182,17 @@ export function PricingSection({ planLimits = [] }: PricingSectionProps) {
             );
           })}
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-10 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground"
+        >
+          <Shield className="h-4 w-4 shrink-0 text-emerald-600" />
+          {landingT('footnote')}
+        </motion.p>
       </div>
     </section>
   );

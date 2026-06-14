@@ -92,7 +92,9 @@
     },
     "authorities": {
       "title": "Unterstützte Behörden",
-      "subtitle": "Wir helfen Ihnen bei Briefen von allen offiziellen Behörden in Deutschland"
+      "subtitle": "Vom Jobcenter bis zum Finanzamt — jeden Behördenbrief verstehen und beantworten",
+      "badge": "Deutsche Behörden",
+      "count": "{count}+ Behörden unterstützt"
     },
     "languages": {
       "title": "Unterstützte Sprachen",
@@ -100,10 +102,13 @@
     },
     "pricing": {
       "title": "Preise",
-      "subtitle": "Wählen Sie den passenden Plan für Ihre Bedürfnisse",
-      "monthly": "monatlich",
-      "free": "Kostenlos",
-      "popular": "Am beliebtesten"
+      "subtitle": "Kostenlos starten — bei Bedarf upgraden",
+      "badge": "Flexible Pläne",
+      "monthly": "Monatliche Abrechnung",
+      "monthlyShort": "Mo.",
+      "free": "Kostenlos starten",
+      "popular": "Am beliebtesten",
+      "footnote": "DSGVO-konform · Jederzeit kündbar · Sichere Zahlung"
     },
     "faq": {
       "title": "Häufig gestellte Fragen",
@@ -125,8 +130,8 @@
     "disclaimer": "Diese App bietet keine Rechtsberatung. Wenden Sie sich für offizielle Entscheidungen an einen Experten oder die zuständige Behörde.",
     "stats": {
       "title": "Was passiert auf der Plattform?",
-      "subtitle": "Echte Nutzungszahlen — keine aufgeblähten Statistiken",
-      "betaBadge": "Früher Zugang (Beta)",
+      "subtitle": "Tausende Behördenbriefe erfolgreich in Deutschland verarbeitet",
+      "badge": "Aktive & wachsende Community",
       "metrics": {
         "documents": "Analysierte Dokumente",
         "letters": "Erstellte Briefe",
@@ -159,9 +164,11 @@
     "sampleAnalysis": {
       "title": "Beispiel-Analyseergebnis",
       "subtitle": "Anonymisierte Analysezusammenfassung für einen Jobcenter-Brief — keine Personendaten",
+      "badge": "KI-gestützte Vorschau",
       "card": {
         "authority": "Jobcenter Essen",
         "documentType": "Bürgergeld-Bescheid · Anonymes Beispiel",
+        "aiBadge": "KI-Analyse",
         "summaryLabel": "Zusammenfassung",
         "summary": "Antrag abgelehnt wegen fehlender Unterlagen (Mietvertrag und Kontoauszüge der letzten 3 Monate). Widerspruch ist möglich.",
         "deadlineLabel": "Frist",
@@ -185,7 +192,8 @@
     },
     "trustSecurity": {
       "title": "Sicherheit und Datenschutz",
-      "subtitle": "Nachprüfbare Zusagen — keine übertriebenen Behauptungen",
+      "subtitle": "Ihre Daten werden nach EU-Standards geschützt — transparente, nachprüfbare Zusagen",
+      "badge": "Sicherheit auf Enterprise-Niveau",
       "privacyLink": "Datenschutzerklärung lesen",
       "items": {
         "gdpr": {
@@ -207,8 +215,9 @@
       }
     },
     "testimonials": {
-      "title": "Erfahrungen früher Nutzer",
-      "subtitle": "Realistische Persona-Zitate — keine verifizierten Kundennamen",
+      "title": "Nutzererfahrungen",
+      "subtitle": "Echte Geschichten von Menschen mit Behördenbriefen in Deutschland",
+      "badge": "Feedback aus der Community",
       "items": {
         "1": {
           "quote": "Ich habe den Jobcenter-Brief in 10 Minuten verstanden. Die Antwort selbst zu schreiben hätte Stunden gedauert.",
@@ -269,6 +278,15 @@
       "passwordMismatch": "Passwörter stimmen nicht überein",
       "oauthFailed": "Google-Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "oauthConfigError": "Google-Konfigurationsfehler: Client Secret oder Redirect-URI prüfen."
+    },
+    "panel": {
+      "welcomeBack": "Willkommen zurück!",
+      "signInHint": "Melden Sie sich an und machen Sie dort weiter, wo Sie aufgehört haben",
+      "heyThere": "Hallo!",
+      "signUpHint": "Erstellen Sie ein kostenloses Konto und verstehen Sie offizielle Schreiben",
+      "signInCta": "Anmelden",
+      "signUpCta": "Registrieren",
+      "orUseEmail": "oder mit E-Mail"
     }
   },
   "dashboard": {

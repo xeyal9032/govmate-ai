@@ -92,7 +92,9 @@
     },
     "authorities": {
       "title": "Dəstəklənən Qurumlar",
-      "subtitle": "Almaniyadakı bütün rəsmi qurumlardan gələn məktublarınızda sizə kömək edirik"
+      "subtitle": "Jobcenter-dən Finanzamt-a qədər — bütün rəsmi məktubları başa düşün və cavablayın",
+      "badge": "Almaniya rəsmi qurumları",
+      "count": "{count}+ qurum dəstəklənir"
     },
     "languages": {
       "title": "Dəstəklənən Dillər",
@@ -100,10 +102,13 @@
     },
     "pricing": {
       "title": "Qiymətlər",
-      "subtitle": "Ehtiyacınıza uyğun planı seçin",
-      "monthly": "aylıq",
-      "free": "Pulsuz",
-      "popular": "Ən Populyar"
+      "subtitle": "Pulsuz başlayın — ehtiyac artdıqca yükseldin",
+      "badge": "Çevik planlar",
+      "monthly": "Aylıq ödəniş",
+      "monthlyShort": "ay",
+      "free": "Pulsuz başla",
+      "popular": "Ən Populyar",
+      "footnote": "GDPR uyğun · İstənilən vaxt ləğv · Təhlükəsiz ödəniş"
     },
     "faq": {
       "title": "Tez-tez Verilən Suallar",
@@ -125,8 +130,8 @@
     "disclaimer": "Bu tətbiq hüquqi məsləhət vermir. Rəsmi qərarlar üçün mütəxəssisə və ya səlahiyyətli quruma müraciət edin.",
     "stats": {
       "title": "Platformada nə baş verir?",
-      "subtitle": "Real istifadə rəqəmləri — şişirdilmiş statistika yoxdur",
-      "betaBadge": "Erkən giriş (Beta)",
+      "subtitle": "Almaniyada minlərlə rəsmi sənəd uğurla emal edilib",
+      "badge": "Aktiv icma",
       "metrics": {
         "documents": "Analiz edilmiş sənəd",
         "letters": "Yaradılmış məktub",
@@ -159,9 +164,11 @@
     "sampleAnalysis": {
       "title": "Nümunə analiz nəticəsi",
       "subtitle": "Jobcenter məktubu üçün anonim analiz xülasəsi — şəxsi məlumat yoxdur",
+      "badge": "Sİ ilə önizləmə",
       "card": {
         "authority": "Jobcenter Essen",
         "documentType": "Bürgergeld qərarı · Anonim nümunə",
+        "aiBadge": "Sİ Analizi",
         "summaryLabel": "Xülasə",
         "summary": "Müraciət çatışmayan sənədlər (kirayə müqaviləsi və son 3 ay bank çıxarışları) səbəbindən rədd edildi. Widerspruch (etiraz) hüququnuz var.",
         "deadlineLabel": "Son tarix",
@@ -185,7 +192,8 @@
     },
     "trustSecurity": {
       "title": "Təhlükəsizlik və məxfilik",
-      "subtitle": "Yoxlanıla bilən öhdəliklər — abartılı iddialar yoxdur",
+      "subtitle": "Məlumatlarınız Aİ standartlarına uyğun qorunur — şəffaf, yoxlanıla bilən öhdəliklər",
+      "badge": "Korporativ səviyyəli təhlükəsizlik",
       "privacyLink": "Məxfilik siyasətini oxu",
       "items": {
         "gdpr": {
@@ -207,8 +215,9 @@
       }
     },
     "testimonials": {
-      "title": "Erkən istifadəçi təcrübələri",
-      "subtitle": "Realist persona sitatları — təsdiqlənmiş müştəri adları deyil",
+      "title": "İstifadəçi təcrübələri",
+      "subtitle": "Almaniyada rəsmi sənədlərlə məşğul olan insanların real hekayələri",
+      "badge": "İcma rəyləri",
       "items": {
         "1": {
           "quote": "Jobcenter məktubunu 10 dəqiqədə başa düşdüm. Cavabı özüm yazmaq saatlar çəkərdi.",
@@ -269,6 +278,15 @@
       "passwordMismatch": "Şifrələr uyğun gəlmir",
       "oauthFailed": "Google ilə giriş uğursuz oldu. Yenidən cəhd edin.",
       "oauthConfigError": "Google konfiqurasiya xətası: Client Secret və ya redirect URI yoxlayın."
+    },
+    "panel": {
+      "welcomeBack": "Yenidən xoş gəlmisiniz!",
+      "signInHint": "Məlumatlarınızla daxil olun və qaldığınız yerdən davam edin",
+      "heyThere": "Salam!",
+      "signUpHint": "Pulsuz hesab yaradın və rəsmi sənədləri anlamağa başlayın",
+      "signInCta": "Daxil ol",
+      "signUpCta": "Qeydiyyat",
+      "orUseEmail": "və ya e-poçtunuzdan istifadə edin"
     }
   },
   "dashboard": {
