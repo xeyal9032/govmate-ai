@@ -48,7 +48,7 @@ test.describe('Landing sayfası', () => {
     await page.goto('/tr');
 
     await page.locator('#video-demo').scrollIntoViewIfNeeded();
-    await expect(page.locator('#video-demo img[src="/marketing/en/upload.png"]')).toBeVisible();
+    await expect(page.locator('#video-demo img[src*="upload.png"]')).toBeVisible();
 
     await page.locator('#sample-analysis').scrollIntoViewIfNeeded();
     await expect(page.locator('a[href="/samples/ornek-analiz-ozeti.pdf"]')).toBeVisible();

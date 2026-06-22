@@ -80,7 +80,9 @@ test.describe('README ekran görüntüleri', () => {
       await page.goto(`/${locale}`);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
-      await page.locator('#how-it-works').scrollIntoViewIfNeeded();
+      const howItWorks = page.locator('#how-it-works');
+      await expect(howItWorks).toBeVisible();
+      await howItWorks.scrollIntoViewIfNeeded();
       await page.waitForTimeout(400);
       await page.screenshot({
         path: path.join(out, 'landing-how-it-works.png'),

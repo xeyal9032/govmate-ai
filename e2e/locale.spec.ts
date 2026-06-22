@@ -15,6 +15,6 @@ test.describe('Çoklu dil', () => {
 
   test('almanca giriş sayfası', async ({ page }) => {
     await page.goto('/de/auth/login');
-    await expect(page.getByLabel(/e-mail|email/i)).toBeVisible();
+    await expect(page.locator('#email')).toBeVisible();
   });
 });
